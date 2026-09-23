@@ -48,7 +48,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
     <main className="app-shell min-h-dvh pt-safe pb-32">
       <header className="py-4">
         <h1 className="gold-text font-display text-[26px] font-extrabold leading-none">
-          Your circle
+          Your chats
         </h1>
         <p className="mt-1.5 text-[13.5px] text-cream/55">
           {conversations.length === 0

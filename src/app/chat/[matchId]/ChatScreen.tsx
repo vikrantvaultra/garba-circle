@@ -136,7 +136,7 @@ export function ChatScreen({
             </p>
           </div>
 
-          {/* Back to the circle for someone new; this chat stays in Circle. */}
+          {/* Back to the circle for someone new; this chat stays in Chat. */}
           <Link
             href="/spin"
             className="flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full border border-marigold/45 bg-marigold/10 px-3 text-[13.5px] font-semibold text-marigold transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marigold"

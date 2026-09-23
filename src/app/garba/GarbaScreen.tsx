@@ -218,7 +218,25 @@ export function GarbaScreen({
 
   return (
     <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)] pt-[calc(env(safe-area-inset-top,0px)+28px)]">
-      <header className={styles.top}>
+      {/* The other half of the app: someone to dance with once you're there. */}
+      <Link href="/spin" className={styles.partner}>
+        <span className={styles.partnerIcon} aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
+            <circle cx="12" cy="12" r="8.5" />
+            <circle cx="12" cy="12" r="2.5" />
+            <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
+          </svg>
+        </span>
+        <span className="min-w-0 flex-1">
+          <b>Find a garba partner</b>
+          <small>Spin the circle and meet someone to dance with</small>
+        </span>
+        <svg className={styles.partnerArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </Link>
+
+      <header className={`${styles.top} mt-7`}>
         <p className={styles.gu} lang="gu" aria-hidden>
           ગરબા
         </p>

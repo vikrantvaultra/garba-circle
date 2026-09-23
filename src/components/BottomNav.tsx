@@ -27,9 +27,12 @@ const ITEMS = [
   },
   {
     href: "/matches",
-    label: "Circle",
+    label: "Chat",
     icon: (
-      <path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z" />
+      <>
+        <path d="M4.5 6.5h15v10h-9l-4 3.5v-3.5h-2z" />
+        <path d="M8.5 11h7M8.5 13.5h4" />
+      </>
     ),
   },
   {

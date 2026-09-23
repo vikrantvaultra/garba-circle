@@ -83,7 +83,7 @@ report from the menu, they are never told".
 The chat header carries a **Spin again** button that goes straight back to the
 circle, with the city and gender already chosen for this browser session.
 
-The Circle tab is a conversation list with unread counts, newest first.
+The Chat tab is a conversation list with unread counts, newest first.
 Opening a chat is what marks it read.
 
 ### Chat is free
