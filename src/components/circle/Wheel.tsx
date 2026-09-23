@@ -19,6 +19,14 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const CHARGE_MS = 1100;
 /** Degrees per second the circle drifts at rest. */
 const IDLE_SPEED = 7;
+/**
+ * How long a throw takes before it lands: at least 4.5 s for a tap, up to
+ * 6 s for a full-power hold. The result is never shown sooner, however fast
+ * the server answers. Reduced motion gets a short, calm stop instead.
+ */
+const SPIN_MIN_MS = 4500;
+const SPIN_POWER_MS = 1500;
+const SPIN_REDUCED_MS = 1000;
 
 const round = (n: number) => Math.round(n * 100) / 100;
 const easeOut = (p: number) => 1 - Math.pow(1 - p, 4);
@@ -172,7 +180,7 @@ export function Wheel(props: Props) {
 
     // Land dancer `winIndex` under the pointer after at least `turns` turns.
     s.winIndex = Math.floor(Math.random() * DANCERS);
-    const turns = 3 + Math.round(power * 4);
+    const turns = 4 + Math.round(power * 4);
     const from = s.angle;
     const to =
       Math.ceil((from + turns * 360 + s.winIndex * SLOT_DEG) / 360) * 360 -
@@ -181,7 +189,7 @@ export function Wheel(props: Props) {
       from,
       to,
       start: performance.now(),
-      dur: reduceMotion.current ? 300 : 3400 + power * 1800,
+      dur: reduceMotion.current ? SPIN_REDUCED_MS : SPIN_MIN_MS + power * SPIN_POWER_MS,
     };
 
     setPhase("spinning");
