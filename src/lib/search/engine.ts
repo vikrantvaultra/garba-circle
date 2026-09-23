@@ -12,19 +12,31 @@ import { FREE_SPINS } from "@/lib/constants";
 export type SpinQuota = {
   freeRemaining: number;
   paidRemaining: number;
+  /** Counted spins left. Irrelevant while `unlimited` is true. */
   totalRemaining: number;
+  /** An unlimited pass is active: spins cost nothing and never run out. */
+  unlimited: boolean;
+  /** ISO time the pass ends, when there is one. */
+  unlimitedUntil: string | null;
   /** True when the free run is over and nothing has been bought yet. */
   needsPack: boolean;
 };
 
+export function hasUnlimited(user: Pick<User, "unlimitedUntil">, now = new Date()): boolean {
+  return Boolean(user.unlimitedUntil && user.unlimitedUntil > now);
+}
+
 export function quotaFor(user: User): SpinQuota {
   const freeRemaining = Math.max(0, FREE_SPINS - user.freeSpinsUsed);
   const paidRemaining = Math.max(0, user.paidSpins);
+  const unlimited = hasUnlimited(user);
   return {
     freeRemaining,
     paidRemaining,
     totalRemaining: freeRemaining + paidRemaining,
-    needsPack: freeRemaining === 0 && paidRemaining === 0,
+    unlimited,
+    unlimitedUntil: unlimited ? user.unlimitedUntil!.toISOString() : null,
+    needsPack: !unlimited && freeRemaining === 0 && paidRemaining === 0,
   };
 }
 
@@ -53,6 +65,7 @@ function toUser(row: Row): User {
     profileComplete: row.profile_complete as boolean,
     freeSpinsUsed: row.free_spins_used as number,
     paidSpins: row.paid_spins as number,
+    unlimitedUntil: row.unlimited_until as Date | null,
     strikes: row.strikes as number,
     chatBannedUntil: row.chat_banned_until as Date | null,
     suspendedAt: row.suspended_at as Date | null,
@@ -120,21 +133,28 @@ export async function pickPartner(input: CandidateInput): Promise<User | null> {
   );
 }
 
-/** Spend one pull: free ones first, then a purchased one. */
-export async function consumeSpin(user: User): Promise<{ paid: boolean }> {
+/**
+ * Spend one spin. With an unlimited pass nothing is spent, so free and
+ * counted spins bought earlier are still there when the pass ends.
+ * Otherwise free ones go first, then a purchased one.
+ */
+export async function consumeSpin(
+  user: User,
+): Promise<{ paid: boolean; spent: "none" | "free" | "paid" }> {
   const quota = quotaFor(user);
+  if (quota.unlimited) return { paid: true, spent: "none" };
   if (quota.freeRemaining > 0) {
     await db
       .update(users)
       .set({ freeSpinsUsed: sql`${users.freeSpinsUsed} + 1`, updatedAt: new Date() })
       .where(sql`${users.id} = ${user.id}::uuid`);
-    return { paid: false };
+    return { paid: false, spent: "free" };
   }
   await db
     .update(users)
     .set({ paidSpins: sql`greatest(${users.paidSpins} - 1, 0)`, updatedAt: new Date() })
     .where(sql`${users.id} = ${user.id}::uuid`);
-  return { paid: true };
+  return { paid: true, spent: "paid" };
 }
 
 export async function recordSpin(input: {

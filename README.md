@@ -62,11 +62,16 @@ and no price list on a first-timer's screen.
 
 | Pack | Price |
 |---|---|
-| 5 searches | ₹21 |
-| 10 searches | ₹31 |
+| 5 spins | ₹49 |
+| Unlimited spins till Dussehra (20 Oct) | ₹99 |
 
-The pack sheet shows the real unit price (₹4.20 vs ₹3.10 per spin) and derives
-the "SAVE 26%" badge from those numbers rather than asserting it.
+The unlimited pass is a Navratri season pass: every spin is free until 6 am
+IST on 21 October 2026, when Dussehra night ends (`UNLIMITED_PASS_ENDS_AT` in
+`src/lib/constants.ts`). While it's active nothing counts down, so free or
+bought spins are still there afterwards. It can't be bought twice, and it's
+taken off sale once the season is over. The old 10-spin pack is retired: it
+can no longer be ordered, but an order placed before the change is still
+honoured when its payment is confirmed.
 
 ### Sending a dandiya
 

@@ -7,7 +7,7 @@ import {
   quotaFor,
   recordSpin,
 } from "@/lib/search/engine";
-import { SPIN_PACKS } from "@/lib/constants";
+import { packsOnSale } from "@/lib/constants";
 
 /**
  * Every spin says where and who. "both" means no gender filter, so dancers
@@ -29,10 +29,10 @@ export async function POST(req: Request) {
     }
 
     const quota = quotaFor(user);
-    if (quota.totalRemaining <= 0) {
+    if (quota.needsPack) {
       return fail("Your free searches are done.", 402, {
         needsPack: true,
-        packs: SPIN_PACKS,
+        packs: packsOnSale(),
         quota,
       });
     }
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { paid } = await consumeSpin(user);
+    const { paid, spent } = await consumeSpin(user);
     await recordSpin({
       userId: user.id,
       shownUserId: partner.id,
@@ -72,8 +72,8 @@ export async function POST(req: Request) {
 
     const after = quotaFor({
       ...user,
-      freeSpinsUsed: paid ? user.freeSpinsUsed : user.freeSpinsUsed + 1,
-      paidSpins: paid ? user.paidSpins - 1 : user.paidSpins,
+      freeSpinsUsed: user.freeSpinsUsed + (spent === "free" ? 1 : 0),
+      paidSpins: user.paidSpins - (spent === "paid" ? 1 : 0),
     });
 
     return json({

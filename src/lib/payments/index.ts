@@ -10,7 +10,7 @@
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { payments, users } from "@/lib/db/schema";
-import { findPack, type Pack } from "@/lib/constants";
+import { UNLIMITED_PASS_ENDS_AT, findPack, packsOnSale, type Pack } from "@/lib/constants";
 import { devPaymentsAllowed, isProduction } from "@/lib/env";
 import {
   createRazorpayOrder,
@@ -44,8 +44,10 @@ export async function createOrder(input: {
   userId: string;
   packKey: string;
 }): Promise<CreatedOrder> {
-  const pack = findPack(input.packKey);
-  if (!pack) throw new PaymentConfigError("Unknown pack");
+  // Only packs on sale can be ordered; retired ones are still honoured on
+  // confirmation for orders placed before they were retired.
+  const pack = packsOnSale().find((p) => p.key === input.packKey);
+  if (!pack) throw new PaymentConfigError("That pack isn't on sale.");
 
   const provider = activeProvider();
   if (provider === "mock" && !devPaymentsAllowed()) {
@@ -157,6 +159,17 @@ export async function confirmOrder(input: {
 
 /** Packs only ever buy spins; chat is free. */
 async function grantPack(input: { userId: string; pack: Pack }): Promise<void> {
+  if (input.pack.unlimited) {
+    // Buying the pass twice doesn't stack; it runs to the same end.
+    await db
+      .update(users)
+      .set({
+        unlimitedUntil: sql`greatest(coalesce(${users.unlimitedUntil}, now()), ${UNLIMITED_PASS_ENDS_AT.toISOString()}::timestamptz)`,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, input.userId));
+    return;
+  }
   await db
     .update(users)
     .set({

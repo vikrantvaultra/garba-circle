@@ -18,35 +18,64 @@ export type Pack = {
   label: string;
   sublabel: string;
   amountPaise: number;
-  /** Spins granted. */
+  /** Spins granted. 0 for the unlimited pass, which grants time instead. */
   grant: number;
+  /** Unlimited spins until UNLIMITED_PASS_ENDS_AT instead of a count. */
+  unlimited?: boolean;
   badge?: string;
 };
+
+/**
+ * The unlimited pass is a Navratri season pass: every spin is free until
+ * Dussehra night is over (6 am IST on 21 October 2026). It stops being sold
+ * once that moment has passed.
+ */
+export const UNLIMITED_PASS_ENDS_AT = new Date("2026-10-21T06:00:00+05:30");
+export const UNLIMITED_PASS_ENDS_LABEL = "Dussehra, 20 Oct";
 
 export const SPIN_PACKS: Pack[] = [
   {
     key: "spins_5",
     kind: "spins",
-    label: "5 Searches",
+    label: "5 spins",
     sublabel: "Keep spinning",
-    amountPaise: 2100,
+    amountPaise: 4900,
     grant: 5,
   },
+  {
+    key: "spins_unlimited",
+    kind: "spins",
+    label: "Unlimited spins",
+    sublabel: `Every spin free till ${UNLIMITED_PASS_ENDS_LABEL}`,
+    amountPaise: 9900,
+    grant: 0,
+    unlimited: true,
+  },
+];
+
+/**
+ * No longer sold, but an order created before a pack was retired must still
+ * be granted when its payment is confirmed.
+ */
+const RETIRED_PACKS: Pack[] = [
   {
     key: "spins_10",
     kind: "spins",
     label: "10 Searches",
-    sublabel: "Best value — save ₹11",
+    sublabel: "Retired",
     amountPaise: 3100,
     grant: 10,
-    badge: "POPULAR",
   },
 ];
 
-export const ALL_PACKS = SPIN_PACKS;
+/** Packs on sale right now. The pass disappears once its season is over. */
+export function packsOnSale(now: Date = new Date()): Pack[] {
+  return SPIN_PACKS.filter((p) => !p.unlimited || now < UNLIMITED_PASS_ENDS_AT);
+}
 
+/** For confirming payments: includes retired packs. */
 export function findPack(key: string): Pack | undefined {
-  return ALL_PACKS.find((p) => p.key === key);
+  return [...SPIN_PACKS, ...RETIRED_PACKS].find((p) => p.key === key);
 }
 
 export function rupees(paise: number): string {

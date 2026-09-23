@@ -6,6 +6,7 @@ import { cityOptions } from "@/lib/search/cities";
 import { countPendingInvites } from "@/lib/matches/list";
 import { circleStats } from "@/lib/stats";
 import { navratriLine } from "@/lib/navratri";
+import { packsOnSale } from "@/lib/constants";
 import { SpinScreen } from "./SpinScreen";
 
 export default async function SpinPage() {
@@ -33,6 +34,7 @@ export default async function SpinPage() {
       stats={stats}
       tonight={tonight}
       cities={cities}
+      packs={packsOnSale()}
       subtitle={navratriLine()}
     />
   );

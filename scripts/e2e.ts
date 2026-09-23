@@ -222,8 +222,8 @@ async function main() {
     body: { packKey: "spins_5" },
   });
   check(
-    "a ₹21 order is created",
-    order.status === 200 && (order.data.pack as Record<string, number>)?.amountPaise === 2100,
+    "a ₹49 order for 5 spins is created",
+    order.status === 200 && (order.data.pack as Record<string, number>)?.amountPaise === 4900,
   );
 
   const confirm = await a.call("/api/payments/confirm", {
@@ -260,6 +260,56 @@ async function main() {
       (paidSpin.data.partner as Record<string, string>)?.city === "Surat",
     paidSpin.status !== 200 ? JSON.stringify(paidSpin.data).slice(0, 140) : "",
   );
+
+  const retired = await a.call("/api/payments/create-order", {
+    method: "POST",
+    body: { packKey: "spins_10" },
+  });
+  check("the retired 10-spin pack can no longer be ordered", retired.status === 400);
+
+  // The unlimited pass: ₹99, every spin free till Dussehra.
+  const passOrder = await a.call("/api/payments/create-order", {
+    method: "POST",
+    body: { packKey: "spins_unlimited" },
+  });
+  const passConfirm = await a.call("/api/payments/confirm", {
+    method: "POST",
+    body: { paymentId: passOrder.data.paymentId },
+  });
+  const passQuota = passConfirm.data.quota as Record<string, unknown>;
+  check(
+    "₹99 buys unlimited spins till Dussehra",
+    passOrder.status === 200 &&
+      (passOrder.data.pack as Record<string, number>)?.amountPaise === 9900 &&
+      passConfirm.status === 200 &&
+      passQuota?.unlimited === true &&
+      String(passQuota?.unlimitedUntil ?? "").startsWith("2026-10-21T00:30:00"),
+    JSON.stringify(passQuota ?? passConfirm.data).slice(0, 160),
+  );
+
+  const paidBefore = passQuota?.paidRemaining as number;
+  const passSpin = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { gender: "both", city: "Mumbai" },
+  });
+  const passSpin2 = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { gender: "both", city: "Delhi" },
+  });
+  check(
+    "with the pass, spins land and nothing counts down",
+    passSpin.status === 200 &&
+      passSpin2.status === 200 &&
+      (passSpin2.data.quota as Record<string, unknown>)?.unlimited === true &&
+      (passSpin2.data.quota as Record<string, number>)?.paidRemaining === paidBefore,
+    `${passSpin.status}/${passSpin2.status} ${JSON.stringify(passSpin2.data.quota ?? passSpin2.data).slice(0, 140)}`,
+  );
+
+  const passAgain = await a.call("/api/payments/create-order", {
+    method: "POST",
+    body: { packKey: "spins_unlimited" },
+  });
+  check("the pass can't be bought twice", passAgain.status === 409);
 
   const partner = paidSpin.data.partner as Record<string, string>;
 

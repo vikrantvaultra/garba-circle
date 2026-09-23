@@ -8,13 +8,15 @@ import { useToast } from "./Toast";
 
 /**
  * Honest value maths. The unit price and the saving are both derived from the
- * real prices, so a "save 26%" badge is arithmetic rather than marketing.
+ * real prices, so a "save 26%" note is arithmetic rather than marketing. The
+ * unlimited pass has no per-spin price, so it says what it is instead.
  */
 function unitPrice(pack: Pack): number {
   return pack.amountPaise / pack.grant;
 }
 
 function unitLabel(pack: Pack): string {
+  if (pack.unlimited) return pack.sublabel;
   const per = unitPrice(pack) / 100;
   return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a spin`;
 }
@@ -41,23 +43,26 @@ export function PackSheet({
   onPurchased: (pack: Pack) => void;
 }) {
   const [busy, setBusy] = useState(false);
-  const [chosen, setChosen] = useState(
-    () => (packs.find((p) => p.badge) ?? packs[packs.length - 1]).key,
-  );
+  // Nothing is pre-chosen for them beyond the first, cheapest pack.
+  const [chosen, setChosen] = useState(() => packs[0]?.key);
   const payRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
 
   const selected = packs.find((p) => p.key === chosen) ?? packs[0];
 
-  // The smallest pack is the baseline everything else is compared against.
-  const baseline = packs.reduce(
-    (cheapest, pack) => (pack.grant < cheapest.grant ? pack : cheapest),
-    packs[0],
+  // The smallest counted pack is the baseline the others are compared with.
+  const counted = packs.filter((p) => !p.unlimited && p.grant > 0);
+  const baseline = counted.reduce<Pack | null>(
+    (cheapest, pack) => (!cheapest || pack.grant < cheapest.grant ? pack : cheapest),
+    null,
   );
   const savingFor = (pack: Pack) => {
+    if (!baseline || pack.unlimited || pack.grant <= 0) return 0;
     const saved = 1 - unitPrice(pack) / unitPrice(baseline);
     return saved >= 0.05 ? Math.round(saved * 100) : 0;
   };
+
+  if (!selected) return null;
 
   const buy = async () => {
     setBusy(true);

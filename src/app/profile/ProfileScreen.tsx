@@ -11,7 +11,8 @@ import { api } from "@/lib/client/api";
 import type { PublicProfile } from "@/lib/api";
 import {
   SKILL_LEVELS,
-  SPIN_PACKS,
+  UNLIMITED_PASS_ENDS_LABEL,
+  type Pack,
   rupees,
 } from "@/lib/constants";
 
@@ -19,6 +20,7 @@ export function ProfileScreen({
   profile,
   phoneMasked,
   quota,
+  packs,
   strikes,
 }: {
   profile: PublicProfile;
@@ -27,13 +29,20 @@ export function ProfileScreen({
     freeRemaining: number;
     paidRemaining: number;
     totalRemaining: number;
+    unlimited: boolean;
   };
+  /** Packs on sale right now. */
+  packs: Pack[];
   strikes: number;
 }) {
   const router = useRouter();
   const toast = useToast();
   const [showPacks, setShowPacks] = useState(false);
   const level = SKILL_LEVELS.find((l) => l.key === profile.skillLevel);
+  const pass = packs.find((p) => p.unlimited);
+  // The tile offers the pass while it's on sale, else the smallest pack.
+  const offer = pass ?? packs[0];
+  const packsForSale = quota.unlimited ? packs.filter((p) => !p.unlimited) : packs;
 
   const logout = async () => {
     try {
@@ -102,24 +111,39 @@ export function ProfileScreen({
       <section className="mt-4 grid grid-cols-2 gap-3">
         <div className="panel p-4 text-center">
           <p className="gold-text font-display text-[30px] font-extrabold leading-none">
-            {quota.totalRemaining}
+            {quota.unlimited ? "∞" : quota.totalRemaining}
           </p>
           <p className="mt-1 text-[12.5px] text-cream/55">
-            spins left
-            {quota.paidRemaining > 0 && ` (${quota.paidRemaining} paid)`}
+            {quota.unlimited ? (
+              `unlimited till ${UNLIMITED_PASS_ENDS_LABEL}`
+            ) : (
+              <>
+                spins left
+                {quota.paidRemaining > 0 && ` (${quota.paidRemaining} paid)`}
+              </>
+            )}
           </p>
         </div>
-        <button
-          onClick={() => setShowPacks(true)}
-          className="panel p-4 text-center transition-transform active:scale-[0.98]"
-        >
-          <p className="font-display text-[30px] font-extrabold leading-none text-parrot">
-            {rupees(SPIN_PACKS[0].amountPaise)}
-          </p>
-          <p className="mt-1 text-[12.5px] text-cream/55">
-            for {SPIN_PACKS[0].grant} more spins
-          </p>
-        </button>
+        {quota.unlimited || !offer ? (
+          <div className="panel p-4 text-center">
+            <p className="font-display text-[30px] leading-none text-parrot">All set</p>
+            <p className="mt-1 text-[12.5px] text-cream/55">every spin is free</p>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowPacks(true)}
+            className="panel p-4 text-center transition-transform active:scale-[0.98]"
+          >
+            <p className="font-display text-[30px] font-extrabold leading-none text-parrot">
+              {rupees(offer.amountPaise)}
+            </p>
+            <p className="mt-1 text-[12.5px] text-cream/55">
+              {offer.unlimited
+                ? `unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL}`
+                : `for ${offer.grant} more spins`}
+            </p>
+          </button>
+        )}
       </section>
 
       {strikes > 0 && (
@@ -149,7 +173,7 @@ export function ProfileScreen({
         />
         <Item
           title="Pricing"
-          body={`${SPIN_PACKS.map((p) => `${p.grant} spins ${rupees(p.amountPaise)}`).join(" · ")}. Chat is free. One-time payments, no subscription.`}
+          body={`${packs.map((p) => (p.unlimited ? `Unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL} ${rupees(p.amountPaise)}` : `${p.grant} spins ${rupees(p.amountPaise)}`)).join(" · ")}. Chat is free. One-time payments, no subscription.`}
         />
       </section>
 
@@ -167,7 +191,7 @@ export function ProfileScreen({
         open={showPacks}
         title="More spins"
         subtitle="Packs are more spins. City and who you meet stay your choice on every one."
-        packs={SPIN_PACKS}
+        packs={packsForSale}
         onClose={() => setShowPacks(false)}
         onPurchased={() => {
           setShowPacks(false);

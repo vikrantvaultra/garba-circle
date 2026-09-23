@@ -30,6 +30,8 @@ export const users = pgTable(
     /** Search economy. */
     freeSpinsUsed: integer("free_spins_used").notNull().default(0),
     paidSpins: integer("paid_spins").notNull().default(0),
+    /** Unlimited pass: every spin is free until this moment. */
+    unlimitedUntil: timestamp("unlimited_until", { withTimezone: true }),
 
     /** Safety. */
     strikes: integer("strikes").notNull().default(0),

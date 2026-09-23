@@ -26,7 +26,7 @@ import { buzz, sound } from "@/lib/client/sound";
 import * as spinPrefs from "@/lib/client/spin-prefs";
 import { compatibility, type Landing } from "@/lib/compat";
 import type { PublicProfile } from "@/lib/api";
-import { FREE_SPINS, SPIN_PACKS } from "@/lib/constants";
+import { FREE_SPINS, UNLIMITED_PASS_ENDS_LABEL, type Pack } from "@/lib/constants";
 import type { CircleStats } from "@/lib/stats";
 import type { Tonight } from "@/lib/search/tonight";
 import type { CityOption } from "@/lib/search/cities";
@@ -36,6 +36,9 @@ type Quota = {
   freeRemaining: number;
   paidRemaining: number;
   totalRemaining: number;
+  /** An unlimited pass is active: nothing counts down. */
+  unlimited: boolean;
+  unlimitedUntil: string | null;
   needsPack: boolean;
 };
 
@@ -69,12 +72,15 @@ const WHO: { value: GenderChoice; label: string }[] = [
 
 /** What the quota will be once the server has taken this spin: free ones go first. */
 function afterOneSpin(q: Quota): Quota {
+  if (q.unlimited) return q;
   const free = q.freeRemaining > 0 ? q.freeRemaining - 1 : 0;
   const paid = q.freeRemaining > 0 ? q.paidRemaining : Math.max(0, q.paidRemaining - 1);
   return {
     freeRemaining: free,
     paidRemaining: paid,
     totalRemaining: free + paid,
+    unlimited: false,
+    unlimitedUntil: null,
     needsPack: free === 0 && paid === 0,
   };
 }
@@ -89,6 +95,7 @@ export function SpinScreen({
   stats,
   tonight,
   cities,
+  packs,
   subtitle,
 }: {
   initialQuota: Quota;
@@ -98,6 +105,8 @@ export function SpinScreen({
   stats: CircleStats;
   tonight: Tonight;
   cities: CityOption[];
+  /** Packs on sale right now (the unlimited pass ends with Navratri). */
+  packs: Pack[];
   subtitle: string;
 }) {
   const router = useRouter();
@@ -146,8 +155,11 @@ export function SpinScreen({
   const resultRef = useRef<Landing | null>(null);
   const failureRef = useRef<unknown>(null);
 
-  const onFreeRun = quota.freeRemaining > 0;
-  const outOfSpins = quota.totalRemaining === 0;
+  const unlimited = quota.unlimited;
+  const onFreeRun = !unlimited && quota.freeRemaining > 0;
+  const outOfSpins = quota.needsPack;
+  // No point offering the pass to someone who has it.
+  const packsForSale = unlimited ? packs.filter((p) => !p.unlimited) : packs;
   const ready = Boolean(city && gender);
 
   useEffect(() => {
@@ -292,6 +304,12 @@ export function SpinScreen({
         Choose <strong>{city ? "who you'd like to meet" : gender ? "a city" : "a city and who you'd like to meet"}</strong>, then spin
       </>
     );
+  } else if (unlimited) {
+    hint = (
+      <>
+        Unlimited spins till {UNLIMITED_PASS_ENDS_LABEL}. <strong>Hold for a bigger spin</strong>
+      </>
+    );
   } else if (quota.totalRemaining === 1) {
     hint = (
       <>
@@ -307,7 +325,7 @@ export function SpinScreen({
     );
   }
 
-  const lit = Math.min(quota.totalRemaining, FREE_SPINS);
+  const lit = unlimited ? FREE_SPINS : Math.min(quota.totalRemaining, FREE_SPINS);
   const spinsPill = (
     <>
       <span className={styles.diyas} aria-hidden>
@@ -315,12 +333,21 @@ export function SpinScreen({
           <i key={i} data-used={i >= lit} />
         ))}
       </span>
-      <span>
-        <b>{quota.totalRemaining}</b> {quota.totalRemaining === 1 ? "spin" : "spins"} left
-      </span>
+      {unlimited ? (
+        <span>
+          <b>∞</b> unlimited
+        </span>
+      ) : (
+        <span>
+          <b>{quota.totalRemaining}</b> {quota.totalRemaining === 1 ? "spin" : "spins"} left
+        </span>
+      )}
     </>
   );
-  const low = quota.totalRemaining > 0 && quota.totalRemaining <= 2;
+  const low = !unlimited && quota.totalRemaining > 0 && quota.totalRemaining <= 2;
+  const spinsLabel = unlimited
+    ? `Unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL}`
+    : `${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left`;
 
   const special = haul.filter((h) => h.tier !== "jodi").length;
   const streak = tonight.pastStreak + (haul.length > 0 ? 1 : 0);
@@ -344,7 +371,7 @@ export function SpinScreen({
         </div>
         <div className={styles.hud}>
           {/* Prices stay out of sight until the free run is over. */}
-          {onFreeRun ? (
+          {onFreeRun || unlimited ? (
             <div className={styles.spins} data-low={low} role="status">
               {spinsPill}
             </div>
@@ -354,7 +381,7 @@ export function SpinScreen({
               className={styles.spins}
               data-low={low}
               onClick={() => setSheet("packs")}
-              aria-label={`${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left. Get more spins`}
+              aria-label={`${spinsLabel}. Get more spins`}
             >
               {spinsPill}
             </button>
@@ -477,7 +504,9 @@ export function SpinScreen({
       <MatchSheet
         open={sheet === "match"}
         landing={landing}
-        againNote={outOfSpins ? "Get more spins" : `${quota.totalRemaining} left`}
+        againNote={
+          unlimited ? "Unlimited" : outOfSpins ? "Get more spins" : `${quota.totalRemaining} left`
+        }
         inviting={inviting}
         onAgain={spinAgain}
         onInvite={invite}
@@ -490,9 +519,11 @@ export function SpinScreen({
         subtitle={
           outOfSpins
             ? `You've used your ${FREE_SPINS} free spins. ${stats.dancers} ${stats.dancers === 1 ? "dancer is" : "dancers are"} in the circle.`
-            : `You have ${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left. Top up any time.`
+            : unlimited
+              ? `You have unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL}.`
+              : `You have ${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left. Top up any time.`
         }
-        packs={SPIN_PACKS}
+        packs={packsForSale}
         teaser={
           <p className="m-0">
             <b className="text-[#FF9FCF]">Same choices, more spins.</b> Pick any city

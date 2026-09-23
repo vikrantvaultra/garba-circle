@@ -1,0 +1,2 @@
+ALTER TABLE "chat_sessions" ADD COLUMN IF NOT EXISTS "last_read_at" timestamp with time zone;--> statement-breakpoint
+ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "unlimited_until" timestamp with time zone;

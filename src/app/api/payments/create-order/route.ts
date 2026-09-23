@@ -2,7 +2,8 @@ import { z } from "zod";
 import { fail, guard, json, rateLimit } from "@/lib/api";
 import { requireUser } from "@/lib/auth/session";
 import { createOrder } from "@/lib/payments";
-import { findPack } from "@/lib/constants";
+import { UNLIMITED_PASS_ENDS_LABEL, packsOnSale } from "@/lib/constants";
+import { hasUnlimited } from "@/lib/search/engine";
 
 const Body = z.object({
   packKey: z.string().min(2).max(24),
@@ -18,8 +19,11 @@ export async function POST(req: Request) {
       return fail("Too many attempts. Try again in a minute.", 429);
     }
 
-    const pack = findPack(parsed.data.packKey);
-    if (!pack) return fail("Unknown pack.");
+    const pack = packsOnSale().find((p) => p.key === parsed.data.packKey);
+    if (!pack) return fail("That pack isn't on sale.");
+    if (pack.unlimited && hasUnlimited(user)) {
+      return fail(`You already have unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL}.`, 409);
+    }
 
     const order = await createOrder({ userId: user.id, packKey: pack.key });
 
