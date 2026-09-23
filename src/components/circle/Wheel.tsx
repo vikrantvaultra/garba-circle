@@ -7,7 +7,7 @@ import {
   useRef,
   type Ref,
 } from "react";
-import { buzz, sound } from "@/lib/client/sound";
+import { TICK, buzz, sound } from "@/lib/client/sound";
 import styles from "./wheel.module.css";
 
 const DANCERS = 12;
@@ -206,6 +206,9 @@ export function Wheel(props: Props) {
   // One animation loop for the whole life of the component. Everything it
   // touches is written straight to the DOM; none of it goes through React.
   useEffect(() => {
+    // Any completed tap on the page (picking a city, a gender) unlocks audio,
+    // so the very first spin already has sound.
+    sound.install();
     reduceMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
 
@@ -221,7 +224,7 @@ export function Wheel(props: Props) {
         if (slot !== s.lastSlot) {
           s.lastSlot = slot;
           sound.tak();
-          buzz(4);
+          buzz(TICK);
           const pointer = pointerRef.current;
           if (pointer) {
             pointer.classList.remove(styles.kick);
@@ -266,6 +269,8 @@ export function Wheel(props: Props) {
   }, []);
 
   const release = () => {
+    // Letting go is a completed gesture: the moment phones allow audio.
+    sound.unlock();
     const s = m.current;
     if (!s.charging) return;
     s.charging = false;

@@ -392,8 +392,9 @@ export function SpinScreen({
             aria-pressed={soundOn}
             aria-label={soundOn ? "Sound on" : "Sound off"}
             onClick={() => {
-              sound.unlock();
               sound.setEnabled(!soundOn);
+              // Turning sound on is itself a tap, so start audio right away.
+              if (!soundOn) sound.unlock();
             }}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
