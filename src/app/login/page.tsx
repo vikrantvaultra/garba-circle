@@ -84,7 +84,7 @@ export default function LoginPage() {
 
       <div className="flex flex-1 flex-col justify-center pb-8">
         <div className="animate-rise">
-          <span className="animate-flicker text-[38px]">{"\u{1FA94}"}</span>
+          <span className="animate-flicker inline-block text-[38px]">{"\u{1FA94}"}</span>
           <h1 className="mt-3 font-display text-[30px] font-extrabold leading-tight">
             {step === "phone" ? "Aavo, join the circle" : "Enter the code"}
           </h1>

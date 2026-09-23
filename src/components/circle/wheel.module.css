@@ -24,6 +24,8 @@
   background: radial-gradient(circle, rgba(246, 169, 27, 0.28), rgba(214, 40, 69, 0.08) 45%, transparent 70%);
   transform: scale(calc(1 + var(--charge) * 0.35));
   opacity: calc(0.7 + var(--charge) * 0.3);
+  /* Its own layer: charging rescales it every frame without repainting. */
+  will-change: transform, opacity;
 }
 .wheel[data-phase="spinning"]::before {
   animation: beat 0.42s ease-in-out infinite alternate;
@@ -36,7 +38,7 @@
   position: absolute;
   inset: 0;
 }
-.layer svg {
+.layer > svg {
   width: 100%;
   height: 100%;
   display: block;
@@ -50,8 +52,23 @@
   will-change: transform;
 }
 
+/* A dancer: a box 56/320 of the circle, centred on the ring at radius
+   120/320, i.e. 120/56 = 214.2857% of its own height out from the middle. */
 .dancer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 17.5%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(var(--a)) translateY(-214.2857%);
   transition: opacity 0.5s;
+}
+.dancer > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 .fig {
   animation: bob 0.9s ease-in-out infinite alternate;
@@ -63,8 +80,9 @@
 .wheel[data-phase="spinning"] .fig {
   animation-duration: 0.28s;
 }
+/* 2.2 of the dancer's 56 units. */
 @keyframes bob {
-  to { transform: translateY(-2.2px); }
+  to { transform: translateY(-3.93%); }
 }
 .halo {
   opacity: 0;
@@ -86,12 +104,6 @@
   transform: translateX(-50%);
   transform-origin: 50% 30%;
   filter: drop-shadow(0 0 6px rgba(246, 169, 27, 0.9));
-}
-.kick {
-  animation: kick 0.12s ease-out;
-}
-@keyframes kick {
-  50% { transform: translateX(-50%) rotate(-16deg); }
 }
 
 /* The garbo: the pierced brass lamp in the middle of every garba circle, and
@@ -125,21 +137,30 @@
 .wheel[data-full="true"] .garbo {
   animation: shake 0.08s linear infinite;
 }
+/* `translate` stacks on the garbo's transform and stays on the compositor;
+   animating margin would re-run layout every frame. */
 @keyframes shake {
-  25% { margin-left: 1px; }
-  75% { margin-left: -1px; }
+  25% { translate: 1px 0; }
+  75% { translate: -1px 0; }
 }
-.garbo svg {
+.lamp {
+  position: relative;
   width: 56%;
-  height: auto;
+  aspect-ratio: 100 / 104;
+}
+.lamp svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: visible;
 }
 .garbo:focus-visible {
   outline: 3px solid var(--color-marigold);
   outline-offset: 5px;
 }
-.wheel[data-blocked="true"] .garbo svg,
-.wheel[data-empty="true"] .garbo svg {
+.wheel[data-blocked="true"] .lamp,
+.wheel[data-empty="true"] .lamp {
   opacity: 0.45;
 }
 .wheel[data-empty="true"] .garbo span {
@@ -147,7 +168,8 @@
 }
 
 .flame {
-  transform-origin: 50px 32px;
+  /* (50, 32) in the lamp's 100 x 104 box. */
+  transform-origin: 50% 30.77%;
   animation: flicker-flame 1.8s ease-in-out infinite;
 }
 .wheel[data-phase="charging"] .flame {
@@ -173,7 +195,6 @@
   .fig,
   .flame,
   .holes,
-  .kick,
   .wheel::before,
   .wheel[data-full="true"] .garbo {
     animation: none !important;

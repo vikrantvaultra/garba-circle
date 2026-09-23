@@ -118,7 +118,7 @@ export function ChatScreen({
 
   return (
     <div className="flex h-dvh flex-col">
-      <header className="sticky top-0 z-20 border-b border-gold/15 bg-night/80 pt-safe backdrop-blur-xl">
+      <header className="sticky top-0 z-20 border-b border-gold/15 bg-night/95 pt-safe">
         <div className="app-shell flex items-center gap-3 py-2.5">
           <Link href="/matches" aria-label="Back" className="-ml-1 p-1.5">
             <svg viewBox="0 0 24 24" className="h-6 w-6 text-cream/70" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -235,7 +235,7 @@ export function ChatScreen({
         <div ref={bottomRef} />
       </div>
 
-      <div className="border-t border-gold/15 bg-night/85 pb-safe backdrop-blur-xl">
+      <div className="border-t border-gold/15 bg-night/95 pb-safe">
         <div className="app-shell py-3">
           {blockedNotice && (
             <div className="animate-rise mb-2.5 flex gap-2.5 rounded-2xl border border-rani/45 bg-rani/12 px-3.5 py-2.5">

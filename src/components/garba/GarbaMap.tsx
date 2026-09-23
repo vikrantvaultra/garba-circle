@@ -132,6 +132,9 @@ export function GarbaMap({
           // One finger scrolls the page; two fingers (or ctrl + wheel) move
           // the map. An embedded map should never trap the page.
           cooperativeGestures: true,
+          // Phones report 3x; drawing every frame at 3x is over twice the
+          // pixels of 2x for a difference nobody can see on a map.
+          pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
         });
         map.addControl(new lib.NavigationControl({ showCompass: false }), "top-right");
         map.addControl(

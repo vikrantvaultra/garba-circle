@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 
 const ITEMS = [
   {
@@ -53,7 +54,7 @@ export function BottomNav({ badge = 0 }: { badge?: number }) {
   return (
     <nav
       aria-label="Main"
-      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-4 gap-1 rounded-[22px] border border-white/8 bg-night/85 p-1.5 shadow-[0_20px_40px_rgba(0,0,0,0.45)] backdrop-blur-lg"
+      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-4 gap-1 rounded-[22px] border border-white/8 bg-night/95 p-1.5 shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
       style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)" }}
     >
       {ITEMS.map((item) => {
@@ -63,34 +64,60 @@ export function BottomNav({ badge = 0 }: { badge?: number }) {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`flex flex-col items-center gap-1 rounded-2xl pb-[7px] pt-[9px] text-[12px] font-semibold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-marigold ${
-              active ? "bg-marigold/10 text-marigold" : "text-muted"
-            }`}
+            className="rounded-2xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-marigold"
           >
-            <span className="relative">
-              <svg
-                viewBox="0 0 24 24"
-                className="h-[22px] w-[22px]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden
-              >
-                {item.icon}
-              </svg>
-              {item.href === "/matches" && badge > 0 && (
-                <span className="absolute -right-2.5 -top-1.5 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-rani px-1 text-[10px] font-bold text-white">
-                  {badge > 9 ? "9+" : badge}
-                  <span className="sr-only"> unread</span>
-                </span>
-              )}
-            </span>
-            {item.label}
+            <NavItem active={active} label={item.label}>
+              <span className="relative">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-[22px] w-[22px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  {item.icon}
+                </svg>
+                {item.href === "/matches" && badge > 0 && (
+                  <span className="absolute -right-2.5 -top-1.5 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-rani px-1 text-[10px] font-bold text-white">
+                    {badge > 9 ? "9+" : badge}
+                    <span className="sr-only"> unread</span>
+                  </span>
+                )}
+              </span>
+            </NavItem>
           </Link>
         );
       })}
     </nav>
+  );
+}
+
+/**
+ * The tab lights up the moment it is tapped, before the next screen (or its
+ * loading skeleton) has arrived, so a tap never looks ignored.
+ */
+function NavItem({
+  active,
+  label,
+  children,
+}: {
+  active: boolean;
+  label: string;
+  children: ReactNode;
+}) {
+  const { pending } = useLinkStatus();
+  const on = active || pending;
+  return (
+    <span
+      className={`flex flex-col items-center gap-1 rounded-2xl pb-[7px] pt-[9px] text-[12px] font-semibold transition-colors duration-150 ${
+        on ? "bg-marigold/10 text-marigold" : "text-muted"
+      }`}
+    >
+      {children}
+      {label}
+    </span>
   );
 }

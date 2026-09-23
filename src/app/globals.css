@@ -79,9 +79,10 @@ body {
   color: var(--color-cream);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  background:
-    radial-gradient(120% 70% at 50% -10%, #3a1778 0%, var(--color-night) 45%, var(--color-deep) 100%) fixed,
-    var(--color-deep);
+  /* The indigo sky is painted by <Ambience> on its own fixed layer. A
+     `background-attachment: fixed` here would make phones repaint the whole
+     screen on every scroll frame. */
+  background: var(--color-deep);
   overflow-x: hidden;
 }
 
@@ -115,7 +116,9 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: var(--animate-shimmer);
+  /* One sweep as the heading arrives. Animating background-position can't run
+     on the compositor, so an endless shimmer would repaint every frame. */
+  animation: shimmer 2.6s linear 1;
 }
 
 @utility btn-primary {
@@ -197,6 +200,16 @@ body {
   color: var(--color-cream);
   background: rgba(246, 169, 27, 0.14);
   border-color: var(--color-marigold);
+}
+
+/* Loading placeholders. Only opacity animates, so it stays on the compositor. */
+@utility skeleton {
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  animation: skeleton-pulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes skeleton-pulse {
+  to { opacity: 0.45; }
 }
 
 /* Safe-area helpers for notched phones. */

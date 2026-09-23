@@ -40,31 +40,29 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
   const rafRef = useRef(0);
   const isClient = useIsClient();
 
-  useEffect(() => {
-    if (!isClient) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-    const size = () => {
-      const d = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * d;
-      canvas.height = window.innerHeight * d;
-      ctx.setTransform(d, 0, 0, d, 0, 0);
-    };
-    size();
-    window.addEventListener("resize", size);
-    return () => {
-      window.removeEventListener("resize", size);
+  useEffect(
+    () => () => {
       cancelAnimationFrame(rafRef.current);
       running.current = false;
-    };
-  }, [isClient]);
+    },
+    [],
+  );
 
   useImperativeHandle(ref, () => ({
     burst(x, y, count, tier) {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      const ctx = canvasRef.current?.getContext("2d");
-      if (!ctx) return;
+      const canvas = canvasRef.current;
+      const ctx = canvas?.getContext("2d");
+      if (!canvas || !ctx) return;
+      // The canvas only has pixels while petals fall. Sized per burst rather
+      // than on resize: phones fire resize whenever the address bar slides,
+      // and a full-screen canvas kept around costs tens of MB of GPU memory.
+      if (!running.current) {
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(window.innerWidth * d);
+        canvas.height = Math.round(window.innerHeight * d);
+        ctx.setTransform(d, 0, 0, d, 0, 0);
+      }
       const palette = PALETTES[tier];
       for (let i = 0; i < count; i++) {
         const a = Math.random() * Math.PI * 2;
@@ -119,7 +117,8 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
           rafRef.current = requestAnimationFrame(draw);
         } else {
           running.current = false;
-          ctx.clearRect(0, 0, w, h);
+          canvas.width = 0;
+          canvas.height = 0;
         }
       };
       rafRef.current = requestAnimationFrame(draw);
@@ -132,6 +131,8 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
     <canvas
       ref={canvasRef}
       aria-hidden
+      width={0}
+      height={0}
       className="pointer-events-none fixed inset-0 z-[55] h-full w-full"
     />,
     document.body,

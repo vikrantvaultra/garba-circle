@@ -90,6 +90,12 @@ class CircleSound {
   /**
    * Unlock audio on every completed gesture anywhere on the page. Cheap to
    * leave in place: once running, unlock() is a no-op.
+   *
+   * Also builds the audio context while the page is idle. Opening the audio
+   * device takes tens of milliseconds on a phone (hundreds on a slow one);
+   * done inside the first tap, it froze that tap and delayed whatever it
+   * was for. A context made outside a gesture simply starts suspended, and
+   * the tap only has to resume it, which is instant.
    */
   install() {
     if (this.installed || typeof document === "undefined") return;
@@ -98,12 +104,19 @@ class CircleSound {
     for (const type of ["pointerup", "touchend", "click", "keydown"]) {
       document.addEventListener(type, unlock, { capture: true, passive: true });
     }
+    const prepare = () => {
+      if (this.enabled) this.create();
+    };
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(prepare, { timeout: 2500 });
+    } else {
+      setTimeout(prepare, 800);
+    }
   }
 
-  /** Create or wake the audio context. Must run inside a completed gesture. */
-  unlock() {
-    if (typeof window === "undefined" || !this.enabled) return;
-
+  /** The context and its output chain, made once. Needs no gesture. */
+  private create(): AudioContext | null {
+    if (this.ac) return this.ac;
     // iPhone: ask for the media session so the silent switch doesn't mute us.
     const nav = navigator as AudioSessionNavigator;
     if (nav.audioSession && nav.audioSession.type !== "playback") {
@@ -112,7 +125,40 @@ class CircleSound {
       } catch {
         /* unsupported value on this version */
       }
-    } else if (!nav.audioSession && !this.silentPlayed && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+    }
+    try {
+      const Ctor =
+        window.AudioContext ??
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!Ctor) return null;
+      const ac = new Ctor();
+      // Everything goes through one gain and a compressor, so the sounds
+      // are loud on a phone speaker without clipping when they overlap.
+      const compressor = ac.createDynamicsCompressor();
+      compressor.threshold.value = -18;
+      compressor.knee.value = 12;
+      compressor.ratio.value = 4;
+      compressor.attack.value = 0.003;
+      compressor.release.value = 0.15;
+      const master = ac.createGain();
+      master.gain.value = 1;
+      master.connect(compressor).connect(ac.destination);
+      this.ac = ac;
+      this.master = master;
+      return ac;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Create or wake the audio context. Must run inside a completed gesture. */
+  unlock() {
+    if (typeof window === "undefined") return;
+    // Every tap on the page lands here; once audio runs there is nothing to do.
+    if (this.ac?.state === "running" || !this.enabled) return;
+
+    const nav = navigator as AudioSessionNavigator;
+    if (!nav.audioSession && !this.silentPlayed && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
       // Older iOS: playing any <audio> switches the page to the media session.
       this.silentPlayed = true;
       try {
@@ -126,32 +172,8 @@ class CircleSound {
       }
     }
 
-    if (!this.ac) {
-      try {
-        const Ctor =
-          window.AudioContext ??
-          (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-        if (!Ctor) return;
-        const ac = new Ctor();
-        // Everything goes through one gain and a compressor, so the sounds
-        // are loud on a phone speaker without clipping when they overlap.
-        const compressor = ac.createDynamicsCompressor();
-        compressor.threshold.value = -18;
-        compressor.knee.value = 12;
-        compressor.ratio.value = 4;
-        compressor.attack.value = 0.003;
-        compressor.release.value = 0.15;
-        const master = ac.createGain();
-        master.gain.value = 1;
-        master.connect(compressor).connect(ac.destination);
-        this.ac = ac;
-        this.master = master;
-      } catch {
-        return;
-      }
-    }
-
-    const ac = this.ac;
+    const ac = this.create();
+    if (!ac) return;
     // "suspended" before the first gesture; "interrupted" on iOS after a
     // call or the lock screen.
     if (ac.state !== "running") {

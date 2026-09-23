@@ -74,7 +74,7 @@ export function FirstRunGuide() {
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       <button
         aria-label="Close"
-        className="absolute inset-0 bg-night/88 backdrop-blur-md"
+        className="absolute inset-0 bg-night/90"
         onClick={dismiss}
       />
       <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t border-gold/30 bg-gradient-to-b from-plum to-night px-5 pt-3 pb-safe">
