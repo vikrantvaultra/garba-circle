@@ -11,7 +11,9 @@
   width: min(340px, 86vw);
   aspect-ratio: 1;
   margin: 0 auto;
-  touch-action: none;
+  /* The circle is most of a phone's width: a swipe that starts on it must
+     still scroll the page. Only the garbo takes the hold, below. */
+  touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -133,6 +135,9 @@
   font: 700 15px var(--font-body);
   letter-spacing: 0.03em;
   transition: box-shadow 0.2s ease;
+  /* A still finger charges; one that moves up or down scrolls the page, and
+     the browser cancels the hold (pointercancel) instead of spinning. */
+  touch-action: pan-y;
 }
 .wheel[data-full="true"] .garbo {
   animation: shake 0.08s linear infinite;

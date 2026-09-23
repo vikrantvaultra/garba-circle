@@ -349,6 +349,27 @@ export function Wheel(props: Props) {
     startSpin(s.charge);
   };
 
+  /** The browser took the touch for a scroll: drop the charge, don't spin. */
+  const cancelCharge = () => {
+    const s = m.current;
+    if (!s.charging) return;
+    s.charging = false;
+    // No click follows a cancelled pointer, so nothing is left to swallow.
+    s.pointerSpin = false;
+    s.idle = true;
+    sound.humStop();
+    const wheel = wheelRef.current;
+    if (wheel) {
+      wheel.dataset.full = "false";
+      wheel.style.setProperty("--charge", "0");
+    }
+    arcRef.current?.setAttribute("stroke-dashoffset", String(CIRCUMFERENCE));
+    clearWin();
+    setPhase("idle");
+    startDrift();
+    latest.current.onPhase("idle", 0);
+  };
+
   return (
     <div
       ref={wheelRef}
@@ -448,7 +469,7 @@ export function Wheel(props: Props) {
           latest.current.onPhase("charging", 0);
         }}
         onPointerUp={release}
-        onPointerCancel={release}
+        onPointerCancel={cancelCharge}
         onClick={(e) => {
           if (m.current.pointerSpin) {
             m.current.pointerSpin = false;

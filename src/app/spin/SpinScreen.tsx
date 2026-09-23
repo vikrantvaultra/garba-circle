@@ -147,6 +147,7 @@ export function SpinScreen({
   const setCity = (next: string | null) => spinPrefs.save({ ...prefs, city: next });
   const setGender = (next: GenderChoice) => spinPrefs.save({ ...prefs, gender: next });
   const [attention, setAttention] = useState<"city" | "gender" | null>(null);
+  const askedAt = useRef(0);
 
   const soundOn = useSyncExternalStore(sound.subscribe, () => sound.enabled, () => true);
 
@@ -173,8 +174,29 @@ export function SpinScreen({
     const missing = city ? "gender" : "city";
     setAttention(missing);
     buzz([20, 40, 20], false);
+    // Say it in words too: the field may be off screen, and a flashing
+    // outline alone is easy to miss. One message per burst of taps.
+    const now = Date.now();
+    if (now - askedAt.current > 2500) {
+      askedAt.current = now;
+      toast.show(
+        !city && !gender
+          ? "Choose a city and who you'd like to meet, then spin"
+          : !city
+            ? "Choose the city you're dancing in, then spin"
+            : "Choose who you'd like to meet, then spin",
+        "warn",
+      );
+    }
     if (missing === "city") {
-      document.getElementById("spin-city")?.focus();
+      const field = document.getElementById("spin-city");
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        // Focusing would pull up the keyboard over the message: just bring
+        // the field into view and let them tap it.
+        field?.scrollIntoView({ block: "center", behavior: "smooth" });
+      } else {
+        field?.focus();
+      }
     } else {
       const first = document.querySelector<HTMLInputElement>('input[name="meet"]');
       first?.scrollIntoView({ block: "center", behavior: "smooth" });
