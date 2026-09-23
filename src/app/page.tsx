@@ -28,7 +28,7 @@ const FEATURES = [
 
 export default async function LandingPage() {
   const user = await getCurrentUser().catch(() => null);
-  if (user) redirect(user.profileComplete ? "/spin" : "/setup");
+  if (user) redirect(user.profileComplete ? "/garba" : "/setup");
 
   return (
     <main className="app-shell flex min-h-dvh flex-col pt-safe pb-safe">
@@ -81,6 +81,9 @@ export default async function LandingPage() {
       >
         <Link href="/login" className="btn-primary active:btn-primary-active">
           Shuru karo {"→"}
+        </Link>
+        <Link href="/garba" className="btn-ghost">
+          See where the garba is
         </Link>
         <p className="text-center text-[12px] leading-relaxed text-cream/45">
           18+ only. By continuing you agree to keep the circle respectful.

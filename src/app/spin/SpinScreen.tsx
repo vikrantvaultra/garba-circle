@@ -46,6 +46,21 @@ type Me = {
   age: number | null;
 };
 
+function dancerCount(option: CityOption, gender: GenderChoice | null): number {
+  return gender === "female" ? option.female : gender === "male" ? option.male : option.total;
+}
+
+function dancerLabel(n: number, gender: GenderChoice | null): string {
+  if (n === 0) return "No one yet";
+  const noun =
+    gender === "female"
+      ? n === 1 ? "woman" : "women"
+      : gender === "male"
+        ? n === 1 ? "man" : "men"
+        : n === 1 ? "dancer" : "dancers";
+  return `${n} ${noun}`;
+}
+
 const WHO: { value: GenderChoice; label: string }[] = [
   { value: "female", label: "Women" },
   { value: "male", label: "Men" },
@@ -111,6 +126,15 @@ export function SpinScreen({
       ? prefs.city
       : null;
   const gender = prefs.gender;
+  // Counts follow the gender chosen, so "3 women" means three women.
+  const pickerCities = useMemo(
+    () =>
+      cities.map((c) => {
+        const n = dancerCount(c, gender);
+        return { name: c.name, count: n, countLabel: dancerLabel(n, gender) };
+      }),
+    [cities, gender],
+  );
   const setCity = (next: string | null) => spinPrefs.save({ ...prefs, city: next });
   const setGender = (next: GenderChoice) => spinPrefs.save({ ...prefs, gender: next });
   const [attention, setAttention] = useState<"city" | "gender" | null>(null);
@@ -365,9 +389,8 @@ export function SpinScreen({
         </label>
         <CityPicker
           id="spin-city"
-          options={cities}
+          options={pickerCities}
           value={city}
-          gender={gender}
           myCity={me.city}
           attention={attention === "city"}
           onChange={setCity}

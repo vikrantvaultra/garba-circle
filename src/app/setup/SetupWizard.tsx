@@ -75,7 +75,7 @@ export function SetupWizard({
         skillLevel: draft.skillLevel,
       });
       toast.show(editing ? "Profile updated." : "Welcome to the circle!", "success");
-      router.replace("/spin");
+      router.replace("/garba");
       router.refresh();
     } catch (error) {
       if (error instanceof ApiFailure && error.data.field) {

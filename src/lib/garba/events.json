@@ -1,0 +1,2395 @@
+[
+  {
+    "id": "shankus-dandiya-shantigram",
+    "name": "Adani Realty presents Shankus Dandiya",
+    "city": "Ahmedabad",
+    "venue": "Adani Shantigram Cricket Ground",
+    "address": "Adani Shantigram, near Vaishno Devi Circle, SG Highway, Ahmedabad",
+    "lat": 23.160401,
+    "lng": 72.5425111,
+    "coordsNote": "Nominatim: 'Shantigram, Ahmedabad' (township; cricket ground itself not in OSM)",
+    "organiser": "Adani Realty",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": "From 7:30 pm",
+    "entry": "Passes from ₹999",
+    "artists": [
+      "Kalpesh Vyas",
+      "Rishikesh Gadhavi",
+      "Brijdan Gadhavi",
+      "Mitesh Bhatt",
+      "Nima Bhatt",
+      "Maulik Rathod",
+      "Nanina Sharma",
+      "Agori Band",
+      "Mansi Meriya",
+      "Prashad Thakar"
+    ],
+    "kind": "ticketed",
+    "highlights": "Large outdoor dandiya on the Shantigram cricket ground with a different singer or band each night, from Gujarati folk to Bollywood numbers. Family-friendly and open to all ages.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://showmates.in/events/adani-realty-presents-shankus-dandiya/F868D8C"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-dhamal-jignesh-kaviraj",
+    "name": "Dandiya Dhamal 2026 ft. Jignesh Barot (Kaviraj)",
+    "city": "Ahmedabad",
+    "venue": "Seven Star Party Plot",
+    "address": "Seven Star Party Plot, Nikol, Ahmedabad",
+    "lat": 23.0589329,
+    "lng": 72.6718737,
+    "coordsNote": "Nominatim: 'Nikol, Ahmedabad' (returned a Nikol landmark; Seven Star Party Plot not in OSM)",
+    "organiser": "Reelflix Media",
+    "dates": "11–20 Oct 2026",
+    "timings": "8 pm (gates open 7 pm)",
+    "entry": "Passes from ₹399; tickets needed for ages 3+",
+    "artists": [
+      "Jignesh Barot (Kaviraj)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The 11th edition of this East Ahmedabad dandiya, with Jignesh Kaviraj singing every night. One of the more affordable big-name garbas in the city.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-dhamal-2026-ft-jignesh-barot-kaviraj-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "genzatri-gucec",
+    "name": "Genzatri – Ahmedabad's AC Dome Garba",
+    "city": "Ahmedabad",
+    "venue": "Gujarat University Convention and Exhibition Centre",
+    "address": "Gujarat University Convention and Exhibition Centre, Gujarat University area, Ahmedabad",
+    "lat": 23.0373068,
+    "lng": 72.5447481,
+    "coordsNote": "Nominatim: 'Gujarat University, Ahmedabad' (campus; the convention centre is not in OSM by name)",
+    "organiser": null,
+    "dates": "16–20 Oct 2026",
+    "timings": "8 pm",
+    "entry": "Passes from ₹999",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "An indoor air-conditioned garba at the Gujarat University convention centre, aimed at a younger crowd, on the last nights of Navratri.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/navratri-in-ahmedabad-book-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "karnavati-club-navratri",
+    "name": "Karnavati Club Navratri Garba",
+    "city": "Ahmedabad",
+    "venue": "Karnavati Club",
+    "address": "Karnavati Club, Sarkhej–Gandhinagar Highway, Makarba, Ahmedabad",
+    "lat": 23.0197555,
+    "lng": 72.5034121,
+    "coordsNote": "Nominatim: 'Karnavati Club, Ahmedabad' (exact venue match)",
+    "organiser": "Karnavati Club Ltd",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "members",
+    "highlights": "A long-running, well-known club garba on the club's 5,00,000 sq ft campus on SG Highway. The 2026 edition has not been announced yet.",
+    "status": "recurring",
+    "sources": [
+      "https://thewandertherapy.com/garba-places-ahmedabad/",
+      "https://karnavaticlub.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "parampara-navratri-kirtidan-gadhvi",
+    "name": "Parampara Navratri 2026 ft. Kirtidan Gadhvi",
+    "city": "Ahmedabad",
+    "venue": "Mahendra Farm (AC dome)",
+    "address": "Mahendra Farm, Shilaj, Ahmedabad 380059",
+    "lat": 23.0544372,
+    "lng": 72.4720756,
+    "coordsNote": "Nominatim: 'Shilaj, Ahmedabad' (area centroid; Mahendra Farm not in OSM, placed in Shilaj per Justdial listing)",
+    "organiser": "Jeegar Chauhan Productions",
+    "dates": "11–20 Oct 2026",
+    "timings": "10 pm start (gates open 7 pm); AllEvents lists 10 pm – 2 am",
+    "entry": "Passes from ₹899 on District (AllEvents lists ₹799–₹1,999); tickets needed for ages 3+",
+    "artists": [
+      "Kirtidan Gadhvi"
+    ],
+    "kind": "ticketed",
+    "highlights": "Kirtidan Gadhvi, one of Gujarat's biggest folk singers, performs all nights inside a fully air-conditioned dome. Free parking; vegetarian food only.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/kirtidaan-gadhvi-2026-buy-tickets",
+      "https://allevents.in/ahmedabad/navratri",
+      "https://www.justdial.com/Ahmedabad/Mahendra-Farm-Party-Plot-Shilaj/079PXX79-XX79-250106192713-B2U9_BZDET"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rajpath-club-navratri",
+    "name": "Rajpath Club Navratri Garba",
+    "city": "Ahmedabad",
+    "venue": "Rajpath Club",
+    "address": "Rajpath Club, Sarkhej–Gandhinagar Highway, Bodakdev, Ahmedabad 380059",
+    "lat": 23.034638,
+    "lng": 72.5093477,
+    "coordsNote": "Nominatim: 'Rajpath Club, Ahmedabad' (exact venue match)",
+    "organiser": "Rajpath Club Ltd",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "members",
+    "highlights": "One of Ahmedabad's best-known club garbas, held on the club's large lawn for many years. The 2026 edition has not been announced yet.",
+    "status": "recurring",
+    "sources": [
+      "https://thewandertherapy.com/garba-places-ahmedabad/",
+      "https://www.rajpathclub.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rang-morla-aditya-gadhvi",
+    "name": "Rang Morla ft. Aditya Gadhvi",
+    "city": "Ahmedabad",
+    "venue": "Savanna Party Lawn",
+    "address": "Savanna Party Lawn, near Applewoods, Sardar Patel Ring Road, Shela Road, Ahmedabad 380057",
+    "lat": 23.0108213,
+    "lng": 72.4427119,
+    "coordsNote": "Nominatim: 'Shela, Ahmedabad' (returned Shela Lake; venue and Applewoods not in OSM, so position is approximate)",
+    "organiser": null,
+    "dates": "From 11 Oct 2026; billed as 10 nights",
+    "timings": null,
+    "entry": "Passes from ₹1,600 (phase 2 pricing)",
+    "artists": [
+      "Aditya Gadhvi"
+    ],
+    "kind": "ticketed",
+    "highlights": "Aditya Gadhvi, the singer of 'Khalasi', headlines a 10-night outdoor garba named after his song 'Rang Morla'.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.livefiesta.com/events/rang-morla-ft-aditya-gadhvi/ahmedabad-2026",
+      "https://insideamdavad.com/ahmedabad-navratri-2026-your-complete-guide-to-garba-events-venues-dates/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "sachi-navratri-ac-dome",
+    "name": "Sachi Navratri AC Dome Garba",
+    "city": "Ahmedabad",
+    "venue": "Sachi Navratri AC Dome",
+    "address": "New Science City Road, Ahmedabad 380060",
+    "lat": 23.0835527,
+    "lng": 72.4936335,
+    "coordsNote": "Nominatim: 'Science City Road, Ahmedabad' (road, not the exact venue)",
+    "organiser": "Sachi Entertainment",
+    "dates": "10–19 Oct 2026",
+    "timings": "8 pm (gates open 7 pm)",
+    "entry": "Passes from ₹999 on District (AllEvents lists ₹799–₹2,199); tickets needed for ages 5+",
+    "artists": [
+      "Jigardan Gadhavi"
+    ],
+    "kind": "ticketed",
+    "highlights": "Air-conditioned dome garba headlined by Jigardan Gadhavi, with concert-grade sound and lighting and themed decor.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/sachi-navaratri-ac-dome-garaba-2026-buy-tickets",
+      "https://showmates.in/blogs/sachi-navratri-2026-ac-dome-garba-jigardan-gadhvi-live",
+      "https://allevents.in/ahmedabad/sachi-navratri-ac-dome-garba/4100030486695742"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "sadu-mata-ni-pol-ashtami-garba",
+    "name": "Sadu Mata ni Pol Ashtami Garba (men in sarees)",
+    "city": "Ahmedabad",
+    "venue": "Sadu Mata ni Pol",
+    "address": "Sadu Mata ni Pol, Delhi Darwaja / Shahpur, old walled city, Ahmedabad",
+    "lat": 23.0377815,
+    "lng": 72.5879516,
+    "coordsNote": "Nominatim: 'Delhi Gate, Ahmedabad' (nearest landmark; the pol is not in OSM)",
+    "organiser": "Barot community of Sadu Mata ni Pol",
+    "dates": null,
+    "timings": null,
+    "entry": "Free",
+    "artists": [],
+    "kind": "community",
+    "highlights": "A tradition over 200 years old: on Ashtami, the eighth night of Navratri, men of the Barot community wear sarees and perform sheri garba to atone for a legendary curse by Saduben. It draws spectators from across the city. Dates are left null because no 2026-specific announcement was found.",
+    "status": "recurring",
+    "sources": [
+      "https://www.tribuneindia.com/news/trending/why-men-dress-up-as-women-for-garba-performance-in-ahmedabad/",
+      "https://thewandertherapy.com/garba-places-ahmedabad/",
+      "https://www.justdial.com/Ahmedabad/Sadu-Mata-Ni-Pol-Delhi-Darwaja/079PXX79-XX79-221130220812-H1E4_BZDET?rStatus=1&pgfrom=b2b_catalogue"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "saibo-garba-mahendra-farm",
+    "name": "Saibo Garba 2026",
+    "city": "Ahmedabad",
+    "venue": "Mahendra Farm",
+    "address": "Mahendra Farm, Shilaj, Ahmedabad 380059",
+    "lat": 23.0544372,
+    "lng": 72.4720756,
+    "coordsNote": "Nominatim: 'Shilaj, Ahmedabad' (area centroid; Mahendra Farm not in OSM, placed in Shilaj per Justdial listing)",
+    "organiser": null,
+    "dates": "11–20 Oct 2026",
+    "timings": "9 pm (gates open 8:30 pm)",
+    "entry": "Passes from ₹999",
+    "artists": [
+      "Maithili Thakur"
+    ],
+    "kind": "ticketed",
+    "highlights": "Premium mandli-style garba with live dhol and traditional Gujarati music across all Navratri nights. District lists Maithili Thakur as the artist.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/saibo-garba-2026-buy-tickets",
+      "https://www.justdial.com/Ahmedabad/Mahendra-Farm-Party-Plot-Shilaj/079PXX79-XX79-250106192713-B2U9_BZDET"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "swarnim-nagari-ac-dome",
+    "name": "Swarnim Nagari AC Dome Garba 2026",
+    "city": "Ahmedabad",
+    "venue": "Swarnim Nagari AC Dome",
+    "address": "SG Highway, Ahmedabad (Justdial lists it near Jay Ambe Cricket Ground, Makarba)",
+    "lat": 22.996342,
+    "lng": 72.5043085,
+    "coordsNote": "Nominatim: 'Makarba, Ahmedabad' (area centroid; the dome isn't in OSM, and the area comes from a Justdial listing that may be from 2025)",
+    "organiser": "Crowd King LLP",
+    "dates": "11–20 Oct 2026 (District lists through 21 Oct)",
+    "timings": "From 8 pm (District: gates 8 pm, 10 pm start)",
+    "entry": "Day and season passes from ₹799 (Showmates) / ₹999 (District); children under 5 free",
+    "artists": [
+      "Aishwarya Majmudar"
+    ],
+    "kind": "ticketed",
+    "highlights": "A 1,20,000 sq ft fully air-conditioned dome with a Vrindavan theme and cushioned flooring, drawing around 15,000 people a night. Aishwarya Majmudar sings all ten nights with her Rangtaali ensemble.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/swarnim-nagari-ac-dome-garba-2026-oct11-2026-buy-tickets",
+      "https://showmates.in/blogs/swarnim-nagari-ac-dome-garba-2026-aishwarya-majmudar-live",
+      "https://swarnimnagari.com/",
+      "https://www.justdial.com/Ahmedabad/Swarnim-Nagari-Garba-Ac-Dome-Navratri-Near-Jay-Ambe-Cricket-Ground-Makarba-Marvel-Society/079PXX79-XX79-250814014043-S6B2_BZDET"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "vibrant-navratri-festival-gmdc",
+    "name": "Vibrant Navratri Festival 2026",
+    "city": "Ahmedabad",
+    "venue": "GMDC Ground",
+    "address": "GMDC Ground, Vastrapur, Ahmedabad",
+    "lat": 23.0401845,
+    "lng": 72.5365206,
+    "coordsNote": "Nominatim: 'GMDC Ground, Ahmedabad' (exact venue match)",
+    "organiser": "Gujarat Tourism",
+    "dates": "11–20 Oct 2026",
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "free",
+    "highlights": "The state government's flagship Navratri festival, opening with a performance by over 1,000 artists of Prachin and Arvachin garba and Raas Dandiya, with a nightly Maha Aarti. 2026 adds an amphitheatre-style garba arena, a kids' zone (Bal Nagari), food court and handicraft bazaar. Kind is 'free' because it is widely described as an open public event; 2026 entry terms are not published.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.incredibleindia.gov.in/en/festivals-and-events/gujarat/Vibrant-Navratri-Festival-2026",
+      "https://thewandertherapy.com/garba-places-ahmedabad/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "heart-killer-garba-vidyanagar",
+    "name": "Heart Killer Group Garba",
+    "city": "Anand",
+    "venue": "Heart Killer (Hartkiller) garba ground",
+    "address": "Near Vaividhya Bungalow crossroads, H.M. Patel Marg, Vallabh Vidyanagar, Anand",
+    "lat": 22.5516264,
+    "lng": 72.9300516,
+    "coordsNote": "Nominatim (bounded to Anand): 'Vallabh Vidyanagar' (area centroid; the ground is not in OSM)",
+    "organiser": "Heart Killer Group",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "One of the biggest garbas in Anand–Vidyanagar. In 2024 the district magistrate declared a no-parking zone around the ground because of the crowds.",
+    "status": "recurring",
+    "sources": [
+      "https://anand.nic.in/document/%E0%AA%A8%E0%AA%B5%E0%AA%B0%E0%AA%BE%E0%AA%A4%E0%AB%8D%E0%AA%B0%E0%AB%80-%E0%AA%97%E0%AA%B0%E0%AA%AC%E0%AA%BE-%E0%AA%AE%E0%AA%B9%E0%AB%8B%E0%AA%A4%E0%AB%8D%E0%AA%B8%E0%AA%B5-%E0%AA%A6%E0%AA%B0/",
+      "https://zeenews.india.com/gujarati/gujarat/garba-will-be-played-on-partplot-for-the-first-time-after-two-years-of-corona-in-anand-226892"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "vidyanagar-road-yuvak-mandal-garba-anand",
+    "name": "Vidyanagar Road Yuvak Mandal Garba (Vrundavan)",
+    "city": "Anand",
+    "venue": "Vrundavan ground, Vidyanagar Road",
+    "address": "Vidyanagar Road, Anand",
+    "lat": 22.5497224,
+    "lng": 72.9286792,
+    "coordsNote": "Nominatim (bounded to Anand): 'Anand Vidyanagar Road' (the road; the exact ground is not in OSM)",
+    "organiser": "Vidyanagar Road Yuvak Mandal Charitable Trust",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "community",
+    "highlights": "A large youth-mandal garba on Vidyanagar Road. The district's 2024 Navratri traffic order names it among Anand's main garbas.",
+    "status": "recurring",
+    "sources": [
+      "https://anand.nic.in/document/%E0%AA%A8%E0%AA%B5%E0%AA%B0%E0%AA%BE%E0%AA%A4%E0%AB%8D%E0%AA%B0%E0%AB%80-%E0%AA%97%E0%AA%B0%E0%AA%AC%E0%AA%BE-%E0%AA%AE%E0%AA%B9%E0%AB%8B%E0%AA%A4%E0%AB%8D%E0%AA%B8%E0%AA%B5-%E0%AA%A6%E0%AA%B0/",
+      "https://cdn.s3waas.gov.in/s3d86ea612dec96096c5e0fcc8dd42ab6d/uploads/2024/10/2024100460.pdf"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "anybody-can-dandiya-6-palace-grounds",
+    "name": "AnyBody Can Dandiya 6.0 – Palace Grounds",
+    "city": "Bengaluru",
+    "venue": "Kings Court, Palace Grounds",
+    "address": "Palace Grounds",
+    "lat": 13.0078058,
+    "lng": 77.5853998,
+    "coordsNote": "Nominatim: 'Kings Court, Palace Grounds, Bengaluru'",
+    "organiser": "Team DesiClans",
+    "dates": "16–19 Oct 2026",
+    "timings": "From 6 pm",
+    "entry": "From ₹99",
+    "artists": [
+      "Live Gujarati folk artists (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The sixth edition of a large Palace Grounds garba with an indoor hall plus open lawn, live folk music, a Maha Aarti and a vegetarian buffet.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/anybody-can-dandiya-60-palace-grounds-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "garba-ni-raat-kalyani-kala-mandir-2026",
+    "name": "Bangalore's Most Authentic Dandiya – Garba Ni Raat",
+    "city": "Bengaluru",
+    "venue": "Kalyani Kala Mandir",
+    "address": "Bannerghatta Road, near IIM Bangalore Metro Station",
+    "lat": 12.8959965,
+    "lng": 77.5996317,
+    "coordsNote": "Nominatim: 'IIM Bangalore' (venue not in OSM; geocoded the IIM-B landmark named in the listing)",
+    "organiser": null,
+    "dates": "From 10 Oct 2026, multiple dates",
+    "timings": "Gates open 4:30 pm",
+    "entry": "From ₹99",
+    "artists": [
+      "Live DJs, garba dancers and dhol (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "Billed as an authentic, traditional-dress garba night with live dhol and Gujarati food on Bannerghatta Road.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/bangalores-most-authentic-dandiya-garba-ni-raat-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-for-all-2026-icb-manyata",
+    "name": "Dandiya for All 2026",
+    "city": "Bengaluru",
+    "venue": "ICB Indian Craft Brewery, Manyata Tech Park",
+    "address": "Manyata Tech Park, Nagawara",
+    "lat": 13.0427884,
+    "lng": 77.6162844,
+    "coordsNote": "Nominatim: 'Indian Craft Brewery'",
+    "organiser": "One Arm Productions (Nural Hassan)",
+    "dates": "14–18 Oct 2026",
+    "timings": "From 5 pm (entry 4:30 pm)",
+    "entry": "From ₹99",
+    "artists": [
+      "Celebrity DJs and live dhol (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "A five-night open-air dandiya at a Manyata Tech Park brewery with a rain-protected dance floor and free dandiya sticks.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/indias-biggest-open-air-dandiya-at-icb-manyata-tech-park-oct14-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-nights-2026-phoenix-marketcity-whitefield",
+    "name": "Dandiya Nights 2026 Whitefield",
+    "city": "Bengaluru",
+    "venue": "Phoenix Marketcity Courtyard",
+    "address": "Phoenix Marketcity, Whitefield Main Road, Mahadevapura",
+    "lat": 12.9977264,
+    "lng": 77.6966474,
+    "coordsNote": "Nominatim: 'Phoenix Marketcity Bengaluru' (matched a shop inside the mall)",
+    "organiser": null,
+    "dates": "17–18 Oct 2026",
+    "timings": "From 4 pm",
+    "entry": "From ₹199",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A weekend mall-courtyard dandiya with DJs, fire acts and a dhol show; free dandiya sticks for the first 200 attendees.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-nights-2026-whitefield-phoenix-marketcity-oct17-2026-buy-tickets",
+      "https://allevents.in/bangalore/navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "electronic-city-gujarati-samaj-daandiya-nights-2026",
+    "name": "Electronic City Gujarati Samaj Daandiya Nights 2026",
+    "city": "Bengaluru",
+    "venue": "Vistar Resort",
+    "address": "Electronic City Phase 1",
+    "lat": 12.8471839,
+    "lng": 77.6707326,
+    "coordsNote": "Nominatim: 'Electronic City Phase 1, Bengaluru' (Vistar Resort not in OSM; area-level pin)",
+    "organiser": "Electronic City Gujarati Samaj",
+    "dates": "16–18 Oct 2026, three nights",
+    "timings": null,
+    "entry": "Season pass ₹1,000; kids season pass ₹650; single entry ₹399; kids (above 5) ₹250",
+    "artists": [
+      "Live singers and orchestra from Mumbai (names not announced)"
+    ],
+    "kind": "community",
+    "highlights": "A Gujarati community dandiya with live singers from Mumbai, daily prizes and food counters, open to ticket holders.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://allevents.in/bangalore/electronic-city-gujarati-samaj-daandiya-nights-2026-tickets/80001184895255",
+      "https://allevents.in/bangalore/navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "mirchi-rock-n-dhol-bengaluru-2026",
+    "name": "Mirchi Rock N Dhol 2026 – Bengaluru",
+    "city": "Bengaluru",
+    "venue": "The Galleria Mall",
+    "address": "Yelahanka Road, Yelahanka",
+    "lat": 13.0943051,
+    "lng": 77.595118,
+    "coordsNote": "Nominatim: 'The Galleria Mall Bengaluru'",
+    "organiser": "Radio Mirchi",
+    "dates": "18 Oct 2026",
+    "timings": "6 pm (gates 5:30 pm)",
+    "entry": "From ₹99",
+    "artists": [
+      "Mirchi RJs (meet and greet)"
+    ],
+    "kind": "ticketed",
+    "highlights": "Radio Mirchi's one-night garba, with live performances and a meet and greet with Mirchi RJs.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/mirchi-rock-n-dhol-bengaluru-oct18-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "wfv-siga-navratri-utsav-2026",
+    "name": "WFV-SIGA Navratri Utsav 2026 (Raas Garba and Dandiya)",
+    "city": "Bengaluru",
+    "venue": "Whitefield Convention Centre & Hotel",
+    "address": "Above Whitefield TTMC, beside Nallurhalli Metro Station, ITPL Main Road, EPIP Zone, Whitefield",
+    "lat": 12.9766408,
+    "lng": 77.7248845,
+    "coordsNote": "Nominatim: 'Nallurhalli, Bengaluru' (venue itself not found; geocoded the adjacent Nallurahalli metro station named in the address)",
+    "organiser": "Water For Voiceless (WFV) and Shree Indiranagar Gujarati Association (SIGA)",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": null,
+    "entry": "Entry pass ₹499; weekend pass ₹1,003; children under 5 free",
+    "artists": [
+      "Live orchestra (names not announced)"
+    ],
+    "kind": "community",
+    "highlights": "A nine-night Gujarati association garba with a live orchestra, daily aarti and an air-conditioned hall; proceeds support animal welfare.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://allevents.in/bangalore/wfv-siga-navratri-utsav-2026-raas-garba-and-dandiya-tickets/80003122005580"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "whitefields-biggest-dandiya-utsav-season-9",
+    "name": "Whitefield's Biggest Dandiya Utsav – Season 9",
+    "city": "Bengaluru",
+    "venue": "MLR Convention Centre, Whitefield",
+    "address": "Whitefield",
+    "lat": 12.9957428,
+    "lng": 77.7579489,
+    "coordsNote": "Nominatim: 'Whitefield, Bengaluru' (area-level pin; Nominatim's 'MLR Convention Centre' hit is a different branch in JP Nagar, so it was not used)",
+    "organiser": null,
+    "dates": "16–21 Oct 2026",
+    "timings": "From 5 pm (gates 4:45 pm)",
+    "entry": "From ₹99",
+    "artists": [
+      "Celebrity DJs, garba dancers and live dhol (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "A long-running (ninth season) six-night Whitefield dandiya mixing garba, dandiya and Bollywood with live dhol.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/whitefields-biggest-dandiya-utsav-season-9-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rangoli-garba-bhavnagar",
+    "name": "Garba at Rangoli",
+    "city": "Bhavnagar",
+    "venue": "Rangoli Park Resort",
+    "address": "Vartej, Bhavnagar",
+    "lat": 21.7397432,
+    "lng": 72.0644938,
+    "coordsNote": "Nominatim: 'Vartej, Bhavnagar' (resort not in OSM; Vartej village on the western edge of Bhavnagar – approximate)",
+    "organiser": "Rangoli group",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A long-running public favourite known for its lighting and young crowd, and for popularising couple garba locally.",
+    "status": "recurring",
+    "sources": [
+      "https://bhavnagar.city/best-navratri/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "iscon-club-navratri-bhavnagar",
+    "name": "Iscon Club Navratri",
+    "city": "Bhavnagar",
+    "venue": "Iscon Club & Resort (The Fern)",
+    "address": "Jewels Circle – Iscon Club – Sidsar Road, Bhavnagar",
+    "lat": 21.7395982,
+    "lng": 72.1232077,
+    "coordsNote": "Nominatim: 'Iscon Club Bhavnagar'",
+    "organiser": "Iscon Club",
+    "dates": null,
+    "timings": null,
+    "entry": "Members; a paid guest pass may be announced",
+    "artists": [],
+    "kind": "members",
+    "highlights": "Club garba on manicured lawns with a controlled crowd, for those who want to skip the big ticketed grounds.",
+    "status": "recurring",
+    "sources": [
+      "https://bhavnagar.city/best-navratri/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navyug-navratri-bhavnagar",
+    "name": "Navyug Navratri",
+    "city": "Bhavnagar",
+    "venue": "Krishna Lawns",
+    "address": "Sidsar Road, near Gyanmanjari University, Bhavnagar",
+    "lat": 21.7320247,
+    "lng": 72.1415978,
+    "coordsNote": "Nominatim: 'Sidsar Road, Bhavnagar' (Krishna Lawns not in OSM; approximate point on Sidsar Road)",
+    "organiser": null,
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "One of Bhavnagar's major public garbas, with a modern setup aimed at a younger crowd. A local guide says it is returning to the same venue in 2026.",
+    "status": "recurring",
+    "sources": [
+      "https://bhavnagar.city/best-navratri/",
+      "https://navyugnavratri.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "garba-dazzle-season-3-dilli-haat-pitampura",
+    "name": "Garba Dazzle Season 3",
+    "city": "Delhi",
+    "venue": "Dilli Haat Pitampura",
+    "address": "Lala Jagat Narayan Marg, Pitampura",
+    "lat": 28.6958325,
+    "lng": 77.1498803,
+    "coordsNote": "Nominatim: 'Dilli Haat Pitampura, Delhi'",
+    "organiser": null,
+    "dates": "11 Oct 2026",
+    "timings": "4 pm (gates 3:30 pm)",
+    "entry": "From ₹299",
+    "artists": [
+      "Anshika Live"
+    ],
+    "kind": "ticketed",
+    "highlights": "An open-air first-night garba at Dilli Haat with live music, a 70+ stall bazaar and 20+ food vendors.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/garba-dazzle-season-3-dilli-haat-pitampura-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "pacific-dandiya-nights-tagore-garden-2026",
+    "name": "Pacific Dandiya Nights",
+    "city": "Delhi",
+    "venue": "Pacific Mall, Tagore Garden",
+    "address": "Tagore Garden, West Delhi",
+    "lat": 28.6437639,
+    "lng": 77.1128454,
+    "coordsNote": "Nominatim: 'Tagore Garden, Delhi' (the mall itself returned only the Anand Vihar branch; area-level pin)",
+    "organiser": "India Music Festival",
+    "dates": "16–18 Oct 2026",
+    "timings": "7 pm (gates 6:30 pm)",
+    "entry": "From ₹799",
+    "artists": [
+      "Live female DJs, dhol performers and a garba crew (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The fourth season of an outdoor mall dandiya in West Delhi.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/pacific-dandiya-nights-pacific-tagore-garden-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raas-dandiya-night-gandhi-darshan-2026",
+    "name": "Raas Dandiya Night",
+    "city": "Delhi",
+    "venue": "Gandhi Darshan",
+    "address": "Rajghat, New Delhi",
+    "lat": 28.6376013,
+    "lng": 77.2501015,
+    "coordsNote": "Nominatim: 'Gandhi Darshan, Delhi'",
+    "organiser": null,
+    "dates": "16–18 Oct 2026",
+    "timings": "From 4 pm",
+    "entry": "From ₹99",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A three-night dandiya at Gandhi Darshan near Rajghat with live dance performances, cash-prize competitions and free dandiya sticks.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/raas-dandiya-night-sep16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raatri-raaga-jln-stadium-2026",
+    "name": "Raatri Raaga – The Raas Affair",
+    "city": "Delhi",
+    "venue": "Jawaharlal Nehru Stadium",
+    "address": "JLN Stadium Marg, New Delhi",
+    "lat": 28.5833771,
+    "lng": 77.2335404,
+    "coordsNote": "Nominatim: 'Jawaharlal Nehru Stadium, Delhi'",
+    "organiser": "Chic Management Services Pvt Ltd",
+    "dates": "16–18 Oct 2026",
+    "timings": "From 4 pm",
+    "entry": "From ₹999",
+    "artists": [
+      "Saaz and Prakhar (16 Oct)",
+      "Akhil Sachdeva (17 Oct)",
+      "Madhavas Rock Band (18 Oct)"
+    ],
+    "kind": "ticketed",
+    "highlights": "A three-night dandiya raas and bhajan-clubbing festival at JLN Stadium with a different live headliner each night; vegetarian and alcohol-free.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/raatri-raaga-the-raas-affair-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raksha-navratri-dwarka-2026",
+    "name": "Raksha Navratri",
+    "city": "Delhi",
+    "venue": "DDA Garba Dandiya Ground",
+    "address": "Dwarka",
+    "lat": 28.6149362,
+    "lng": 77.0227628,
+    "coordsNote": "Nominatim: 'Dwarka, Delhi' (ground not in OSM; area-level pin in Dwarka, not the exact ground)",
+    "organiser": null,
+    "dates": "11–20 Oct 2026",
+    "timings": "7 pm (gates 6:30 pm)",
+    "entry": "From ₹350 (District); children under 10 free with an adult",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "The third edition of a ten-night fair combining a Durga Puja pandal with a big garba-dandiya arena, rides and a food court.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/raksha-navratri-oct11-2026-buy-tickets",
+      "https://www.thedilli.in/2026/06/best-navratri-dandiya-nights-in-delhi.html"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rangtaali-sddgm",
+    "name": "Rangtaali (Shri Dakshin Delhi Gujarati Mandal)",
+    "city": "Delhi",
+    "venue": "Lalit Mahajan SVM Sr. Sec. School (2025 venue)",
+    "address": "Vasant Vihar, New Delhi",
+    "lat": 28.5557657,
+    "lng": 77.1595532,
+    "coordsNote": "Nominatim: 'Lalit Mahajan SVM'",
+    "organiser": "Shri Dakshin Delhi Gujarati Mandal",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "community",
+    "highlights": "A South Delhi Gujarati Mandal's own garba and dandiya nights. 2025: 27, 28 and 30 Sep at this school, ₹500 (India TV); the 2026 edition is not announced yet.",
+    "status": "recurring",
+    "sources": [
+      "https://www.district.in/events/rangtaali-2025-sep27-2025-buy-tickets",
+      "https://www.indiatvnews.com/lifestyle/events/garba-dandiya-events-delhi-2025-2025-09-18-1008810",
+      "https://sddgm.org/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "shubharambh-2026-bharat-mandapam",
+    "name": "Shubharambh 2026 – Delhi's Biggest Disco Dandiya Festival",
+    "city": "Delhi",
+    "venue": "Bharat Mandapam",
+    "address": "Pragati Maidan, New Delhi",
+    "lat": 28.6172378,
+    "lng": 77.2434616,
+    "coordsNote": "Nominatim: 'Bharat Mandapam'",
+    "organiser": "Souldout",
+    "dates": "16–18 Oct 2026",
+    "timings": "From 4 pm",
+    "entry": "From ₹800",
+    "artists": [
+      "Boh!b"
+    ],
+    "kind": "ticketed",
+    "highlights": "A large three-day disco-dandiya festival at the Bharat Mandapam convention centre, with DJs, a flea market and celebrity guests.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/shubharambh-delhis-biggest-disco-dandiya-festival-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "thanganat-adhyashakti-navratri",
+    "name": "Adhyashakti Iconic Navratri by Thanganat",
+    "city": "Gandhinagar",
+    "venue": "Thanganat Garba Club",
+    "address": "Thanganat Garba Club, Sector 11, Gandhinagar (the foundation's site also names a Thanganat Garba Ground in Sector 6)",
+    "lat": 23.2196246,
+    "lng": 72.6478573,
+    "coordsNote": "Nominatim: 'Sector 11, Gandhinagar' (sector centroid; the club is not in OSM. Sources disagree between Sector 11 and Sector 6, so the position is approximate)",
+    "organiser": "Thanganat Art and Cultural Foundation, Gandhinagar",
+    "dates": "11–20 Oct 2026",
+    "timings": "9 pm (gates open 8:50 pm)",
+    "entry": "Passes ₹800–₹1,500; minimum age 10",
+    "artists": [
+      "Kajal Maheriya",
+      "Sagar Patel",
+      "Divya Thakor",
+      "Trusha Rami",
+      "Tejal Thakor",
+      "Ravi Shah",
+      "Shefali Shah",
+      "Payal Vaidya"
+    ],
+    "kind": "ticketed",
+    "highlights": "A long-running Gandhinagar garba by the Thanganat foundation, with ten nights of popular Gujarati singers.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/adhyashakti-iconic-navratri-by-thanganat-oct11-2026-buy-tickets",
+      "https://allevents.in/gandhinagar/navratri",
+      "https://thanganatfoundation.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "after-1159-garba-praveg-adalaj",
+    "name": "After 11:59 Garba",
+    "city": "Gandhinagar",
+    "venue": "Praveg Adalaj Theme Park",
+    "address": "Adalaj, Gandhinagar district (listed under Ahmedabad on Showmates)",
+    "lat": 23.1646919,
+    "lng": 72.5821046,
+    "coordsNote": "Nominatim: 'Adalaj, Gandhinagar' (village centroid; the theme park is not in OSM)",
+    "organiser": null,
+    "dates": "11–19 Oct 2026",
+    "timings": "11:59 pm until sunrise",
+    "entry": "Passes from ₹2,200; ages 5+",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "An all-night garba that starts at midnight and runs until sunrise across three stages: Dholi Garba, Raag Baithak with live folk artists, and Shakti Manch.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://showmates.in/events/after-1159-garba/58BE3BF"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "kesariya-garba-gandhinagar",
+    "name": "Kesariya Garba 2026",
+    "city": "Gandhinagar",
+    "venue": "Ramkatha Maidan",
+    "address": "Ramkatha Maidan, Sector 11, Gandhinagar 382011",
+    "lat": 23.2196246,
+    "lng": 72.6478573,
+    "coordsNote": "Nominatim: 'Sector 11, Gandhinagar' (sector centroid; Ramkatha Maidan not in OSM)",
+    "organiser": "Sahay Foundation",
+    "dates": "11–20 Oct 2026",
+    "timings": null,
+    "entry": "Single-night passes, price to be announced; children under 10 free",
+    "artists": [
+      "Dipali Shastri",
+      "Abhita Patel",
+      "Jagdeep Mehta",
+      "Prahar Vora",
+      "Nayna Sharma",
+      "Nisha Upadhyay"
+    ],
+    "kind": "ticketed",
+    "highlights": "Gandhinagar's biggest ground garba, with a different lead singer on each of the ten nights. 2025: attended by Union Home Minister Amit Shah.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.kesariyagarba.in/",
+      "https://sundayguardianlive.com/news/union-home-minister-amit-shah-attends-kesariya-garba-navratri-celebration-in-gujarat20250924061519-147757/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "biggest-bollywood-dandiya-raas-season-9",
+    "name": "Biggest Bollywood Dandiya Raas – Season 9",
+    "city": "Gurugram",
+    "venue": "Goa Country Club by Pearl",
+    "address": "Opp. Metro Park Hospital, J Block, Palam Vihar",
+    "lat": 28.4983353,
+    "lng": 77.0203007,
+    "coordsNote": "Nominatim: 'Palam Vihar, Gurugram' (venue not in OSM; area-level pin)",
+    "organiser": "Pearl Weddings and Entertainment",
+    "dates": "17–18 Oct 2026",
+    "timings": "From 7 pm",
+    "entry": "From ₹399",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "The ninth season of a weekend dandiya raas by an organiser who calls itself a pioneer of dandiya in North India, with a kids' zone and food stalls.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/biggest-bollywood-dandiya-raas-season9-oct17-2026-buy-tickets",
+      "https://www.weddingwire.in/banquet-halls/goa-country-club--e407585"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-night-molecule-ifc-gurgaon-2026",
+    "name": "Dandiya Night at Molecule IFC Gurgaon",
+    "city": "Gurugram",
+    "venue": "Molecule Air Bar, M3M International Financial Center",
+    "address": "M3M IFC (Sector 66 per OSM)",
+    "lat": 28.4049117,
+    "lng": 77.0584264,
+    "coordsNote": "Nominatim: 'M3M IFC'",
+    "organiser": null,
+    "dates": "11–19 Oct 2026",
+    "timings": "8 pm (entry 7:45 pm)",
+    "entry": "From ₹299; 21+ only",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Nightly dandiya parties through Navratri at a rooftop bar, for ages 21 and above.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-night-at-molecule-ifc-gurgaon-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-raas-under-the-stars-2026-gymkhana",
+    "name": "Dandiya Raas – Under the Stars 2026",
+    "city": "Gurugram",
+    "venue": "Gymkhana Club",
+    "address": "HUDA Gymkhana Club, near IFFCO Chowk, Sector 29",
+    "lat": 28.4667788,
+    "lng": 77.0618348,
+    "coordsNote": "Nominatim: 'Gymkhana Club, Gurugram' (matched HUDA Gymkhana Club; listing just says 'Gymkhana Club, Gurugram')",
+    "organiser": "Direct Sourcing Services",
+    "dates": "17 Oct 2026",
+    "timings": "From 6 pm",
+    "entry": "From ₹899",
+    "artists": [
+      "Alisha Arora",
+      "DJ Rishi",
+      "Dheeraj Bhandari"
+    ],
+    "kind": "ticketed",
+    "highlights": "An open-air one-night dandiya with a live garba singer, a DJ set and a rock band, plus laser and LED effects.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-raas-under-the-stars-2026-oct17-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "celebrity-dandiya-nights-season-10",
+    "name": "Celebrity Dandiya Nights Season 10",
+    "city": "Hyderabad",
+    "venue": "Flipside Adventure Park",
+    "address": "Nanakramguda",
+    "lat": 17.4217796,
+    "lng": 78.3379784,
+    "coordsNote": "Nominatim: 'Nanakramguda, Hyderabad' (venue not in OSM; area-level pin)",
+    "organiser": "Hyderabad Models",
+    "dates": "9–20 Oct 2026",
+    "timings": "From 7 pm",
+    "entry": "From ₹149",
+    "artists": [
+      "Live dhol; celebrity models and influencers (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The tenth season of a long-running Nanakramguda dandiya with celebrity guests and a Maha Harathi.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/celebrity-dandiya-nights-season-10-oct9-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-nights-2026-hyderabad-sri-infinity",
+    "name": "Dandiya Nights 2026 – Hyderabad",
+    "city": "Hyderabad",
+    "venue": "Sri Infinity Convention & Banquet",
+    "address": "Manikonda",
+    "lat": 17.3999951,
+    "lng": 78.3861689,
+    "coordsNote": "Nominatim: 'Manikonda, Hyderabad' (venue not in OSM; area-level pin)",
+    "organiser": "Tomo Events",
+    "dates": "11–19 Oct 2026",
+    "timings": "6–11 pm",
+    "entry": "From ₹399",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A nine-night garba in a 15,000+ sq ft indoor hall with a DJ and food stalls.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-nights-2026-hyderabad-oct11-2026-buy-tickets",
+      "https://allevents.in/hyderabad/navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-ramzat-2026-cga",
+    "name": "Dandiya Ramzat 2026 by CGA",
+    "city": "Hyderabad",
+    "venue": "Lohia Convention & Garden",
+    "address": "245, Community Hall Rd, Phase 2, Jaya Prakash Narayan Nagar, Miyapur 500049",
+    "lat": 17.4981608,
+    "lng": 78.3567628,
+    "coordsNote": "Nominatim: 'Miyapur, Hyderabad' (venue not in OSM; area-level pin)",
+    "organiser": "Cyberabad Gujarati Association (CGA)",
+    "dates": "16–18 Oct 2026",
+    "timings": "Indoor 7–11 pm; outdoor 7–10:30 pm",
+    "entry": "Kids indoor season pass ₹1,649; other passes on AllEvents",
+    "artists": [],
+    "kind": "community",
+    "highlights": "The 14th edition of the Cyberabad Gujarati Association's garba, with an AC indoor hall and an open-air area, meals included.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://allevents.in/miyapur/dandiya-ramzat-2026-by-cga-tickets/80003818399763"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navkar-navratri-utsav-2026",
+    "name": "Navkar Navratri Utsav 2026",
+    "city": "Hyderabad",
+    "venue": "Grand Lawns Banquet Hall & Convention Centre, Jalavihar",
+    "address": "Jalavihar, Necklace Road",
+    "lat": 17.432209,
+    "lng": 78.4651789,
+    "coordsNote": "Nominatim: 'Jalavihar, Hyderabad' (matched Jalavihar Water Park; the Grand Lawns venue is not in OSM)",
+    "organiser": "Navkar Darshan (Kavita Jain)",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": "From 7 pm",
+    "entry": "From ₹299",
+    "artists": [
+      "Bamboo Beats (Mumbai)"
+    ],
+    "kind": "ticketed",
+    "highlights": "Nine nights of garba with a Mumbai band, Maha Aarti, and prizes the organisers put at ₹50 lakh in total.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/navkar-navratri-utsav-2026-jalavihar-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raas-rang-2026-hyderabad",
+    "name": "Raas Rang 2026",
+    "city": "Hyderabad",
+    "venue": "Pindi Pulla Reddy Gardens",
+    "address": "34–35 Nagarjuna Sagar Ring Road, Bairamalguda (LB Nagar)",
+    "lat": 17.3421597,
+    "lng": 78.5457628,
+    "coordsNote": "Nominatim: 'Bairamalguda, Hyderabad' (venue not in OSM; area-level pin)",
+    "organiser": "CSR Events",
+    "dates": "17–18 Oct 2026",
+    "timings": "Gates 5:15 pm (multiple slots)",
+    "entry": "From ₹249",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A weekend dandiya and garba for East Hyderabad with a DJ, games and a shopping area; traditional dress is required.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/rass-rang-2026-oct17-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raastaali-dandiyaraas-2026",
+    "name": "Raastaali Dandiyaraas",
+    "city": "Hyderabad",
+    "venue": "Vysta Conventions and Resorts",
+    "address": "Kothwalguda (near Shamshabad)",
+    "lat": 17.2888971,
+    "lng": 78.3664132,
+    "coordsNote": "Nominatim: 'Kothwalguda, Telangana' (venue not in OSM; area-level pin)",
+    "organiser": "Dakshin Stories",
+    "dates": "11–19 Oct 2026",
+    "timings": "From 8 pm",
+    "entry": "From ₹399",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A nine-night upscale dandiya raas at a resort near Shamshabad.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/raastaali-dandiyaraas-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dholi-taara-open-garba-5",
+    "name": "Dholi Taara Open Garba 5.0",
+    "city": "Indore",
+    "venue": "Essentia Luxury Hotel",
+    "address": "Near World Cup Square, Pipliyahana",
+    "lat": 22.7059925,
+    "lng": 75.9058645,
+    "coordsNote": "Nominatim: 'World Cup Square, Indore' (matched Pipliyahana Square; hotel not in OSM)",
+    "organiser": "B3",
+    "dates": "11–20 Oct 2026",
+    "timings": "7:30 pm (gates 7:15 pm)",
+    "entry": "From ₹199",
+    "artists": [
+      "Live DJs (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The fifth edition of a ten-night open garba on a 5-star hotel's lawn, with a different theme each night.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dholi-taara-open-garba-50-an-event-by-b3-oct11-2026-buy-tickets",
+      "https://www.essentiahotels.in/luxury-hotel-indore/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "indraas-premium-garba-indore-2026",
+    "name": "Indraas – Premium Garba Experience",
+    "city": "Indore",
+    "venue": "Urban Haat",
+    "address": "Vaishali Nagar",
+    "lat": 22.6979672,
+    "lng": 75.8458798,
+    "coordsNote": "Nominatim: 'Urban Haat, Indore'",
+    "organiser": "Redfeets Creative Lab",
+    "dates": "17–19 Oct 2026",
+    "timings": "6:30 pm (gates 6 pm)",
+    "entry": "From ₹999",
+    "artists": [
+      "21-piece live band (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "Three nights of garba to a 21-piece live band under a covered, rain-proof floor with a capped crowd size.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/indraas-premium-garba-experience-in-indore-oct17-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "man-mohini-garba-mahotsav-2",
+    "name": "Man Mohini Garba Mahotsav 2.0",
+    "city": "Indore",
+    "venue": "Vitthal Rukmani Garden",
+    "address": "Kesar Bagh Road",
+    "lat": 22.6881983,
+    "lng": 75.8434448,
+    "coordsNote": "Nominatim: 'Kesar Bagh Road, Indore' (garden not in OSM; street-level pin)",
+    "organiser": "Amay Mathur",
+    "dates": "17–19 Oct 2026",
+    "timings": "From 7:30 pm",
+    "entry": "₹199; ages 17+",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A three-night garba and dandiya on Kesar Bagh Road.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/man-mohini-garba-mahotsav-20-oct17-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-maharaas-2026-season-15",
+    "name": "Dandiya Maharaas 2026 – Season 15",
+    "city": "Jaipur",
+    "venue": "Janki Paradise Marriage Garden",
+    "address": "Gandhi Path West, B Block, Vaishali Nagar",
+    "lat": 26.9051371,
+    "lng": 75.746906,
+    "coordsNote": "Nominatim: 'Gandhi Path, Jaipur' (garden not in OSM; street-level pin)",
+    "organiser": "Pawan Tank",
+    "dates": "16–19 Oct 2026",
+    "timings": "From 5 pm",
+    "entry": "From ₹200",
+    "artists": [
+      "Celebrity guests (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The 15th season of a four-night dandiya with Dandiya King/Queen contests and a Maha Aarti.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-maharaas-2026-season-15-oct16-2026-buy-tickets",
+      "https://www.sulekha.com/janki-paradise-marriage-garden-vaishali-nagar-jaipur-contact-address"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "garba-raas-season-7-fun-kingdom",
+    "name": "Garba Raas Season 7",
+    "city": "Jaipur",
+    "venue": "Fun Kingdom",
+    "address": "Jaipur–Jodhpur Highway, Sanganer tehsil (per OSM)",
+    "lat": 26.8379913,
+    "lng": 75.7827832,
+    "coordsNote": "Nominatim: 'Fun Kingdom, Jaipur'",
+    "organiser": "Honey Events",
+    "dates": "15–18 Oct 2026",
+    "timings": "From 6 pm",
+    "entry": "From ₹299",
+    "artists": [
+      "Live Gujarati singers and bands (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The seventh season of a four-night garba with live Gujarati singers and a vegetarian food court.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/garba-raas-season-7-2026-buy-tickets",
+      "https://www.district.in/events/navratri-in-jaipur-book-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "mirchi-rock-n-dhol-jaipur-2026",
+    "name": "Mirchi Rock N Dhol 2026 – Jaipur",
+    "city": "Jaipur",
+    "venue": "Raj Aangan Resort at The Haveli Ralawata",
+    "address": "Maharaja Kishan Singh Nagar, near Patrakar Colony, Mansarovar",
+    "lat": 26.8756076,
+    "lng": 75.7509072,
+    "coordsNote": "Nominatim: 'Mansarovar, Jaipur' (resort and Patrakar Colony not in OSM; area-level pin)",
+    "organiser": null,
+    "dates": "17–18 Oct 2026",
+    "timings": "7 pm (gates 6:30 pm)",
+    "entry": "From ₹399",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A two-night garba branded with Radio Mirchi's Rock N Dhol name, with live music and a food court.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/mirchi-rock-n-dhol-jaipur-oct17-2026-buy-tickets",
+      "https://www.weddingwire.in/marriage-garden/the-haveli-ralawata--e167081"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "jay-shree-chamunda-garbi-jamnagar",
+    "name": "Jay Shree Chamunda Yuvak Kumarika Garbi Mandal",
+    "city": "Jamnagar",
+    "venue": "Near Pancheshwar Tower",
+    "address": "Pancheshwar area, Jamnagar",
+    "lat": 22.4669558,
+    "lng": 70.0727774,
+    "coordsNote": "Nominatim: 'Pancheshwar Tower, Jamnagar'",
+    "organiser": "Jay Shree Chamunda Yuvak Kumarika Garbi Mandal",
+    "dates": null,
+    "timings": null,
+    "entry": "Free",
+    "artists": [],
+    "kind": "community",
+    "highlights": "Traditional prachin garbi of about four decades, known for its burning-indhoni raas, where dancers carry a lit pot-stand on their heads.",
+    "status": "recurring",
+    "sources": [
+      "https://www.abtakmedia.com/in-the-burning-indhoni-raas-a-young-man-and-woman-have-preserved-a-four-decade-old-tradition/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "patel-yuvak-garbi-mandal-jamnagar",
+    "name": "Shree Patel Yuvak Garbi Mandal (Mashaal Raas)",
+    "city": "Jamnagar",
+    "venue": "Near Leuva Patel Samaj, Ranjitnagar",
+    "address": "Ranjitnagar, off Summair Club Road, Jamnagar",
+    "lat": 22.4693181,
+    "lng": 70.058194,
+    "coordsNote": "Nominatim: 'Summair Club Road, Jamnagar' (Ranjitnagar not in OSM; Summair Club Road is the road named in the Patel Samaj Ranjitnagar address – approximate)",
+    "organiser": "Shree Patel Yuvak Garbi Mandal",
+    "dates": null,
+    "timings": null,
+    "entry": "Free",
+    "artists": [],
+    "kind": "community",
+    "highlights": "Prachin garbi of more than 70 years, famous for its mashaal raas, in which young men dance with flaming torches and barefoot over burning embers. Also performs talvar and datarda raas.",
+    "status": "recurring",
+    "sources": [
+      "https://www.etvbharat.com/gu/!state/jamnagar-patel-yuvak-garbi-mandal-mashal-ras-on-burning-coals-gujarat-news-gjs24100401937",
+      "https://www.freepressjournal.in/lifestyle/what-is-mashaal-raas-jamnagars-unique-garba-played-on-fire-heres-what-youneedtoknow",
+      "https://www.mappls.com/place-patel+samaj-ranjit+nagar-oshwal+colony-summair+club+road-jamnagar-gujarat-361005-HAK2TS@zdata=MjIuNDY0NzY3KzcwLjA1Njg2MSsxNytIQUsyVFMrK25yed"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "the-garba-town-jamnagar",
+    "name": "The Garba Town",
+    "city": "Jamnagar",
+    "venue": "Ashirwad Club Resort",
+    "address": "D.P. Road, opp. Podar International School, Naghedi, Jamnagar",
+    "lat": 22.4374741,
+    "lng": 70.0093004,
+    "coordsNote": "Nominatim: 'Naghedi, Jamnagar' (resort not in OSM; Naghedi is the area named in the address – approximate)",
+    "organiser": null,
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Ten-night 'urban Navratri' at Ashirwad Club Resort, with themed and fusion rounds and different artists each night. 2025: 9 pm – 1 am, day pass from ₹500, season pass from ₹3,500.",
+    "status": "recurring",
+    "sources": [
+      "https://www.townvibe.info/navratri/jamnagar/2025/the-garba-town",
+      "https://allevents.in/jamnagar/navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "divya-raas-2026-inorbit-malad-preety-pinky",
+    "name": "Divya Raas Navratri 2026 ft. Preety and Pinky",
+    "city": "Mumbai",
+    "venue": "Inorbit Mall Malad",
+    "address": "Link Road, Malad West / Bangur Nagar, Mumbai",
+    "lat": 19.1729654,
+    "lng": 72.8350769,
+    "coordsNote": "Nominatim: 'Inorbit Mall, Mumbai'",
+    "organiser": null,
+    "dates": "11–20 Oct 2026, ten nights (multiple slots)",
+    "timings": "Gates open 6:30 pm",
+    "entry": "From ₹249",
+    "artists": [
+      "Preety & Pinky"
+    ],
+    "kind": "ticketed",
+    "highlights": "The singing sisters Preety and Pinky perform over ten nights, ending with a Maha Aarti and visarjan on 20 Oct.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/divya-raas-navratri-ft-preety-pinky-2026-buy-tickets",
+      "https://allevents.in/mumbai/divya-raas-navratri-2026-ft-preety-and-pinky/4100030715974812"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dome-dandiya-nites-2026-worli",
+    "name": "Dome Dandiya Nites 2026",
+    "city": "Mumbai",
+    "venue": "Dome, SVP Stadium (NSCI)",
+    "address": "Lala Lajpatrai Marg, Worli / Mahalakshmi, Mumbai 400034",
+    "lat": 18.9864715,
+    "lng": 72.8155277,
+    "coordsNote": "Nominatim: 'Sardar Vallabhbhai Patel Stadium, Mumbai'",
+    "organiser": null,
+    "dates": "15–20 Oct 2026",
+    "timings": null,
+    "entry": "From ₹499",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A fully enclosed, air-conditioned indoor dandiya at the NSCI Dome in Worli, listed on the venue's own site. 2025: Riya Bhattacharya and Amit Jadhav performed.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://domeindia.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "garba-dhoom-2026-infiniti-mall-malad",
+    "name": "Garba Dhoom 2026",
+    "city": "Mumbai",
+    "venue": "Main Atrium, Infiniti Mall Malad",
+    "address": "New Link Road, Mindspace, Malad West, Mumbai 400064",
+    "lat": 19.1851346,
+    "lng": 72.8353721,
+    "coordsNote": "Nominatim: 'Infiniti Mall, Malad, Mumbai'",
+    "organiser": "Infiniti Mall",
+    "dates": "11–21 Oct 2026",
+    "timings": "From 8 pm; until 12 am on weekdays, 1 am on weekends",
+    "entry": "From ₹199",
+    "artists": [
+      "Himang Joshi & Team"
+    ],
+    "kind": "ticketed",
+    "highlights": "An indoor, air-conditioned mall garba with live music over eleven nights.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://businessnewsthisweek.com/news/from-dandiya-beats-to-festive-feels-garba-dhoom-is-set-to-make-navratri-unmissable-at-infiniti-mall-malad/",
+      "https://www.district.in/events/garba-dhoom-2026-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "korakendra-navratri-2026-kinjal-dave",
+    "name": "Korakendra Navratri 2026 with Kinjal Dave",
+    "city": "Mumbai",
+    "venue": "Korakendra Ground No. 1",
+    "address": "Kora Kendra, Borivali West, Mumbai",
+    "lat": 19.2201042,
+    "lng": 72.8507185,
+    "coordsNote": "Nominatim: 'Kora Kendra Ground, Mumbai' (the complex has several numbered grounds; the pin is on the complex, not specifically Ground 1)",
+    "organiser": "Naidu Club & Tribe Vibe",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [
+      "Kinjal Dave"
+    ],
+    "kind": "ticketed",
+    "highlights": "Long-running Naidu Club garba on Kora Kendra Ground 1 in Borivali; Kinjal Dave was announced as the 2026 headliner at a press conference in September 2026.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://english.loktej.com/article/32293/naidu-club--amp--tribe-vibe-presents-korakendra-navratri-2026-gets-bigger-and-more-vibrant-as-kinjal-dave-set-to-bring-her-high-energy-garba-beats-to-korakendra--ground-1--borivali"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navrang-navratri-2026-goregaon-nilesh-thakkar",
+    "name": "Navrang Navratri 2026 ft. Nilesh Thakkar",
+    "city": "Mumbai",
+    "venue": "Sapphire Dome, Brahma Mahesh Ground",
+    "address": "Bangur Nagar, Goregaon West, Mumbai 400104",
+    "lat": 19.1624723,
+    "lng": 72.8348708,
+    "coordsNote": "Nominatim: 'Bangur Nagar, Goregaon West, Mumbai' (the ground itself was not found; pin is the Bangur Nagar area named in its address)",
+    "organiser": "Vivenita Events LLP",
+    "dates": "11–20 Oct 2026",
+    "timings": "7 pm (gates 6:30 pm)",
+    "entry": "From ₹500",
+    "artists": [
+      "Nilesh Thakkar"
+    ],
+    "kind": "ticketed",
+    "highlights": "A domed ground garba in Goregaon West headlined by Nilesh Thakkar. His 2025 Navrang edition was held at Shimpoli Sports Complex in Borivali.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/navrang-navratri-2026-oct11-2026-buy-tickets",
+      "https://weddingz.in/mumbai/sapphire-dome-brahma-mahesh-ground-goregaon-west/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navratri-utsav-2026-falguni-pathak-jio-world",
+    "name": "Navratri Utsav 2026 with Falguni Pathak",
+    "city": "Mumbai",
+    "venue": "Jio World Convention Centre",
+    "address": "Bandra Kurla Complex (BKC), Bandra East, Mumbai",
+    "lat": 19.0640925,
+    "lng": 72.8673923,
+    "coordsNote": "Nominatim: 'Jio World Convention Centre, Mumbai'",
+    "organiser": "TribeVibe Entertainment and Alphonso Studios",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": null,
+    "entry": "Ticketed; sold exclusively on BookMyShow (prices not published in source)",
+    "artists": [
+      "Falguni Pathak"
+    ],
+    "kind": "ticketed",
+    "highlights": "Falguni Pathak performs live every night of Navratri at this large indoor BKC celebration, billed as one of the city's biggest.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://en.sangritimes.com/entertainment/falguni-pathak-navratri-is-more-than-just-a-festival",
+      "https://ianslive.in/falguni-pathak-shares-why-navratri-is-more-than-just-a-festival-for-her--20260811144804"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "prerna-raas-mulund-kalidas",
+    "name": "Prerna Raas Navratri",
+    "city": "Mumbai",
+    "venue": "Kalidas Ground (Kalidas Complex)",
+    "address": "Kalidas Complex, Purushottam Kheraj Road, Mulund West, Mumbai 400080",
+    "lat": 19.1728858,
+    "lng": 72.9487343,
+    "coordsNote": "Nominatim: 'Kalidas, Mulund, Mumbai' (resolved to Kalidas Garden, Mulund West, next to the complex)",
+    "organiser": "Mulund Yuvak Prerna / Manoj Kotak",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Mulund's long-running ground garba at Kalidas, held since at least 2013. 2025: 22 Sep – 2 Oct, from ₹400.",
+    "status": "recurring",
+    "sources": [
+      "https://www.pnrnews.in/2013/10/prerna-rass-navratri-utsav-at-mulund.html",
+      "https://www.indiatvnews.com/lifestyle/events/garba-events-mumbai-navratri-2025-2025-09-18-1008814"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rang-raas-navratri-2026-chikoowadi-borivali",
+    "name": "Rang Raas Navratri 2026 ft. Bhoomi Trivedi",
+    "city": "Mumbai",
+    "venue": "Chikoowadi Playground",
+    "address": "Kanti Park Road, Gorai 1, Borivali West, Mumbai 400092",
+    "lat": 19.2298129,
+    "lng": 72.8471376,
+    "coordsNote": "Nominatim: 'Borivali West, Mumbai' (the playground was not found; pin is the Borivali West area)",
+    "organiser": "Hitech Events & Exhibition",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": "7:30 pm (gates 7 pm)",
+    "entry": "From ₹499",
+    "artists": [
+      "Bhoomi Trivedi"
+    ],
+    "kind": "ticketed",
+    "highlights": "An open-ground garba in Borivali West led by the playback singer Bhoomi Trivedi.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/rang-raas-navratri-2026-ft-bhoomi-trivedi-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rangilo-re-2026-nesco-parthiv-gohil",
+    "name": "Rangilo Re 2026 with Parthiv Gohil",
+    "city": "Mumbai",
+    "venue": "NESCO Center, Hall 6",
+    "address": "Western Express Highway, NESCO, Goregaon East, Mumbai 400063",
+    "lat": 19.1524909,
+    "lng": 72.8550235,
+    "coordsNote": "Nominatim: 'NESCO, Goregaon, Mumbai' (resolved to NESCO IT Park in the same complex)",
+    "organiser": "LiveFiesta",
+    "dates": "From 11 Oct 2026 (multiple Navratri nights, per LiveFiesta)",
+    "timings": "7:30 pm, about 5 hours",
+    "entry": "From ₹999",
+    "artists": [
+      "Parthiv Gohil"
+    ],
+    "kind": "ticketed",
+    "highlights": "Indoor, air-conditioned garba at NESCO in Goregaon, led by Parthiv Gohil. Children aged 5 and up are allowed.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.livefiesta.com/events/rangilo-re-2026/mumbai-2026"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rangtaali-navratri-borivali",
+    "name": "Rangtaali Navratri",
+    "city": "Mumbai",
+    "venue": "Gen. Arunkumar Vaidya Ground",
+    "address": "Borivali, Mumbai",
+    "lat": 19.2229081,
+    "lng": 72.8662436,
+    "coordsNote": "Nominatim: 'Arunkumar Vaidya, Borivali, Mumbai' (resolved to Gen Arunkumar Vaidya Road, Devipada, Borivali East; the ground itself was not found)",
+    "organiser": "Yash Entertainment with Taramati Foundation",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A large Borivali ground garba. 2025: Aishwarya Majmudar headlined, 22 Sep – 1 Oct, from ₹943. The 2026 edition is not yet confirmed.",
+    "status": "recurring",
+    "sources": [
+      "https://curlytales.com/india/food/plan/halo-re-halo-navratri-events-in-mumbai-featuring-falguni-pathak-dandiya-nights-djs-local-mandals-more/",
+      "https://www.indiatvnews.com/lifestyle/events/garba-events-mumbai-navratri-2025-2025-09-18-1008814"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "showglitz-navratri-2026-korakendra",
+    "name": "Showglitz Navratri 2026 ft. Geeta Rabari",
+    "city": "Mumbai",
+    "venue": "Korakendra Ground No. 4",
+    "address": "Kora Kendra, Borivali West, Mumbai",
+    "lat": 19.2201042,
+    "lng": 72.8507185,
+    "coordsNote": "Nominatim: 'Kora Kendra Ground, Mumbai' (pin is on the Kora Kendra complex, not specifically Ground 4)",
+    "organiser": "Showglitz Events And Entertainment Pvt Ltd",
+    "dates": "11–19 Oct 2026, all nine nights; extra Dussehra night with Falguni Pathak on 20 Oct 2026",
+    "timings": "7:30 pm (gates 7 pm)",
+    "entry": "From ₹500 per night; Falguni Pathak Dussehra night (20 Oct) from ₹1,300",
+    "artists": [
+      "Geeta Rabari",
+      "Falguni Pathak"
+    ],
+    "kind": "ticketed",
+    "highlights": "Geeta Rabari sings all nine nights at this big Borivali ground garba. Falguni Pathak headlines a separate ticketed night on Dussehra, 20 Oct.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/showglitz-events-nvaratri-2026-buy-tickets",
+      "https://www.district.in/events/showglitz-navratri-utsav-2026-ft-falguni-pathak-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "shubharambh-2026-jio-world-drive",
+    "name": "Shubharambh 2026 – Disco Dandiya Festival",
+    "city": "Mumbai",
+    "venue": "Jio World Drive",
+    "address": "BKC, Bandra East, Mumbai",
+    "lat": 19.0535413,
+    "lng": 72.8508353,
+    "coordsNote": "Nominatim: 'Jio World Drive, Mumbai'",
+    "organiser": "Souldout",
+    "dates": "17–18 Oct 2026",
+    "timings": "From 4 pm (to about 10 pm)",
+    "entry": "₹800–₹2,800",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A weekend 'disco dandiya' festival that mixes garba with Bollywood and EDM. It has live DJs, neon garba, a flea market and celebrity guests.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/shubharambh-mumbais-biggest-disco-dandiya-festival-buy-tickets",
+      "https://allevents.in/mumbai/shubharambh-2026/4100030715975323"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navrang-garba-marriott-navi-mumbai",
+    "name": "Navrang Garba",
+    "city": "Navi Mumbai",
+    "venue": "Jade Terrace, Marriott Executive Apartments Navi Mumbai",
+    "address": "D-33, Turbhe MIDC Road, TTC Industrial Area, Turbhe, Navi Mumbai 400705",
+    "lat": 19.0625133,
+    "lng": 73.022845,
+    "coordsNote": "Nominatim: 'Turbhe MIDC, Navi Mumbai' (resolved to a neighbouring hotel on Turbhe MIDC Road; the Marriott itself was not found)",
+    "organiser": "Rupa Food & Hospitality (2025)",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Billed as Navi Mumbai's premium nine-night garba, with a live band. 2025: 22 Sep – 1 Oct, 7 pm, from ₹500, with Kamlesh Barot, Indrani Bhattacherjee, Sanket Goswami and Milan Jain.",
+    "status": "recurring",
+    "sources": [
+      "https://www.district.in/events/navrang-garba-25-buy-tickets",
+      "https://curlytales.com/india/food/plan/halo-re-halo-navratri-events-in-mumbai-featuring-falguni-pathak-dandiya-nights-djs-local-mandals-more/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-dhamaal-2026-sapna-choudhary",
+    "name": "Dandiya Dhamaal 2026 ft. Sapna Choudhary",
+    "city": "Noida",
+    "venue": "International Trade Expo Centre",
+    "address": "A-11 Expo Drive, NH-24, Sector 62",
+    "lat": 28.6211447,
+    "lng": 77.3643493,
+    "coordsNote": "Nominatim: 'Sector 62, Noida' (venue not in OSM; area-level pin)",
+    "organiser": "Vanya Industries (Anjali Awasthi)",
+    "dates": "16–18 Oct 2026",
+    "timings": "5 pm (gates 4:45 pm)",
+    "entry": "From ₹499",
+    "artists": [
+      "Sapna Choudhary"
+    ],
+    "kind": "ticketed",
+    "highlights": "A three-night dandiya with a live performance by Haryanvi star Sapna Choudhary, a DJ, dhol and costume contests.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/dandiya-dhamaal-2026-ft-sapna-chaudhary-oct16-2026-buy-tickets",
+      "https://10times.com/venues/expo-centre-noida"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "spectrum-metro-dandiya-night-4",
+    "name": "Spectrum Metro Dandiya Night 4.0",
+    "city": "Noida",
+    "venue": "Spectrum Metro Mall",
+    "address": "Noida",
+    "lat": 28.572436,
+    "lng": 77.3793265,
+    "coordsNote": "Nominatim: 'Spectrum Metro Mall, Noida'",
+    "organiser": "Spectrum Metro Mall",
+    "dates": "17 Oct 2026",
+    "timings": "6 pm (gates 5:50 pm)",
+    "entry": "From ₹199",
+    "artists": [
+      "DJ Perisha",
+      "DJ Gaurav"
+    ],
+    "kind": "ticketed",
+    "highlights": "The fourth edition of a one-night outdoor mall dandiya.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/spectrum-dandiya-night-40-oct17-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "great-indian-garba-fest-4-noida",
+    "name": "The Great Indian Garba Fest 4.0",
+    "city": "Noida",
+    "venue": "Worlds of Wonder",
+    "address": "38A, Lt. Vijyant Thapar Marg (per OSM)",
+    "lat": 28.5649333,
+    "lng": 77.3259652,
+    "coordsNote": "Nominatim: 'Worlds of Wonder, Noida'",
+    "organiser": null,
+    "dates": "16–18 Oct 2026",
+    "timings": "5 pm (gates 3:45 pm)",
+    "entry": "From ₹799",
+    "artists": [
+      "Live folk artists and DJs (names not announced)"
+    ],
+    "kind": "ticketed",
+    "highlights": "The fourth edition of a large three-night garba festival; vegetarian and alcohol-free.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/the-great-indian-garba-fest-40-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-dhoom-9-mahalakshmi-lawns-kharadi",
+    "name": "Dandiya Dhoom 9.0 – Mahalakshmi Lawns, Kharadi",
+    "city": "Pune",
+    "venue": "Mahalakshmi Lawns",
+    "address": "Kharadi, Pune",
+    "lat": 18.5512763,
+    "lng": 73.9416575,
+    "coordsNote": "Nominatim: 'Kharadi, Pune' (Mahalakshmi Lawns in Kharadi was not found; a same-named lawn in Karve Nagar was rejected; pin is the Kharadi locality)",
+    "organiser": "Linkin Minds",
+    "dates": "16–18 Oct 2026",
+    "timings": "5:30 pm (gates 5 pm)",
+    "entry": "From ₹249 (allevents lists ₹49–₹399)",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "The East Pune venue of Dandiya Dhoom 9.0. District lists it under the title 'Mirchi Rock n Dhol'.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://dandiya.linkinminds.com/",
+      "https://www.district.in/events/dandiya-fever-90-at-mahalakshami-lawns-kharadi-oct16-2026-buy-tickets",
+      "https://allevents.in/pune/dandiya-fever-90-at-mahalakshami-lawns-kharadi/4100030415696415"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "dandiya-dhoom-9-orchid-balewadi",
+    "name": "Dandiya Dhoom 9.0 – The Orchid, Balewadi",
+    "city": "Pune",
+    "venue": "The Orchid Hotel Pune",
+    "address": "Mhalunge–Baner Road, Balewadi, Pune",
+    "lat": 18.5706933,
+    "lng": 73.7637801,
+    "coordsNote": "Nominatim: 'The Orchid Hotel, Balewadi, Pune'",
+    "organiser": "Linkin Minds",
+    "dates": "16–18 Oct 2026",
+    "timings": "5:30 pm – 10 pm (gates 5 pm)",
+    "entry": "From ₹249",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Pune's multi-venue Dandiya Dhoom festival, also held at Mahalakshmi Lawns, Kharadi and Amanora Fern, Magarpatta. It promises more than 10 DJs and live singers, with capacity for over 5,000 people across its venues.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://dandiya.linkinminds.com/",
+      "https://www.district.in/events/dandiya-fever-90-oct16-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "messe-global-dandiya-dhamaka-2026",
+    "name": "Messe Global Dandiya Dhamaka",
+    "city": "Pune",
+    "venue": "Messe Global Convention Center",
+    "address": "CTS No 2036/4-65, near previous Laxmi Lawns, Mundhwa, Pune 411036",
+    "lat": 18.5194758,
+    "lng": 73.9214309,
+    "coordsNote": "Nominatim: 'Laxmi Lawns, Pune' (the venue's address reads 'near previous Laxmi Lawns, Mundhwa')",
+    "organiser": null,
+    "dates": "16–18 Oct 2026",
+    "timings": "6:30 pm (gates 6 pm)",
+    "entry": "From ₹199",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A three-night garba and dandiya at what bills itself as Pune's largest open-air event venue, with special performances and celebrity guests.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/messe-global-dandiya-dhamaka-oct16-2026-buy-tickets",
+      "https://www.messeglobalpune.com/contact/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raas-rasiya-season-4-nahata-lawns",
+    "name": "Raas Rasiya Garba and Dandiya – Season 4",
+    "city": "Pune",
+    "venue": "Nahata Lawns",
+    "address": "Sinhagad Road, Kirti Nagar, Vadgaon Budruk, Pune 411041",
+    "lat": 18.4674971,
+    "lng": 73.825365,
+    "coordsNote": "Nominatim: 'Vadgaon Budruk, Pune' (Nahata Lawns was not found; pin is the Vadgaon Budruk locality)",
+    "organiser": "Happy Wedz",
+    "dates": "11, 15, 16, 17, 18, 19 and 20 Oct 2026",
+    "timings": "Gates open 7 pm",
+    "entry": "From ₹249",
+    "artists": [
+      "Rohini Garba Group",
+      "Faghun Valunj & Group",
+      "Suyash Mankar",
+      "Nav Chaitanya Garba",
+      "Raadhe Raadhe Garba Group"
+    ],
+    "kind": "ticketed",
+    "highlights": "A multi-night garba on Sinhagad Road, with a different live garba group or singer on each night.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/raas-rasiya-garba-dandiya-season-4-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "ramti-aave-2026-pimpri-chinchwad",
+    "name": "Ramti Aave – Grand Navratri Celebration by SIVRU",
+    "city": "Pune",
+    "venue": "D Y Patil Cricket Ground",
+    "address": "D Y Patil Cricket Ground, Pimpri-Chinchwad (a Justdial listing places it at Shinde Vasti, Ravet, 411044)",
+    "lat": 18.643269,
+    "lng": 73.7450557,
+    "coordsNote": "Nominatim: 'Ravet, Pune' (the cricket ground was not found; the Ravet location comes from a Justdial search-result snippet, as the page itself could not be fetched; pin is the Ravet locality)",
+    "organiser": "Sivru Fan Corner",
+    "dates": "11–20 Oct 2026, ten nights",
+    "timings": "7 pm (gates 6 pm)",
+    "entry": "From ₹150",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "One of the few Pune garbas that runs for the whole festival: ten nights of traditional garba and dandiya on an open cricket ground in PCMC.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/ramti-aave-oct11-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "rangilo-re-navratri-7-the-mills-pune",
+    "name": "Rangilo Re Navratri 7.0",
+    "city": "Pune",
+    "venue": "The Game Super Park, The Mills",
+    "address": "Raja Bahadur Mill Road, near Pune Railway Station, Pune 411001",
+    "lat": 18.5322947,
+    "lng": 73.8709134,
+    "coordsNote": "Nominatim: 'The Mills, Pune' (resolved to The Mills Social, RBM Road)",
+    "organiser": "IceNation",
+    "dates": "17–18 Oct 2026",
+    "timings": "6 pm (gates 5:50 pm)",
+    "entry": "From ₹499",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "The seventh edition of IceNation's live-band garba weekend at The Mills complex near Pune station.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/rangilo-re-navratri-70---the-mills-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "abtak-surbhi-rasotsav-rajkot",
+    "name": "Abtak Surbhi Rasotsav",
+    "city": "Rajkot",
+    "venue": "Madhavrao Scindia Cricket Ground (2025 venue)",
+    "address": "Race Course, Rajkot",
+    "lat": 22.3019827,
+    "lng": 70.7889809,
+    "coordsNote": "Nominatim: 'Madhavrao Sindhiya Cricket Ground, Rajkot'",
+    "organiser": "Abtak / Surbhi Club",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Run for 19 years by Abtak and Surbhi Club, with nightly prizes and a king/queen finale. 2025: held at the Madhavrao Scindia cricket ground with Margi Patel and Mrudul Ghosh.",
+    "status": "recurring",
+    "sources": [
+      "https://www.abtakmedia.com/the-rain-of-prizes-crosses-the-winners-at-the-abtak-surbhi-mirchi-rock-and-dhol-rasotsav/",
+      "https://www.abtakmedia.com/abtak-surbhi-micharchi-rock-and-dhol-rasotsavs-enthusiasm-and-dignitaries-woke-up-with-enthusiasm/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "bamboo-beats-navratri-mahotsav-rajkot",
+    "name": "Bamboo Beats Navratri Mahotsav 2026",
+    "city": "Rajkot",
+    "venue": "Shastri Maidan",
+    "address": "Shastri Maidan, Trikon Baug, Rajputpara, Rajkot 360001",
+    "lat": 22.2939162,
+    "lng": 70.7997762,
+    "coordsNote": "Nominatim: 'Shastri Maidan, Rajkot'",
+    "organiser": null,
+    "dates": "Nine nights from 10 Oct 2026 (listing shows 10 Oct start)",
+    "timings": "8:30 pm – 11:59 pm",
+    "entry": "Early-bird season pass ₹1,499 single; ₹2,699 couple; up to ₹4,199 for groups",
+    "artists": [
+      "Bamboo Beats Orchestra (Mumbai)"
+    ],
+    "kind": "ticketed",
+    "highlights": "Central-city ground with Mumbai's Bamboo Beats orchestra playing live for garba and dandiya.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://allevents.in/rajkot/bamboo-beats-navratri-mahotsav-2026/4100030648340224"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "mgm-cultural-navratri-rajkot",
+    "name": "MGM Cultural Navratri",
+    "city": "Rajkot",
+    "venue": "Seasons Hotel",
+    "address": "Seasons Hotel, Kalawad Road, Rajkot",
+    "lat": 22.2857109,
+    "lng": 70.770989,
+    "coordsNote": "Nominatim: 'Kalawad Road, Rajkot' (hotel itself not in OSM; approximate point on Kalawad Road)",
+    "organiser": "MGM Cultural (led by Amit Dhorda)",
+    "dates": "11–20 Oct 2026, ten nights",
+    "timings": "Live garba from 9 pm; mandli garba late into the night",
+    "entry": "Daily, seasonal and couple passes; listed from ₹499",
+    "artists": [
+      "Amit Dhorda",
+      "Kinjal Dave"
+    ],
+    "kind": "ticketed",
+    "highlights": "Fourth season of a ten-day festival at Seasons Hotel with live folk garba and late-night mandli garba. A listing site says it keeps to traditional music, with no DJ or Bollywood tracks.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.mgmcultural.com/",
+      "https://navratrigarba.com/garba/mgm-cultural-navratri-(mgm-garba)/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "navraat-mandli-garba-rajkot",
+    "name": "Navraat Mandli Garba 2026",
+    "city": "Rajkot",
+    "venue": "Vishwa Party Lawns & Banquet Hall",
+    "address": "New 150 Ft. Ring Road, near Christ College, Munjka, Rajkot 360005",
+    "lat": 22.2916003,
+    "lng": 70.7255343,
+    "coordsNote": "Nominatim: 'Christ College, Rajkot' (landmark named in address)",
+    "organiser": "YAJ Entertainment & Events",
+    "dates": "10–20 Oct 2026, eleven nights",
+    "timings": "Garba 9 pm – 12 am; mandli 12 am till morning",
+    "entry": "General and Legacy passes (daily, single, couple); prices not listed",
+    "artists": [
+      "Aghori Muzik",
+      "Pooja Kalyani",
+      "Shanskar Dhokia",
+      "Jeet Sachde",
+      "Meera Bhanushali",
+      "Rooted Mandli Garba"
+    ],
+    "kind": "ticketed",
+    "highlights": "Live garba concerts followed by dhol-and-shehnai mandli garba that runs until morning.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.navraatmandligarba.com/",
+      "https://www.mepass.in/city/Rajkot/events/navraat-mandli-garba-a-premium-mandli-garba"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "sahiyar-club-rasotsav-rajkot",
+    "name": "Sahiyar Club Rasotsav",
+    "city": "Rajkot",
+    "venue": "Race Course Ground",
+    "address": "Race Course, Rajkot",
+    "lat": 22.3060724,
+    "lng": 70.7901409,
+    "coordsNote": "Nominatim: 'Race Course Ground, Rajkot'",
+    "organiser": "Sahiyar Club, Rajkot",
+    "dates": "Nine nights of Navratri 2026 (exact dates not stated on site)",
+    "timings": null,
+    "entry": "Season and daily passes sold via official site (prices not published in fetched page)",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "One of Rajkot's best-known arvachin raas events; the club says 2026 marks 25 years of its Navratri festival.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://sahiyarclub.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "sonam-garba-rasotsav-rajkot",
+    "name": "Sonam Garba Rasotsav (Vishwa Vanik Sangathan & Jain Vision)",
+    "city": "Rajkot",
+    "venue": "Ground near Ayodhya Chowk",
+    "address": "150 Feet Ring Road, near Ayodhya Chowk, Rajkot",
+    "lat": 22.3276253,
+    "lng": 70.7685296,
+    "coordsNote": "Nominatim: '150 Feet Ring Road, Rajkot' (Ayodhya Chowk not in OSM; approximate point on the ring road)",
+    "organiser": "Vishwa Vanik Sangathan and Jain Vision",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Large family-oriented Vanik/Jain community rasotsav mixing prachin and arvachin garba, with a Jain food court. 2025: free season passes for women, ₹1,500 for men.",
+    "status": "recurring",
+    "sources": [
+      "https://khaskhabarrajkot.com/sonam-garba-rasotsav-organized-by-vishwa-vanik-sangathan-jain-vision-in-full-swing/",
+      "https://akilanews.com/rajkot-news-detail/68c92cd0f240b239053d6337"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "thanganat-raas-garba-mahotsav-rajkot",
+    "name": "Thanganat 2026 – Grand Raas-Garba Mahotsav",
+    "city": "Rajkot",
+    "venue": "Thanganat Rajwadi Ground",
+    "address": "Opp. Dholakiya School, behind Balaji Hall, 150 Feet Ring Road, Rajkot (pass office: 323 Sattva Square, near Nana Mava Circle)",
+    "lat": 22.2759914,
+    "lng": 70.7779014,
+    "coordsNote": "Nominatim: 'Nana Mava Circle' (venue not in OSM; Nana Mava Circle is the landmark in the organiser's pass-office address – approximate)",
+    "organiser": "Aatman Group of Events & Aajkaal",
+    "dates": "11–20 Oct 2026",
+    "timings": "Gates 7:30 pm; aarti 8 pm; raas-garba 8:30 pm – 12 am",
+    "entry": "Season pass ₹1,199 single / ₹2,398 couple (GST incl.)",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Rajwadi-themed ground with a 50-piece orchestra and celebrity singers promised (names not yet listed).",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://thanganat.vercel.app/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "cr-zankar-navratri-surat",
+    "name": "CR Zankar Navratri",
+    "city": "Surat",
+    "venue": "CR Zankaar AC Dome",
+    "address": "Near Prime Shoppers, opp. Rajhans Skylar, Udhana–Magdalla Road, Vesu, Surat",
+    "lat": 21.1473113,
+    "lng": 72.7658518,
+    "coordsNote": "Nominatim (bounded to Surat): 'Prime Shoppers' (named landmark next to the venue)",
+    "organiser": "C R Entertainment",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "An air-conditioned dome garba in Vesu that bills itself as a mixed-language event, including Marathi segments.",
+    "status": "recurring",
+    "sources": [
+      "https://navratrigarba.com/garba/cr-zankar-navratri/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "g9-garba-ratri-surat",
+    "name": "G9 Garba Ratri",
+    "city": "Surat",
+    "venue": "G9 AC Dome",
+    "address": "Near Avadh Utopia Club, Avadh Copper Stone Lane, opposite Surat International Airport, Dumas Road, Surat",
+    "lat": 21.1162883,
+    "lng": 72.7417269,
+    "coordsNote": "Nominatim (bounded to Surat): 'Surat Airport' (the venue is listed as opposite the airport; Avadh Utopia is not in OSM)",
+    "organiser": "G9 Event",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Billed as one of the biggest garbas in the world, in a huge air-conditioned dome on Dumas Road.",
+    "status": "recurring",
+    "sources": [
+      "https://navratrigarba.com/garba/g9-garba-ratri/",
+      "https://www.facebook.com/G9Eventsurat/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "glam-garba-vr-surat",
+    "name": "Glam Garba",
+    "city": "Surat",
+    "venue": "VR Mall Surat",
+    "address": "VR Surat, Dumas Road, Magdalla, Surat 395007",
+    "lat": 21.1450222,
+    "lng": 72.7573191,
+    "coordsNote": "Nominatim (bounded to Surat): 'VR Mall'",
+    "organiser": "VR Surat",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A mall-hosted garba at VR Surat that has run for about a decade and has partnered with Radio Mirchi.",
+    "status": "recurring",
+    "sources": [
+      "https://navratrigarba.com/garba/glam-garba-surat/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "gujarat-garba-galaxy-surat",
+    "name": "Gujarat Garba Galaxy",
+    "city": "Surat",
+    "venue": "Ekta Lawn, The Grand Bhagwati (Le Meridien)",
+    "address": "The Grand Bhagwati (TGB), Dumas Road, Surat",
+    "lat": 21.1361303,
+    "lng": 72.7511307,
+    "coordsNote": "Nominatim (bounded to Surat): 'Grand Bhagwati' -> 'The Grand Bhagwati (TGB)'",
+    "organiser": null,
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "An upmarket garba on the hotel lawns at The Grand Bhagwati on Dumas Road.",
+    "status": "recurring",
+    "sources": [
+      "https://navratrigarba.com/garba/gujarat-garba-galaxy/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "kesariya-navratri-surat",
+    "name": "Kesariya Navratri",
+    "city": "Surat",
+    "venue": "Sarsana International Exhibition and Convention Centre (SIECC) dome",
+    "address": "Althan–Sarsana Road, near Palsana Chokdi, Khajod, Surat 395007",
+    "lat": 21.1220565,
+    "lng": 72.7993591,
+    "coordsNote": "Nominatim (bounded to Surat): 'Convention' -> 'Convention Center' metro station (under construction) next to SIECC; SIECC itself is not in OSM",
+    "organiser": "The Memories Event (Keval Jasoliya) with Hemz & Co.",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A garba with lavish palace-themed decor in the air-conditioned Sarsana convention-centre dome.",
+    "status": "recurring",
+    "sources": [
+      "https://navratrigarba.com/garba/kesariya-navratri/",
+      "https://www.facebook.com/nirupamafashion/videos/vibrant-night-with-kesariya-navratri-2023-at-sarsana-dome-happy-faces-garba-styl/173789472450273/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "maa-navratri-surat",
+    "name": "Maa Navratri",
+    "city": "Surat",
+    "venue": "Apple Farm Party Plot",
+    "address": "Apple Farm Party Plot, Dumas Road, near VR Mall, Surat",
+    "lat": 21.1450222,
+    "lng": 72.7573191,
+    "coordsNote": "Nominatim (bounded to Surat): 'VR Mall' (the party plot is near VR Mall and is not in OSM)",
+    "organiser": null,
+    "dates": "From 11 Oct 2026",
+    "timings": "From 8 pm",
+    "entry": "From ₹594 (Mepass listing)",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A ticketed garba on Dumas Road for ages 12 and up, listed on Mepass for Navratri 2026.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.mepass.in/city/Surat/events/maa-navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "yashvi-navratri-surat",
+    "name": "Yashvi Navratri 3.0",
+    "city": "Surat",
+    "venue": "Yashvi Navratri AC Dome",
+    "address": "Beside C. B. Patel Cricket Stadium, Vesu Canal Road, Abhva, Surat",
+    "lat": 21.152291,
+    "lng": 72.7882004,
+    "coordsNote": "Nominatim (bounded to Surat): 'Cricket Stadium' -> 'C.B. Patel Cricket Stadium' (the dome is beside the stadium)",
+    "organiser": "Yashvi Entertainments",
+    "dates": "11–20 Oct 2026 (plus a Falguni Pathak special night on 22 Oct at CB Patel Stadium)",
+    "timings": "From 8 pm",
+    "entry": "Daily passes: Gold ₹1,999–2,499, VIP ₹4,499–4,999, VVIP ₹6,499–6,999",
+    "artists": [
+      "Purva Mantri",
+      "Falguni Pathak (22 Oct special)"
+    ],
+    "kind": "ticketed",
+    "highlights": "A large air-conditioned dome garba with Purva Mantri singing all nights. Falguni Pathak is billed for a special night on 22 Oct.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://placestovisitsurat.com/yashvi-navratri/",
+      "https://allevents.in/surat/navratri"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "herwa-navratri-2026-the-walk-thane",
+    "name": "Herwa Navratri 2026",
+    "city": "Thane",
+    "venue": "The Walk",
+    "address": "Hiranandani Estate, Ghodbunder Road, Thane West",
+    "lat": 19.2555409,
+    "lng": 72.9844225,
+    "coordsNote": "Nominatim: 'The Walk, Hiranandani Estate, Thane'",
+    "organiser": "HERWA with Folk Swaggers",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": "7 pm",
+    "entry": "From ₹400",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "More than 20 musicians and singers perform live Gujarati folk, Bollywood and Marathi songs every night.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.district.in/events/herwa-navratri-2026-oct10-2026-buy-tickets"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "raas-rang-thane",
+    "name": "Raas Rang Thane",
+    "city": "Thane",
+    "venue": "Raymond Ground (2025 venue)",
+    "address": "Eastern Express Highway, Thane West",
+    "lat": 19.2091243,
+    "lng": 72.971624,
+    "coordsNote": "Nominatim: 'Raymond, Thane' (resolved to the Raymond site on Eastern Express Highway, Majiwada). This is the 2025 venue; the 2024 edition was at Octroi Ground, Kopri",
+    "organiser": "CREDAI MCHI Thane and Dharamvir Anand Dighe Pratishthan (2025)",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Thane's flagship garba with a 27-year legacy and more than 12,000 visitors a night in 2025. 2025: 22 Sep – 1 Oct at Raymond Ground, from ₹590. The 2026 venue and dates are not yet announced.",
+    "status": "recurring",
+    "sources": [
+      "https://safariplus.co.in/thane-gears-up-for-navratri-glory-with-raas-rang-2025-at-raymond-ground",
+      "https://www.indiatvnews.com/lifestyle/events/navratri-2025-garba-nights-navi-mumbai-thane-2025-09-20-1009102"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "sankalp-navratri-aapla-dandiya-thane",
+    "name": "Sankalp Navratri Utsav – 'Aapla Dandiya'",
+    "city": "Thane",
+    "venue": "Sankalp Chowk",
+    "address": "Sankalp Chowk, Raghunath Nagar, Wagle Estate, Thane 400604",
+    "lat": 19.1985175,
+    "lng": 72.9509778,
+    "coordsNote": "Nominatim: 'Wagle Estate, Thane' (Sankalp Chowk and Raghunath Nagar were not found; pin is the Wagle Industrial Estate area)",
+    "organiser": "Sankalp Pratishthan Thane",
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "community",
+    "highlights": "A Thane community dandiya listed on the Government of India's Utsav portal, with garba and dandiya nights, music shows and competitions. 2023: 9 pm – 11:55 pm.",
+    "status": "recurring",
+    "sources": [
+      "https://utsav.gov.in/view-event/the-sankalp-navratri-dandiya-thane-festival"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "allaiya-ballaiya-children-navratri-vadodara",
+    "name": "Allaiya Ballaiya (children's Navratri)",
+    "city": "Vadodara",
+    "venue": "Panchshil School Ground",
+    "address": "Panchshil School Ground, Manjalpur, Vadodara 390011",
+    "lat": 22.2758686,
+    "lng": 73.1879304,
+    "coordsNote": "Nominatim: 'Manjalpur, Vadodara' (area centroid; the school ground is not in OSM)",
+    "organiser": "Allaiya Ballaiya Sarvajanik Trust (founder Ajai Pratap Dave)",
+    "dates": "11–20 Oct 2026, 10 nights",
+    "timings": "8 pm – 2 am (mothers' pass until 11 pm)",
+    "entry": "Junior (5–15) ₹180; Youth (16–21) ₹680; Mother's pass ₹750; under-5 free",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "Vadodara's children's garba, running since 1996; 2026 is its 30th edition. Children are both the singers and the dancers.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.allaiyaballaiya.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "bita-garba-mahotsav-vadodara",
+    "name": "BITA Garba Mahotsav",
+    "city": "Vadodara",
+    "venue": "Akota Stadium",
+    "address": "Akota Stadium Road, Akota, Vadodara 390020",
+    "lat": 22.2966696,
+    "lng": 73.1706971,
+    "coordsNote": "Nominatim: 'Akota Stadium, Vadodara'",
+    "organiser": "Baroda IT Association (BITA)",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": "From 8 pm",
+    "entry": "Season, daily playing, viewer and VIP seating passes, ₹250–₹3,000",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A traditional dandiya-raas garba run by the Baroda IT Association. The city corporation gave it the Akota Stadium ground for Navratri 2026.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://app.bitaindia.org/",
+      "https://www.gujaratsamachar.com/news/baroda/garba-organizers-were-rewarded-with-one-rupee-token-from-vadodara-municipal-corporation-grounds-91301333749"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "lvp-heritage-garba-vadodara",
+    "name": "Lukshmi Vilas Palace Heritage Garba",
+    "city": "Vadodara",
+    "venue": "Motibaug Cricket Ground, Lukshmi Vilas Palace",
+    "address": "Lukshmi Vilas Palace compound, Vadodara",
+    "lat": 22.2937963,
+    "lng": 73.1913074,
+    "coordsNote": "Nominatim (bounded to Vadodara): 'Palace' -> 'Lukshmi Villas Palace'; Motibaug ground is not in OSM, so the pin is the palace",
+    "organiser": "Shri Maharani Chimnabai Stree Udyogalaya & Maharaja Fatehsingh Museum Trust",
+    "dates": null,
+    "timings": null,
+    "entry": "Player, viewer, 'Utsav' and carpool passes sold on BookMyShow (prices not published on the site)",
+    "artists": [
+      "Sachin Limaye",
+      "Ashita Limaye"
+    ],
+    "kind": "ticketed",
+    "highlights": "A heritage garba in the grounds of the Gaekwad palace. It raises money for women's skill-building and inclusion programmes.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://lvphg.com/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "maa-shakti-garba-mahotsav-vadodara",
+    "name": "Maa Shakti Garba Mahotsav",
+    "city": "Vadodara",
+    "venue": "Maa Shakti garba ground, Gotri",
+    "address": "Opp. PM EV bus charging station, behind Collabera, Gotri–Sevasi Road, Gotri, Vadodara",
+    "lat": 22.3142488,
+    "lng": 73.1388124,
+    "coordsNote": "Nominatim: 'Gotri, Vadodara' (area centroid; the exact ground is not in OSM)",
+    "organiser": null,
+    "dates": "From 11 Oct 2026",
+    "timings": "From 8 pm",
+    "entry": "From ₹100 (Mepass listing)",
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A long-running traditional garba known for its strict traditional dress code. The 2026 Mepass listing puts it on the Gotri–Sevasi Road; older listings place it in Subhanpura.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://www.mepass.in/city/Vadodara/events/maa-shakti-garba-mahotsav-1",
+      "https://navratrigarba.com/garba/maa-shakti-garba/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "msu-fine-arts-garba-vadodara",
+    "name": "MSU Faculty of Fine Arts Garba",
+    "city": "Vadodara",
+    "venue": "Faculty of Fine Arts ground, M.S. University",
+    "address": "Faculty of Fine Arts, Maharaja Sayajirao University, Sayajigunj, Vadodara",
+    "lat": 22.3124231,
+    "lng": 73.1851102,
+    "coordsNote": "Nominatim (bounded to Vadodara): 'Maharaja Sayajirao University' (university point, not the faculty building)",
+    "organiser": "Faculty of Fine Arts students and alumni",
+    "dates": null,
+    "timings": null,
+    "entry": "Only students and alumni dance; visitors come to watch",
+    "artists": [],
+    "kind": "community",
+    "highlights": "A famous campus garba with no microphones: the dancers sing old (pracheen) garbas themselves to dhol and other traditional instruments. Students' handmade art and decorations set the scene.",
+    "status": "recurring",
+    "sources": [
+      "https://www.tribuneindia.com/news/archive/bling-it-on/grooving-to-garba-471275/",
+      "https://www.slurrp.com/article/navratri-2025-in-baroda-a-culinary-journey-through-garbas-grandest-venues-1758196736891"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "united-garba-mahotsav-vadodara",
+    "name": "United Garba Mahotsav (United Way garba)",
+    "city": "Vadodara",
+    "venue": "M M Patel Farm",
+    "address": "Near Transpek Silox, behind Delhi Public School, Atladara, Vadodara",
+    "lat": 22.2675604,
+    "lng": 73.1644858,
+    "coordsNote": "Nominatim (bounded to Vadodara): 'Kalali' -> 'DPS Kalali' point; the farm itself is not in OSM, the site says it is behind Delhi Public School",
+    "organiser": "United Baroda Foundation",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": null,
+    "entry": "Season registration: boys ₹5,300, girls ₹2,400 (traditional attire compulsory; e-pass via app only)",
+    "artists": [
+      "Atul Purohit",
+      "Rutumbhara"
+    ],
+    "kind": "ticketed",
+    "highlights": "Vadodara's best-known big garba, with Atul Purohit and his group Rutumbhara singing, as they have for about four decades. Entry is by e-pass in the official app only; there are no physical passes.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://unitedgarbamahotsav.org/"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "vadodara-navratri-festival-navlakhi",
+    "name": "Vadodara Navratri Festival (VNF)",
+    "city": "Vadodara",
+    "venue": "Navlakhi Ground",
+    "address": "Navlakhi Compound, Lukshmi Vilas Palace grounds, Vadodara",
+    "lat": 22.2937963,
+    "lng": 73.1913074,
+    "coordsNote": "Nominatim (bounded to Vadodara): 'Palace' -> 'Lukshmi Villas Palace'; Navlakhi Ground itself is not in OSM, so the pin is the palace compound",
+    "organiser": null,
+    "dates": null,
+    "timings": null,
+    "entry": null,
+    "artists": [],
+    "kind": "ticketed",
+    "highlights": "A big commercial garba on the Navlakhi Ground with player and viewer passes. The official site is titled 2026 but still shows 'Registration opens soon' and older content, so 2026 details are not confirmed.",
+    "status": "recurring",
+    "sources": [
+      "https://www.vadodaranavratri.com/",
+      "https://www.mepass.in/events/vadodara-navratri-festival"
+    ],
+    "lastChecked": "2026-09-23"
+  },
+  {
+    "id": "vadodara-vibrant-navratri-vvn",
+    "name": "Vadodara Vibrant Navratri (VVN)",
+    "city": "Vadodara",
+    "venue": "VVN Garba Ground, BRG Campus",
+    "address": "BRG Campus, near Hanumanji mandir, Maharaja Chowk, Sun Pharma Road, Vadodara",
+    "lat": 22.28039,
+    "lng": 73.1533351,
+    "coordsNote": "Nominatim (bounded to Vadodara): 'Sunpharma Road' (the road, Tandalja; the campus is not in OSM)",
+    "organiser": "BRG Group (BRG Education Institute)",
+    "dates": "11–19 Oct 2026, all nine nights",
+    "timings": null,
+    "entry": "Season player pass: male ₹3,200, female ₹750 (incl. GST); Elite combo packages also sold",
+    "artists": [
+      "Kairavi Buch"
+    ],
+    "kind": "ticketed",
+    "highlights": "The second edition of a newer large garba led by singer Kairavi Buch. Part of the proceeds goes to community and empowerment causes.",
+    "status": "confirmed-2026",
+    "sources": [
+      "https://vadodaravibrantnavratri.in/",
+      "https://reg.vadodaravibrantnavratri.in/form/2026"
+    ],
+    "lastChecked": "2026-09-23"
+  }
+]

@@ -12,6 +12,29 @@ Deploys to Vercel.
 
 ## How it works
 
+### The garba map (home)
+`/garba` is the home screen, and it is public, so no sign-in is needed. It shows
+every Navratri garba we know of on a map: pick a city from the searchable
+dropdown, or tap a numbered circle, and the map flies to that city's pins. A
+pin or card shows the dates, timings, entry and passes, artists, organiser,
+Google Maps directions and the source links.
+
+- **Map:** MapLibre GL on OpenFreeMap's free "liberty" vector style, with no API
+  key. Pins cluster into numbered circles. MapLibre 6 loads its tile worker
+  by URL, so `postinstall` copies it into `public/maplibre/` (git-ignored).
+- **Data:** `src/lib/garba/events.json`, validated against
+  `src/lib/garba/schema.ts` when the app starts. Every event lists its source
+  URLs. Fields the sources didn't give are null, never guessed. `status` is
+  `confirmed-2026` when this year's edition is announced, and `recurring` for
+  a garba held every year whose 2026 details aren't out yet.
+- **Updating:** research into JSON files in that shape, then
+  `npm run garba:import -- a.json b.json ...` validates them, rejects
+  duplicates and drops any pin more than 45 km from the rest of its city (a
+  geocoder matching a same-named place in another state), then rewrites
+  `events.json`.
+- **Pins** were geocoded with OpenStreetMap Nominatim. Many venues aren't in
+  OSM, so some pins sit on the area or a landmark, and the map says so.
+
 ### The circle
 Every dancer gets **5 free spins**. Tap the garbo in the middle to spin, or
 hold it to charge a bigger spin (bigger only in how long it turns — power
@@ -251,6 +274,7 @@ DOTENV_CONFIG_PATH=.env.local BASE=http://127.0.0.1:3000 \
 src/
   app/
     page.tsx                 landing
+    garba/                   the garba map (home)
     login/                   phone + OTP
     setup/                   3-step profile wizard
     spin/                    the circle
@@ -263,6 +287,7 @@ src/
     moderation/              normalize · numbers · phone · abuse · lexicon
     chat/session.ts          read receipts and the split-number buffer
     search/engine.ts         candidate selection and the spin economy
+    garba/                   garba events data, schema and loaders
     payments/                Razorpay orders and verification
     db/schema.ts             11 tables
 ```

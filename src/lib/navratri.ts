@@ -26,15 +26,19 @@ export function nightStart(now: Date = new Date()): Date {
   );
 }
 
-/** The header line: "Night 4 of Navratri." or "Navratri starts in 18 days." */
-export function navratriLine(now: Date = new Date()): string {
+/** Where we are in the festival: "Night 4 of Navratri." or "Navratri starts in 18 days." */
+export function navratriStatus(now: Date = new Date()): string | null {
   const night = Math.round((nightDate(now) - FIRST_NIGHT_UTC) / DAY_MS) + 1;
   if (night >= 1 && night <= NIGHTS) {
-    return night === NIGHTS
-      ? "Last night of Navratri. Find your partner."
-      : `Night ${night} of Navratri. Find your partner.`;
+    return night === NIGHTS ? "Last night of Navratri." : `Night ${night} of Navratri.`;
   }
-  if (night === 0) return "Navratri starts tomorrow. Find your partner.";
-  if (night < 0) return `Navratri starts in ${1 - night} days. Find your partner.`;
-  return "Find your garba partner.";
+  if (night === 0) return "Navratri starts tomorrow.";
+  if (night < 0) return `Navratri starts in ${1 - night} days.`;
+  return null;
+}
+
+/** The spin screen's header line: "Night 4 of Navratri. Find your partner." */
+export function navratriLine(now: Date = new Date()): string {
+  const status = navratriStatus(now);
+  return status ? `${status} Find your partner.` : "Find your garba partner.";
 }

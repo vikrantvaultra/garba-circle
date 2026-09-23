@@ -5,6 +5,16 @@ import { usePathname } from "next/navigation";
 
 const ITEMS = [
   {
+    href: "/garba",
+    label: "Garba",
+    icon: (
+      <>
+        <path d="M9 4.5 3.5 6.5v13L9 17.5l6 2 5.5-2v-13L15 6.5l-6-2Z" />
+        <path d="M9 4.5v13M15 6.5v13" />
+      </>
+    ),
+  },
+  {
     href: "/spin",
     label: "Spin",
     icon: (
@@ -40,7 +50,7 @@ export function BottomNav({ badge = 0 }: { badge?: number }) {
   return (
     <nav
       aria-label="Main"
-      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-3 gap-1 rounded-[22px] border border-white/8 bg-night/85 p-1.5 shadow-[0_20px_40px_rgba(0,0,0,0.45)] backdrop-blur-lg"
+      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-4 gap-1 rounded-[22px] border border-white/8 bg-night/85 p-1.5 shadow-[0_20px_40px_rgba(0,0,0,0.45)] backdrop-blur-lg"
       style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)" }}
     >
       {ITEMS.map((item) => {

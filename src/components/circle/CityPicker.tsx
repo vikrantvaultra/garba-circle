@@ -1,25 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CityOption } from "@/lib/search/cities";
 import styles from "./city-picker.module.css";
 
 export type GenderChoice = "female" | "male" | "both";
 
-function countFor(option: CityOption, gender: GenderChoice | null): number {
-  return gender === "female" ? option.female : gender === "male" ? option.male : option.total;
-}
-
-function countLabel(n: number, gender: GenderChoice | null): string {
-  if (n === 0) return "No one yet";
-  const noun =
-    gender === "female"
-      ? n === 1 ? "woman" : "women"
-      : gender === "male"
-        ? n === 1 ? "man" : "men"
-        : n === 1 ? "dancer" : "dancers";
-  return `${n} ${noun}`;
-}
+/** One row in the list: how many of something are there, and how to say it. */
+export type PickerCity = { name: string; count: number; countLabel: string };
 
 function Highlight({ text, query }: { text: string; query: string }) {
   const at = query ? text.toLowerCase().indexOf(query) : -1;
@@ -36,22 +23,25 @@ function Highlight({ text, query }: { text: string; query: string }) {
 /**
  * A searchable, single-select city dropdown (the ARIA 1.2 combobox pattern).
  * Type to filter, arrows to move, Enter to pick, Escape to close. Each city
- * shows how many dancers are really there for the gender chosen, so nobody
- * spins into an empty city without knowing.
+ * carries a real count — dancers on the spin screen, garbas on the map — so
+ * nobody picks an empty city without knowing.
  */
 export function CityPicker({
   id,
   options,
   value,
-  gender,
   myCity,
   attention,
+  placeholder = "Search a city",
+  noneText = (q) => `No dancers in ${q} yet. Try a nearby city.`,
   onChange,
 }: {
   id: string;
-  options: CityOption[];
+  options: PickerCity[];
   value: string | null;
-  gender: GenderChoice | null;
+  placeholder?: string;
+  /** Shown when the search matches nothing. */
+  noneText?: (query: string) => string;
   /** The viewer's own city, pinned to the top of the list. */
   myCity: string | null;
   /** Briefly highlight the control, e.g. after a spin was tried without a city. */
@@ -74,7 +64,7 @@ export function CityPicker({
         if (a.name.toLowerCase() === mine) return -1;
         if (b.name.toLowerCase() === mine) return 1;
       }
-      return countFor(b, gender) - countFor(a, gender) || a.name.localeCompare(b.name);
+      return b.count - a.count || a.name.localeCompare(b.name);
     });
     if (!q) return sorted;
     const starts = sorted.filter((o) => o.name.toLowerCase().startsWith(q));
@@ -82,7 +72,7 @@ export function CityPicker({
       (o) => !o.name.toLowerCase().startsWith(q) && o.name.toLowerCase().includes(q),
     );
     return [...starts, ...contains];
-  }, [options, gender, mine, q]);
+  }, [options, mine, q]);
 
   const listId = `${id}-list`;
   const optionId = (i: number) => `${id}-opt-${i}`;
@@ -114,7 +104,7 @@ export function CityPicker({
     setQuery("");
   };
 
-  const pick = (option: CityOption | undefined) => {
+  const pick = (option: PickerCity | undefined) => {
     if (!option) return;
     onChange(option.name);
     close();
@@ -196,7 +186,7 @@ export function CityPicker({
           autoCorrect="off"
           spellCheck={false}
           enterKeyHint="done"
-          placeholder={value ?? "Search a city"}
+          placeholder={value ?? placeholder}
           value={open ? query : (value ?? "")}
           onFocus={openList}
           onChange={(e) => {
@@ -249,14 +239,12 @@ export function CityPicker({
         // Keep focus in the input while tapping inside the panel.
         <div className={styles.panel} onMouseDown={(e) => e.preventDefault()}>
           {shown.length === 0 ? (
-            <p className={styles.none}>
-              No dancers in <b>{query.trim()}</b> yet. Try a nearby city.
-            </p>
+            <p className={styles.none}>{noneText(query.trim())}</p>
           ) : (
             <ul ref={listRef} id={listId} role="listbox" aria-label="Cities" className={styles.list}>
               {shown.map((option, i) => {
                 const selected = value?.toLowerCase() === option.name.toLowerCase();
-                const n = countFor(option, gender);
+                const n = option.count;
                 return (
                   <li
                     key={option.name}
@@ -276,7 +264,7 @@ export function CityPicker({
                         <span className={styles.tag}>Your city</span>
                       )}
                     </span>
-                    <span className={styles.count}>{countLabel(n, gender)}</span>
+                    <span className={styles.count}>{option.countLabel}</span>
                     {selected ? (
                       <svg className={styles.check} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                         <path d="M5 12.5l4.5 4.5L19 7.5" />

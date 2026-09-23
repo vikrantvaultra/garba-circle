@@ -63,7 +63,7 @@ export default function LoginPage() {
         "/api/auth/verify-otp",
         { phone, code: value },
       );
-      router.replace(res.profileComplete ? "/spin" : "/setup");
+      router.replace(res.profileComplete ? "/garba" : "/setup");
     } catch (error) {
       setCode("");
       toast.show(error instanceof Error ? error.message : "Try again.", "error");
