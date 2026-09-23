@@ -1,0 +1,99 @@
+/* The in-app "new message" banner. It stays mounted and slides with a
+   transform only, so showing and hiding it never touches layout. */
+.wrap {
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  left: 50%;
+  width: min(420px, calc(100% - 24px));
+  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  transform: translate(-50%, calc(-100% - 12px));
+  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.25, 1);
+  will-change: transform;
+  pointer-events: none;
+}
+.wrap[data-open="true"] {
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 20px;
+  background: #fbefd9;
+  color: #2a1260;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+  padding: 6px 4px 6px 6px;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.main:focus-visible,
+.close:focus-visible {
+  outline: 2px solid var(--color-marigold);
+  outline-offset: 1px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-marigold), var(--color-rani));
+  color: var(--color-night);
+  font: 400 19px var(--font-display);
+}
+
+.text {
+  min-width: 0;
+  display: grid;
+  line-height: 1.3;
+}
+.text b {
+  font-size: 15px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text span {
+  font-size: 14px;
+  color: rgba(42, 18, 96, 0.75);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: rgba(42, 18, 96, 0.55);
+  cursor: pointer;
+}
+.close svg {
+  width: 18px;
+  height: 18px;
+}

@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Avatar } from "@/components/Avatar";
 import { BottomNav } from "@/components/BottomNav";
+import { NotifyPrompt } from "@/components/NotifyPrompt";
 import { api } from "@/lib/client/api";
+import { onMessage } from "@/lib/client/inbox";
 import type { Conversation, MatchesPayload } from "@/lib/matches/list";
 
 function timeAgo(iso: string | null): string {
@@ -31,15 +33,21 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
   const [data, setData] = useState(initial);
 
   // Keep unread counts honest while the tab is open.
+  // A new message anywhere reorders the list at once.
   useEffect(() => {
-    const timer = setInterval(async () => {
+    const refresh = async () => {
       try {
         setData(await api.get<MatchesPayload>("/api/matches"));
       } catch {
         /* keep the last good list */
       }
-    }, 20_000);
-    return () => clearInterval(timer);
+    };
+    const timer = setInterval(refresh, 20_000);
+    const stop = onMessage(() => void refresh());
+    return () => {
+      clearInterval(timer);
+      stop();
+    };
   }, []);
 
   const { conversations } = data;
@@ -56,6 +64,8 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
             : `${conversations.length} ${conversations.length === 1 ? "conversation" : "conversations"}`}
         </p>
       </header>
+
+      <NotifyPrompt />
 
       {conversations.length === 0 ? (
         <div className="panel p-7 text-center">

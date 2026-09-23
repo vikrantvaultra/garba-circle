@@ -3,8 +3,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Avatar } from "@/components/Avatar";
+import { NotifyPrompt } from "@/components/NotifyPrompt";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
+import { onMessage } from "@/lib/client/inbox";
 import type { PublicProfile } from "@/lib/api";
 import { SafetyNotice } from "./SafetyNotice";
 import { ChatMenu } from "./ChatMenu";
@@ -73,9 +75,12 @@ export function ChatScreen({
 
     poll();
     const timer = setInterval(poll, POLL_MS);
+    // A push or the app's own check saw a message here: fetch it now.
+    const stop = onMessage(() => void poll(), matchId);
     return () => {
       cancelled = true;
       clearInterval(timer);
+      stop();
     };
   }, [matchId, applyMessages]);
 
@@ -244,6 +249,11 @@ export function ChatScreen({
                 {blockedNotice}
               </p>
             </div>
+          )}
+
+          {/* Once they've written, they're waiting on a reply. */}
+          {!chatBanned && messages.some((m) => m.mine) && (
+            <NotifyPrompt variant="bar" name={partner.name} />
           )}
 
           {chatBanned ? (

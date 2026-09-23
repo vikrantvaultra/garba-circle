@@ -91,6 +91,36 @@ circle, with the city and gender already chosen for this browser session.
 The Chat tab is a conversation list with unread counts, newest first.
 Opening a chat is what marks it read.
 
+### Message notifications
+Whoever receives a message is told, whether or not the app is open:
+
+- **App closed or in the background:** a web push notification with the
+  sender's name and the message ("Dev Mehta: Aaj raat kaunsa garba?").
+  More messages from the same person update one notification with a
+  count rather than stacking up, and a tap opens that chat. Nothing is sent
+  for a message moderation blocked, and nothing appears while the recipient
+  is already reading that chat.
+- **App open on another screen:** a banner slides down from the top and
+  opens the chat on a tap, and the Chat tab's unread badge updates live.
+  This works without push too: the app checks `/api/inbox` every 10 s while
+  it is on screen (every 60 s once push is on, since the push wakes it).
+
+The offer to turn notifications on sits at the top of the Chat list, and as a
+slim bar in a conversation once you've written something ("Get notified when
+Priya replies"). "Not now" hides it for three days. You → **Message
+notifications** switches it per device, and signing out stops the device
+getting that account's messages.
+
+On iPhone, iOS only gives web push to a site added to the Home Screen and
+opened from there (iOS 16.4+), so in Safari the offer explains that instead.
+`src/app/manifest.ts` makes the app installable.
+
+Pieces: `public/sw.js` (the service worker: notifications only, no
+caching), `src/lib/push` (sending, with dead subscriptions cleaned up),
+`src/lib/client/push.ts` (subscribing), `src/components/MessageNotifier.tsx`
+(the banner and live badge), and the `push_subscriptions` table. The push is
+sent with `after()`, so the sender never waits on it.
+
 ### Chat is free
 There is no timer on a conversation and nothing to buy for it. Packs only buy
 spins. (The old per-person chat meter and its heartbeat endpoint are gone; its
@@ -294,7 +324,8 @@ src/
     search/engine.ts         candidate selection and the spin economy
     garba/                   garba events data, schema and loaders
     payments/                Razorpay orders and verification
-    db/schema.ts             11 tables
+    push/                    web push for new messages
+    db/schema.ts             12 tables
 ```
 
 ## Deploying
@@ -313,6 +344,8 @@ Before the first deploy, set these on the Vercel project:
 | `SMS_PROVIDER` + provider keys | real OTP delivery (production refuses the console transport) |
 | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | real payments (production refuses the simulated gateway) |
 | `BLOB_READ_WRITE_TOKEN` | optional — avatars as files instead of data URLs |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | message notifications. Generate a pair with `npx web-push generate-vapid-keys`. Without them the app never offers notifications (the in-app banner still works) |
+| `VAPID_SUBJECT` | a contact for the push services, e.g. `mailto:you@yourdomain.com`. Apple rejects `localhost` addresses |
 
 Then run `npm run db:push` with `DATABASE_URL` pointing at the production
 database.

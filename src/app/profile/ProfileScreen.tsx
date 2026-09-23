@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/Avatar";
 import { BottomNav } from "@/components/BottomNav";
+import { NotifySetting } from "@/components/NotifyPrompt";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
+import * as push from "@/lib/client/push";
 import type { PublicProfile } from "@/lib/api";
 import {
   SKILL_LEVELS,
@@ -46,6 +48,8 @@ export function ProfileScreen({
 
   const logout = async () => {
     try {
+      // While still signed in: this device stops getting this account's messages.
+      await push.forget();
       await api.post("/api/auth/logout");
       router.replace("/");
       router.refresh();
@@ -157,6 +161,10 @@ export function ProfileScreen({
           </p>
         </section>
       )}
+
+      <section className="panel mt-4">
+        <NotifySetting />
+      </section>
 
       <section className="panel mt-4 divide-y divide-white/8">
         <Item

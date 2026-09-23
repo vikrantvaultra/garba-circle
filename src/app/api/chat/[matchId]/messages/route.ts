@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { after } from "next/server";
 import { and, asc, desc, eq, gt, or } from "drizzle-orm";
 import { fail, guard, json, rateLimit } from "@/lib/api";
 import { db } from "@/lib/db";
@@ -12,6 +13,13 @@ import {
 } from "@/lib/chat/session";
 import { moderateText } from "@/lib/moderation";
 import { isChatBanned, recordBlock } from "@/lib/moderation/record";
+import { sendPush } from "@/lib/push";
+
+/** Long enough to read on a lock screen, short enough to stay one glance. */
+function preview(body: string): string {
+  const flat = body.replace(/\s+/g, " ").trim();
+  return flat.length > 140 ? `${flat.slice(0, 139)}…` : flat;
+}
 
 export async function GET(
   req: Request,
@@ -157,6 +165,25 @@ export async function POST(
     // through in chunks with a harmless message in between.
     if (verdict.carry) {
       await rememberCarryDigits({ sessionId: session.id, carry: verdict.carry });
+    }
+
+    // Tell the other dancer, after the response has gone: the sender never
+    // waits on a push service. Only messages that passed moderation get here.
+    const recipient = context.partner;
+    if (!recipient.suspendedAt) {
+      after(() =>
+        sendPush(recipient.id, {
+          type: "message",
+          title: user.name ?? "A dancer",
+          body: preview(created.body),
+          url: `/chat/${matchId}`,
+          tag: `chat-${matchId}`,
+          matchId,
+          messageId: created.id,
+          // Blob avatars only; an inline data URL would overflow the payload.
+          icon: user.avatarUrl?.startsWith("https://") ? user.avatarUrl : undefined,
+        }),
+      );
     }
 
     return json({

@@ -128,3 +128,67 @@ export async function countPendingInvites(userId: string): Promise<number> {
   const { unreadTotal } = await listMatches(userId);
   return unreadTotal;
 }
+
+export type InboxSummary = {
+  /** Server time, so "newer than the last check" never depends on the phone's clock. */
+  now: string;
+  /** Conversations with something unread, the same count as the nav badge. */
+  unreadTotal: number;
+  /** The newest message this dancer hasn't read yet. */
+  latest: {
+    messageId: string;
+    matchId: string;
+    name: string | null;
+    body: string;
+    createdAt: string;
+  } | null;
+};
+
+/**
+ * What the app polls while it's open: cheap enough to ask every few seconds,
+ * and enough to say "Priya: kem cho?" in a banner and keep the badge right.
+ */
+export async function inboxSummary(userId: string): Promise<InboxSummary> {
+  const result = await db.execute(sql`
+    with unread as (
+      select msg.id, msg.match_id, msg.body, msg.created_at, msg.sender_id
+      from matches m
+      join messages msg on msg.match_id = m.id
+      left join chat_sessions cs
+        on cs.match_id = m.id and cs.user_id = ${userId}::uuid
+      where (m.user_a_id = ${userId}::uuid or m.user_b_id = ${userId}::uuid)
+        and msg.sender_id <> ${userId}::uuid
+        and msg.created_at > coalesce(cs.last_read_at, to_timestamp(0))
+        and not exists (
+          select 1 from blocks b
+          where (b.blocker_id = ${userId}::uuid and b.blocked_id = msg.sender_id)
+             or (b.blocker_id = msg.sender_id and b.blocked_id = ${userId}::uuid)
+        )
+    )
+    select
+      (select count(distinct match_id) from unread)::int as total,
+      l.id, l.match_id, l.body, l.created_at, u.name
+    from (select 1) one
+    left join lateral (
+      select * from unread order by created_at desc limit 1
+    ) l on true
+    left join users u on u.id = l.sender_id
+  `);
+
+  const row = rows(result)[0];
+  const now = new Date().toISOString();
+  if (!row) return { now, unreadTotal: 0, latest: null };
+  return {
+    now,
+    unreadTotal: Number(row.total ?? 0),
+    latest: row.id
+      ? {
+          messageId: row.id as string,
+          matchId: row.match_id as string,
+          name: (row.name as string | null) ?? null,
+          body: row.body as string,
+          createdAt: new Date(row.created_at as string).toISOString(),
+        }
+      : null,
+  };
+}

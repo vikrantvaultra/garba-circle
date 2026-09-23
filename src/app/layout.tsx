@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Hind_Vadodara, Rozha_One } from "next/font/google";
 import { Ambience } from "@/components/Ambience";
 import { DemoBanner } from "@/components/DemoBanner";
+import { MessageNotifier } from "@/components/MessageNotifier";
 import { ToastProvider } from "@/components/Toast";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 import "./globals.css";
@@ -54,6 +55,7 @@ export default function RootLayout({
         <ToastProvider>
           <DemoBanner />
           <div className="relative z-10">{children}</div>
+          <MessageNotifier />
         </ToastProvider>
       </body>
     </html>

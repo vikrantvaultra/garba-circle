@@ -219,6 +219,29 @@ export const payments = pgTable(
   ],
 );
 
+/**
+ * One row per browser that asked to be told about new messages. A phone and
+ * a laptop are two rows. The endpoint is the push service's address for that
+ * browser, so it is unique: signing in as someone else on the same browser
+ * moves the row to them rather than notifying both.
+ */
+export const pushSubscriptions = pgTable(
+  "push_subscriptions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    endpoint: text("endpoint").notNull(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("push_subscriptions_endpoint_idx").on(t.endpoint),
+    index("push_subscriptions_user_idx").on(t.userId),
+  ],
+);
+
 export type User = typeof users.$inferSelect;
 export type Message = typeof messages.$inferSelect;
 export type Match = typeof matches.$inferSelect;

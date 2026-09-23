@@ -2,7 +2,8 @@
 
 import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useSyncExternalStore, type ReactNode } from "react";
+import * as inbox from "@/lib/client/inbox";
 
 const ITEMS = [
   {
@@ -48,8 +49,11 @@ const ITEMS = [
   },
 ];
 
-export function BottomNav({ badge = 0 }: { badge?: number }) {
+export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
   const pathname = usePathname();
+  // The live count once the app has checked; until then, what the page had.
+  const live = useSyncExternalStore(inbox.subscribe, inbox.getSnapshot, inbox.getServerSnapshot);
+  const badge = live ?? rendered;
 
   return (
     <nav
