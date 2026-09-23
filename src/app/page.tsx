@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
-import { FREE_SPINS, FREE_CHAT_SECONDS } from "@/lib/constants";
+import { FREE_SPINS } from "@/lib/constants";
 
 const FEATURES = [
   {
@@ -22,7 +22,7 @@ const FEATURES = [
   {
     icon: "\u{1F4AC}",
     title: "Talk it out",
-    body: `Matched? You each get ${FREE_CHAT_SECONDS / 60} free minutes of chat, and the clock only runs while you’re actually talking.`,
+    body: "Send a dandiya and the chat opens straight away. Chatting is free, with no timer.",
   },
 ];
 

@@ -32,8 +32,8 @@ const STEPS = [
         <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
       </>
     ),
-    title: "Tap the garbo",
-    body: "The circle stops on a real dancer. Hold for a bigger spin. Your first five spins are free.",
+    title: "Choose, then spin",
+    body: "Pick a city and who you’d like to meet, then tap the garbo. It stops on a real dancer. Your first five spins are free.",
   },
   {
     icon: <path d="M6 5l12 14M18 5L6 19" />,
@@ -48,7 +48,7 @@ const STEPS = [
       </>
     ),
     title: "Chat opens instantly",
-    body: "You both get 5 free minutes. Numbers, links and abuse are blocked.",
+    body: "Chatting is free, with no timer. Numbers, links and abuse are blocked.",
   },
 ];
 

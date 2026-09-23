@@ -112,8 +112,12 @@ export const matches = pgTable(
 );
 
 /**
- * The chat meter. One row per person per match, so buying time is a personal
- * purchase and one person running out never silences the other.
+ * One row per person per conversation: read receipts and the digit buffer
+ * that catches a phone number split across messages.
+ *
+ * purchasedSeconds, consumedSeconds and lastTickAt belong to the chat meter,
+ * which was removed when chat became free. They are no longer read or
+ * written; drop them in a migration once old deployments are gone.
  */
 export const chatSessions = pgTable(
   "chat_sessions",
@@ -123,7 +127,7 @@ export const chatSessions = pgTable(
     userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
     purchasedSeconds: integer("purchased_seconds").notNull().default(0),
     consumedSeconds: integer("consumed_seconds").notNull().default(0),
-    /** Last heartbeat. The gap since this is what we bill, capped. */
+    /** Unused since chat became free (was the meter's last heartbeat). */
     lastTickAt: timestamp("last_tick_at", { withTimezone: true }),
     /** Last time this person had the conversation open, for unread counts. */
     lastReadAt: timestamp("last_read_at", { withTimezone: true }),

@@ -138,6 +138,7 @@
   outline: 3px solid var(--color-marigold);
   outline-offset: 5px;
 }
+.wheel[data-blocked="true"] .garbo svg,
 .wheel[data-empty="true"] .garbo svg {
   opacity: 0.45;
 }

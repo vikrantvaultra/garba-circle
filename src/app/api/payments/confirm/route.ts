@@ -6,11 +6,9 @@ import { users } from "@/lib/db/schema";
 import { requireUser } from "@/lib/auth/session";
 import { confirmOrder } from "@/lib/payments";
 import { quotaFor } from "@/lib/search/engine";
-import { getMeter } from "@/lib/chat/billing";
 
 const Body = z.object({
   paymentId: z.string().uuid(),
-  matchId: z.string().uuid().optional().nullable(),
   razorpay_order_id: z.string().optional(),
   razorpay_payment_id: z.string().optional(),
   razorpay_signature: z.string().optional(),
@@ -43,10 +41,6 @@ export async function POST(req: Request) {
       ok: true,
       pack: result.pack,
       quota: quotaFor(fresh),
-      meter:
-        result.pack.kind === "chat" && parsed.data.matchId
-          ? await getMeter(parsed.data.matchId, user.id)
-          : undefined,
     });
   });
 }

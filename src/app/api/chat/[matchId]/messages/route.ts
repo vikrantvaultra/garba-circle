@@ -7,15 +7,11 @@ import { requireUser } from "@/lib/auth/session";
 import { loadMatchFor } from "@/lib/chat/match";
 import {
   ensureChatSession,
-  getMeter,
-  meterFrom,
   rememberCarryDigits,
-  tickChatSession,
   usableCarry,
-} from "@/lib/chat/billing";
+} from "@/lib/chat/session";
 import { moderateText } from "@/lib/moderation";
 import { isChatBanned, recordBlock } from "@/lib/moderation/record";
-import { CHAT_PACKS } from "@/lib/constants";
 
 export async function GET(
   req: Request,
@@ -74,7 +70,6 @@ export async function GET(
         mine: m.senderId === user.id,
         createdAt: m.createdAt,
       })),
-      meter: await getMeter(matchId, user.id),
     });
   });
 }
@@ -119,15 +114,8 @@ export async function POST(
     const parsed = Body.safeParse(await req.json().catch(() => null));
     if (!parsed.success) return fail("Write something first.");
 
+    // Chat is free and untimed; the session row is only the digit buffer.
     const session = await ensureChatSession(matchId, user.id);
-    const meter = meterFrom(session);
-    if (meter.locked) {
-      return fail("Your chat time is over.", 402, {
-        needsPack: true,
-        packs: CHAT_PACKS,
-        meter,
-      });
-    }
 
     const verdict = moderateText(parsed.data.body, {
       context: "chat",
@@ -171,13 +159,6 @@ export async function POST(
       await rememberCarryDigits({ sessionId: session.id, carry: verdict.carry });
     }
 
-    // Sending a message is proof of presence, so the meter advances here too.
-    const updatedMeter = await tickChatSession({
-      matchId,
-      userId: user.id,
-      active: true,
-    });
-
     return json({
       ok: true,
       message: {
@@ -186,7 +167,6 @@ export async function POST(
         mine: true,
         createdAt: created.createdAt,
       },
-      meter: updatedMeter,
     });
   });
 }

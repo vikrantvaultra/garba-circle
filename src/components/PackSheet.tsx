@@ -11,13 +11,12 @@ import { useToast } from "./Toast";
  * real prices, so a "save 26%" badge is arithmetic rather than marketing.
  */
 function unitPrice(pack: Pack): number {
-  const units = pack.kind === "spins" ? pack.grant : pack.grant / 60;
-  return pack.amountPaise / units;
+  return pack.amountPaise / pack.grant;
 }
 
 function unitLabel(pack: Pack): string {
   const per = unitPrice(pack) / 100;
-  return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a ${pack.kind === "spins" ? "spin" : "minute"}`;
+  return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a spin`;
 }
 
 export function PackSheet({
@@ -25,7 +24,6 @@ export function PackSheet({
   title,
   subtitle,
   packs,
-  matchId,
   teaser,
   footer,
   onClose,
@@ -35,7 +33,6 @@ export function PackSheet({
   title: string;
   subtitle: string;
   packs: Pack[];
-  matchId?: string | null;
   /** A highlighted line about what a pack gets you. */
   teaser?: ReactNode;
   /** Anything free that sits under the paid options. */
@@ -65,7 +62,7 @@ export function PackSheet({
   const buy = async () => {
     setBusy(true);
     try {
-      await purchasePack({ packKey: selected.key, matchId });
+      await purchasePack({ packKey: selected.key });
       toast.show(`${selected.label} added. Jai Mataji!`, "success");
       onPurchased(selected);
     } catch (error) {

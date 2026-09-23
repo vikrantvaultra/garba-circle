@@ -9,7 +9,7 @@
 
 import { and, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { chatSessions, payments, users } from "@/lib/db/schema";
+import { payments, users } from "@/lib/db/schema";
 import { findPack, type Pack } from "@/lib/constants";
 import { devPaymentsAllowed, isProduction } from "@/lib/env";
 import {
@@ -43,13 +43,9 @@ export type CreatedOrder = {
 export async function createOrder(input: {
   userId: string;
   packKey: string;
-  matchId?: string | null;
 }): Promise<CreatedOrder> {
   const pack = findPack(input.packKey);
   if (!pack) throw new PaymentConfigError("Unknown pack");
-  if (pack.kind === "chat" && !input.matchId) {
-    throw new PaymentConfigError("Chat time is bought for a specific chat");
-  }
 
   const provider = activeProvider();
   if (provider === "mock" && !devPaymentsAllowed()) {
@@ -66,7 +62,6 @@ export async function createOrder(input: {
       kind: pack.kind,
       amountPaise: pack.amountPaise,
       provider,
-      matchId: input.matchId ?? null,
       status: "created",
     })
     .returning();
@@ -146,11 +141,7 @@ export async function confirmOrder(input: {
     return { ok: false, reason: "Payments are not configured" };
   }
 
-  await grantPack({
-    userId: row.userId,
-    pack,
-    matchId: row.matchId,
-  });
+  await grantPack({ userId: row.userId, pack });
 
   await db
     .update(payments)
@@ -164,32 +155,15 @@ export async function confirmOrder(input: {
   return { ok: true, pack, alreadyApplied: false };
 }
 
-async function grantPack(input: {
-  userId: string;
-  pack: Pack;
-  matchId: string | null;
-}): Promise<void> {
-  if (input.pack.kind === "spins") {
-    await db
-      .update(users)
-      .set({
-        paidSpins: sqlAdd("paid_spins", input.pack.grant),
-        updatedAt: new Date(),
-      })
-      .where(eq(users.id, input.userId));
-    return;
-  }
-
-  if (!input.matchId) throw new PaymentConfigError("Chat pack without a chat");
+/** Packs only ever buy spins; chat is free. */
+async function grantPack(input: { userId: string; pack: Pack }): Promise<void> {
   await db
-    .update(chatSessions)
-    .set({ purchasedSeconds: sqlAdd("purchased_seconds", input.pack.grant) })
-    .where(
-      and(
-        eq(chatSessions.matchId, input.matchId),
-        eq(chatSessions.userId, input.userId),
-      ),
-    );
+    .update(users)
+    .set({
+      paidSpins: sqlAdd("paid_spins", input.pack.grant),
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, input.userId));
 }
 
 /**

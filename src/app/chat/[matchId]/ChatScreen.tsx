@@ -3,29 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Avatar } from "@/components/Avatar";
-import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
 import type { PublicProfile } from "@/lib/api";
-import {
-  CHAT_HEARTBEAT_SECONDS,
-  CHAT_IDLE_SECONDS,
-  CHAT_PACKS,
-  FREE_CHAT_SECONDS,
-} from "@/lib/constants";
 import { SafetyNotice } from "./SafetyNotice";
 import { ChatMenu } from "./ChatMenu";
-
-type Meter = {
-  totalSeconds: number;
-  consumedSeconds: number;
-  remainingSeconds: number;
-  freeSecondsLeft: number;
-  purchasedSeconds: number;
-  locked: boolean;
-  onFreeTime: boolean;
-  heartbeatSeconds: number;
-};
 
 type ChatMessage = {
   id: string;
@@ -36,21 +18,14 @@ type ChatMessage = {
 
 const POLL_MS = 2600;
 
-function clock(seconds: number): string {
-  const s = Math.max(0, Math.round(seconds));
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-}
-
 export function ChatScreen({
   matchId,
   partner,
-  initialMeter,
   chatBanned,
   initiatedByMe,
 }: {
   matchId: string;
   partner: PublicProfile;
-  initialMeter: Meter;
   chatBanned: boolean;
   /** True when this user sent the dandiya that opened the conversation. */
   initiatedByMe: boolean;
@@ -58,44 +33,13 @@ export function ChatScreen({
   const toast = useToast();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [meter, setMeter] = useState<Meter>(initialMeter);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
   const [blockedNotice, setBlockedNotice] = useState<string | null>(null);
-  const [packSheet, setPackSheet] = useState<"auto" | "open" | "dismissed">("auto");
   const [loaded, setLoaded] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const lastAtRef = useRef<string | null>(null);
-  // Not Date.now() here: reading the clock during render is impure, and the
-  // mount effect below sets it before any heartbeat can fire.
-  const lastInteractionRef = useRef<number>(0);
-
-  /** Presence: the tab is visible AND they have done something recently. */
-  const isActive = useCallback(() => {
-    if (typeof document === "undefined") return false;
-    if (document.visibilityState !== "visible") return false;
-    return Date.now() - lastInteractionRef.current < CHAT_IDLE_SECONDS * 1000;
-  }, []);
-
-  const noteInteraction = useCallback(() => {
-    lastInteractionRef.current = Date.now();
-  }, []);
-
-  useEffect(() => {
-    noteInteraction();
-  }, [noteInteraction]);
-
-  /**
-   * The sheet opens by itself the moment time runs out, but stays closed once
-   * dismissed. Derived rather than set from an effect so it can never fight
-   * with the user's own tap.
-   */
-  const outOfTime = loaded && meter.remainingSeconds <= 0;
-  const showPacks =
-    packSheet === "open" || (outOfTime && packSheet !== "dismissed");
-  const setShowPacks = (open: boolean) =>
-    setPackSheet(open ? "open" : "dismissed");
 
   const applyMessages = useCallback((incoming: ChatMessage[]) => {
     if (incoming.length === 0) return;
@@ -116,16 +60,11 @@ export function ChatScreen({
         const suffix = lastAtRef.current
           ? `?after=${encodeURIComponent(lastAtRef.current)}`
           : "";
-        const res = await api.get<{ messages: ChatMessage[]; meter: Meter }>(
+        const res = await api.get<{ messages: ChatMessage[] }>(
           `/api/chat/${matchId}/messages${suffix}`,
         );
         if (cancelled) return;
         applyMessages(res.messages);
-        // Only trust the server's meter when we are not mid-countdown, so the
-        // local timer does not jump backwards between syncs.
-        setMeter((prev) =>
-          res.meter.remainingSeconds < prev.remainingSeconds ? res.meter : prev,
-        );
         setLoaded(true);
       } catch {
         /* transient; the next tick retries */
@@ -140,45 +79,6 @@ export function ChatScreen({
     };
   }, [matchId, applyMessages]);
 
-  // Heartbeat: the only thing that spends time.
-  useEffect(() => {
-    const beat = async () => {
-      try {
-        const res = await api.post<{ meter: Meter }>(
-          `/api/chat/${matchId}/heartbeat`,
-          { active: isActive() },
-        );
-        setMeter(res.meter);
-      } catch {
-        /* ignore */
-      }
-    };
-
-    const timer = setInterval(beat, CHAT_HEARTBEAT_SECONDS * 1000);
-    const onVisible = () => {
-      if (document.visibilityState === "visible") noteInteraction();
-      beat();
-    };
-    document.addEventListener("visibilitychange", onVisible);
-    return () => {
-      clearInterval(timer);
-      document.removeEventListener("visibilitychange", onVisible);
-    };
-  }, [matchId, isActive, noteInteraction]);
-
-  // Smooth local countdown between heartbeats.
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isActive()) return;
-      setMeter((prev) =>
-        prev.remainingSeconds <= 0
-          ? prev
-          : { ...prev, remainingSeconds: prev.remainingSeconds - 1 },
-      );
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [isActive]);
-
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length]);
@@ -188,18 +88,16 @@ export function ChatScreen({
     const body = draft.trim();
     if (!body || sending) return;
 
-    noteInteraction();
     setSending(true);
     setBlockedNotice(null);
 
     try {
-      const res = await api.post<{ message: ChatMessage; meter: Meter }>(
+      const res = await api.post<{ message: ChatMessage }>(
         `/api/chat/${matchId}/messages`,
         { body },
       );
       setDraft("");
       applyMessages([res.message]);
-      setMeter(res.meter);
     } catch (error) {
       if (error instanceof ApiFailure && error.status === 422) {
         // A moderated message stays in the box so they can rewrite it.
@@ -207,8 +105,6 @@ export function ChatScreen({
         if (error.data.chatBanned) {
           toast.show("Chat paused on your account.", "error");
         }
-      } else if (error instanceof ApiFailure && error.status === 402) {
-        setShowPacks(true);
       } else {
         toast.show(
           error instanceof Error ? error.message : "Could not send.",
@@ -220,14 +116,8 @@ export function ChatScreen({
     }
   };
 
-  const lowTime = meter.remainingSeconds <= 60;
-
   return (
-    <div
-      className="flex h-dvh flex-col"
-      onPointerDown={noteInteraction}
-      onKeyDown={noteInteraction}
-    >
+    <div className="flex h-dvh flex-col">
       <header className="sticky top-0 z-20 border-b border-gold/15 bg-night/80 pt-safe backdrop-blur-xl">
         <div className="app-shell flex items-center gap-3 py-2.5">
           <Link href="/matches" aria-label="Back" className="-ml-1 p-1.5">
@@ -246,36 +136,20 @@ export function ChatScreen({
             </p>
           </div>
 
-          <button
-            onClick={() => setShowPacks(true)}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13.5px] font-bold tabular-nums transition-colors ${
-              lowTime
-                ? "border-rani/50 bg-rani/15 text-rani"
-                : "border-parrot/40 bg-parrot/10 text-parrot"
-            }`}
+          {/* Back to the circle for someone new; this chat stays in Circle. */}
+          <Link
+            href="/spin"
+            className="flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full border border-marigold/45 bg-marigold/10 px-3 text-[13.5px] font-semibold text-marigold transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marigold"
           >
-            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
               <circle cx="12" cy="12" r="8.5" />
-              <path d="M12 7.5V12l3 2" />
+              <circle cx="12" cy="12" r="2.5" />
+              <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
             </svg>
-            {clock(meter.remainingSeconds)}
-          </button>
+            Spin again
+          </Link>
 
           <ChatMenu partner={partner} matchId={matchId} />
-        </div>
-
-        {/* Time bar */}
-        <div className="h-[3px] w-full bg-cream/10">
-          <div
-            className={`h-full transition-[width] duration-1000 ease-linear ${
-              lowTime
-                ? "bg-gradient-to-r from-rani to-magenta"
-                : "bg-gradient-to-r from-parrot to-royal"
-            }`}
-            style={{
-              width: `${Math.max(0, Math.min(100, (meter.remainingSeconds / Math.max(1, meter.totalSeconds)) * 100))}%`,
-            }}
-          />
         </div>
       </header>
 
@@ -322,9 +196,11 @@ export function ChatScreen({
               </>
             )}
             <p className="mt-3 text-[12.5px] leading-snug text-cream/45">
-              You each get {FREE_CHAT_SECONDS / 60} free minutes, and the clock
-              only runs while you&rsquo;re actually chatting.
+              Chatting is free, with no timer.
             </p>
+            <Link href="/spin" className="btn-ghost mt-3 min-h-[44px] text-[14.5px]">
+              Spin again for someone new
+            </Link>
           </div>
         )}
 
@@ -374,21 +250,11 @@ export function ChatScreen({
             <p className="rounded-2xl border border-rani/40 bg-rani/10 px-4 py-3 text-center text-[14px] text-cream/80">
               Chat is paused on your account after repeated rule breaks.
             </p>
-          ) : meter.locked ? (
-            <button
-              onClick={() => setShowPacks(true)}
-              className="btn-primary active:btn-primary-active"
-            >
-              Time&rsquo;s up {"—"} add more minutes
-            </button>
           ) : (
             <form onSubmit={send} className="flex items-end gap-2">
               <textarea
                 value={draft}
-                onChange={(e) => {
-                  setDraft(e.target.value);
-                  noteInteraction();
-                }}
+                onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -415,23 +281,6 @@ export function ChatScreen({
         </div>
       </div>
 
-      <PackSheet
-        open={showPacks}
-        title={meter.locked ? "Time’s up" : "Add more time"}
-        subtitle={
-          meter.locked
-            ? "Your free minutes are done. Top up to keep this conversation going."
-            : "Add minutes now so the chat doesn’t stop mid-sentence."
-        }
-        packs={CHAT_PACKS}
-        matchId={matchId}
-        onClose={() => setShowPacks(false)}
-        onPurchased={async () => {
-          const res = await api.get<{ meter: Meter }>(`/api/chat/${matchId}`);
-          setMeter(res.meter);
-          setPackSheet("auto");
-        }}
-      />
     </div>
   );
 }

@@ -18,7 +18,6 @@ type ConfirmResponse = {
   ok: true;
   pack: Pack;
   quota?: unknown;
-  meter?: unknown;
 };
 
 declare global {
@@ -60,17 +59,14 @@ export class CheckoutCancelled extends Error {
  */
 export async function purchasePack(input: {
   packKey: string;
-  matchId?: string | null;
 }): Promise<ConfirmResponse> {
   const order = await api.post<OrderResponse>("/api/payments/create-order", {
     packKey: input.packKey,
-    matchId: input.matchId ?? null,
   });
 
   if (order.provider === "mock") {
     return api.post<ConfirmResponse>("/api/payments/confirm", {
       paymentId: order.paymentId,
-      matchId: input.matchId ?? null,
     });
   }
 
@@ -97,7 +93,6 @@ export async function purchasePack(input: {
 
   return api.post<ConfirmResponse>("/api/payments/confirm", {
     paymentId: order.paymentId,
-    matchId: input.matchId ?? null,
     razorpay_order_id: result.razorpay_order_id,
     razorpay_payment_id: result.razorpay_payment_id,
     razorpay_signature: result.razorpay_signature,

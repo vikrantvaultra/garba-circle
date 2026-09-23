@@ -2,12 +2,20 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { useRouter } from "next/navigation";
 import { Wheel, type WheelHandle, type WheelPhase } from "@/components/circle/Wheel";
 import { MatchSheet } from "@/components/circle/MatchSheet";
 import { PetalBurst, type PetalBurstHandle } from "@/components/circle/PetalBurst";
 import { dancerColor, initials } from "@/components/circle/dancer";
+import { CityPicker, type GenderChoice } from "@/components/circle/CityPicker";
 import { PackSheet } from "@/components/PackSheet";
 import { BottomNav } from "@/components/BottomNav";
 import { CircleLive } from "@/components/CircleLive";
@@ -15,18 +23,19 @@ import { FirstRunGuide } from "@/components/FirstRunGuide";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
 import { buzz, sound } from "@/lib/client/sound";
+import * as spinPrefs from "@/lib/client/spin-prefs";
 import { compatibility, type Landing } from "@/lib/compat";
 import type { PublicProfile } from "@/lib/api";
-import { FREE_SPINS, POPULAR_CITIES, SPIN_PACKS } from "@/lib/constants";
+import { FREE_SPINS, SPIN_PACKS } from "@/lib/constants";
 import type { CircleStats } from "@/lib/stats";
 import type { Tonight } from "@/lib/search/tonight";
+import type { CityOption } from "@/lib/search/cities";
 import styles from "./spin.module.css";
 
 type Quota = {
   freeRemaining: number;
   paidRemaining: number;
   totalRemaining: number;
-  canPickGender: boolean;
   needsPack: boolean;
 };
 
@@ -37,13 +46,10 @@ type Me = {
   age: number | null;
 };
 
-const CHIP_CITIES = ["Mumbai", "Ahmedabad", "Vadodara", "Surat", "Pune"];
-
-const WHO = [
+const WHO: { value: GenderChoice; label: string }[] = [
   { value: "female", label: "Women" },
   { value: "male", label: "Men" },
-  { value: "other", label: "Other" },
-  { value: "", label: "Everyone" },
+  { value: "both", label: "Both" },
 ];
 
 /** What the quota will be once the server has taken this spin: free ones go first. */
@@ -54,7 +60,6 @@ function afterOneSpin(q: Quota): Quota {
     freeRemaining: free,
     paidRemaining: paid,
     totalRemaining: free + paid,
-    canPickGender: paid > 0,
     needsPack: free === 0 && paid === 0,
   };
 }
@@ -68,6 +73,7 @@ export function SpinScreen({
   me,
   stats,
   tonight,
+  cities,
   subtitle,
 }: {
   initialQuota: Quota;
@@ -76,6 +82,7 @@ export function SpinScreen({
   me: Me;
   stats: CircleStats;
   tonight: Tonight;
+  cities: CityOption[];
   subtitle: string;
 }) {
   const router = useRouter();
@@ -90,8 +97,23 @@ export function SpinScreen({
   const [landing, setLanding] = useState<Landing | null>(null);
   const [haul, setHaul] = useState<Landing[]>(tonight.landings);
   const [inviting, setInviting] = useState(false);
-  const [gender, setGender] = useState("");
-  const [city, setCity] = useState("");
+  // Both must be chosen before the circle will spin, free spins included.
+  // Kept for the browser session so "Spin again" from a chat keeps them.
+  const prefsRaw = useSyncExternalStore(
+    spinPrefs.subscribe,
+    spinPrefs.getSnapshot,
+    spinPrefs.getServerSnapshot,
+  );
+  const prefs = useMemo(() => spinPrefs.parse(prefsRaw), [prefsRaw]);
+  // A remembered city nobody dances in any more is dropped, not kept.
+  const city =
+    prefs.city && cities.some((c) => c.name.toLowerCase() === prefs.city!.toLowerCase())
+      ? prefs.city
+      : null;
+  const gender = prefs.gender;
+  const setCity = (next: string | null) => spinPrefs.save({ ...prefs, city: next });
+  const setGender = (next: GenderChoice) => spinPrefs.save({ ...prefs, gender: next });
+  const [attention, setAttention] = useState<"city" | "gender" | null>(null);
 
   const soundOn = useSyncExternalStore(sound.subscribe, () => sound.enabled, () => true);
 
@@ -102,8 +124,27 @@ export function SpinScreen({
 
   const onFreeRun = quota.freeRemaining > 0;
   const outOfSpins = quota.totalRemaining === 0;
-  // Gender is what a pack buys; the server only honours it on a paid pull.
-  const canPickGender = quota.freeRemaining === 0 && quota.paidRemaining > 0;
+  const ready = Boolean(city && gender);
+
+  useEffect(() => {
+    if (!attention) return;
+    const timer = setTimeout(() => setAttention(null), 1900);
+    return () => clearTimeout(timer);
+  }, [attention]);
+
+  /** A tap on the garbo before both are chosen points at whatever is missing. */
+  const askForFilters = () => {
+    const missing = city ? "gender" : "city";
+    setAttention(missing);
+    buzz([20, 40, 20], false);
+    if (missing === "city") {
+      document.getElementById("spin-city")?.focus();
+    } else {
+      const first = document.querySelector<HTMLInputElement>('input[name="meet"]');
+      first?.scrollIntoView({ block: "center", behavior: "smooth" });
+      first?.focus({ preventScroll: true });
+    }
+  };
 
   const refreshQuota = async () => {
     try {
@@ -116,15 +157,13 @@ export function SpinScreen({
 
   const onSpin = async (): Promise<boolean> => {
     const before = quota;
-    const useGender = before.freeRemaining === 0 && before.paidRemaining > 0;
     setQuota(afterOneSpin(before));
     resultRef.current = null;
     failureRef.current = null;
     try {
       const res = await api.post<{ partner: PublicProfile; quota: Quota }>(
         "/api/search/spin",
-        // City travels on every pull; gender only once it is unlocked.
-        { gender: useGender && gender ? gender : null, city: city.trim() || null },
+        { gender, city },
       );
       setQuota(res.quota);
       resultRef.current = { ...compatibility(me, res.partner), profile: res.partner };
@@ -223,6 +262,12 @@ export function SpinScreen({
     hint = phase.power > 0.8 ? "Full power spin!" : "Finding your partner in the circle…";
   } else if (outOfSpins) {
     hint = "You're out of spins. Tap the garbo for more.";
+  } else if (!ready) {
+    hint = (
+      <>
+        Choose <strong>{city ? "who you'd like to meet" : gender ? "a city" : "a city and who you'd like to meet"}</strong>, then spin
+      </>
+    );
   } else if (quota.totalRemaining === 1) {
     hint = (
       <>
@@ -262,8 +307,6 @@ export function SpinScreen({
       : `${haul.length} ${haul.length === 1 ? "jodi" : "jodis"} tonight${
           special ? `, ${special} rare` : ""
         }.${streakText ? ` ${streakText}` : ""}`;
-
-  const typedCity = city.trim().toLowerCase();
 
   return (
     <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)] pt-[calc(env(safe-area-inset-top,0px)+28px)]">
@@ -315,16 +358,58 @@ export function SpinScreen({
 
       <CircleLive initial={stats} />
 
+      {/* Where and who, chosen before every spin. Both are free. */}
+      <section className={styles.prefs} aria-label="Who you're looking for">
+        <label className={styles.q} htmlFor="spin-city">
+          Where are you dancing?
+        </label>
+        <CityPicker
+          id="spin-city"
+          options={cities}
+          value={city}
+          gender={gender}
+          myCity={me.city}
+          attention={attention === "city"}
+          onChange={setCity}
+        />
+
+        <fieldset className={styles.seg} data-attention={attention === "gender"}>
+          <legend className={styles.q}>Who you&rsquo;d like to meet</legend>
+          <div className={styles.segTrack}>
+            {WHO.map((w) => (
+              <label key={w.value}>
+                <input
+                  type="radio"
+                  name="meet"
+                  value={w.value}
+                  checked={gender === w.value}
+                  onChange={() => setGender(w.value)}
+                />
+                <span>{w.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </section>
+
       <section className={styles.stage} aria-label="Spin the circle">
         <Wheel
           ref={wheelRef}
           empty={outOfSpins}
+          blocked={!ready}
           label={outOfSpins ? "Get spins" : "Spin"}
-          ariaLabel={outOfSpins ? "Get more spins" : "Spin the circle. Hold for a bigger spin"}
+          ariaLabel={
+            outOfSpins
+              ? "Get more spins"
+              : ready
+                ? "Spin the circle. Hold for a bigger spin"
+                : "Spin the circle. Choose a city and who you'd like to meet first"
+          }
           describedBy="spin-hint"
           onSpin={onSpin}
           onSettled={onSettled}
           onEmptyTap={() => setSheet("packs")}
+          onBlockedTap={askForFilters}
           onPhase={(p, power) => setPhase({ phase: p, power })}
         />
         <p className={styles.hint} id="spin-hint" aria-live="polite">
@@ -365,64 +450,6 @@ export function SpinScreen({
         )}
       </section>
 
-      {/* Choosing a city is free on every pull. Gender is what a pack buys. */}
-      <section className={styles.prefs} aria-label="Your preferences">
-        <label className={styles.q} htmlFor="spin-city">
-          Where are you dancing?
-        </label>
-        <input
-          id="spin-city"
-          className="field focus:field-focus"
-          type="text"
-          list="spin-cities"
-          placeholder="Any city in India"
-          autoComplete="address-level2"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <datalist id="spin-cities">
-          {POPULAR_CITIES.map((c) => (
-            <option key={c} value={c} />
-          ))}
-        </datalist>
-        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Popular cities">
-          {CHIP_CITIES.map((c) => {
-            const on = typedCity === c.toLowerCase();
-            return (
-              <button
-                key={c}
-                type="button"
-                aria-pressed={on}
-                className={`chip focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream ${on ? "chip-on" : ""}`}
-                onClick={() => setCity(on ? "" : c)}
-              >
-                {c}
-              </button>
-            );
-          })}
-        </div>
-
-        {canPickGender && (
-          <fieldset className={styles.seg}>
-            <legend className={styles.q}>Who you&rsquo;d like to meet</legend>
-            <div className={styles.segTrack}>
-              {WHO.map((w) => (
-                <label key={w.value || "all"}>
-                  <input
-                    type="radio"
-                    name="meet"
-                    value={w.value}
-                    checked={gender === w.value}
-                    onChange={() => setGender(w.value)}
-                  />
-                  <span>{w.label}</span>
-                </label>
-              ))}
-            </div>
-            <p className={styles.segNote}>Included with every paid spin.</p>
-          </fieldset>
-        )}
-      </section>
 
       <MatchSheet
         open={sheet === "match"}
@@ -445,8 +472,8 @@ export function SpinScreen({
         packs={SPIN_PACKS}
         teaser={
           <p className="m-0">
-            <b className="text-[#FF9FCF]">Choose who you meet.</b> Every paid spin lets
-            you pick women, men or everyone. Your city always stays free.
+            <b className="text-[#FF9FCF]">Same choices, more spins.</b> Pick any city
+            and who you&rsquo;d like to meet on every spin, free or paid.
           </p>
         }
         footer={

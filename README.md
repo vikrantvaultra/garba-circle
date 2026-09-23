@@ -25,11 +25,17 @@ number. Scores of 82+ are a "rare jodi", 96+ a "dandiya soulmate".
 nights run past midnight), and the streak counts consecutive nights with a
 spin — both read from the spins log.
 
-**Choosing a city is free on every spin** — a dancer in Surat looking for
-someone in Delhi helps nobody. **Choosing a gender is what a pack buys.** Until
-the free spins run out the app says nothing at all about filters or prices:
-there is no lock icon, no "paid only" label and no price list on a first-timer's
-screen. The moment the fifth spin lands, a card introduces both.
+**Every spin starts with two choices: a city and who you'd like to meet**
+(women, men or both — "both" applies no gender filter, so dancers who chose
+"other" are never hidden). The circle will not spin until both are picked,
+and the API refuses a spin without them. Both are free on every spin, free or
+paid; a pack only buys more spins. The city dropdown is searchable and shows
+how many dancers of the chosen gender are really in each city
+(`src/lib/search/cities.ts`), so nobody spins into an empty city blind — and
+if they do, the spin is refused and nothing is charged.
+
+Until the free spins run out the app says nothing about prices: no lock icon
+and no price list on a first-timer's screen.
 
 | Pack | Price |
 |---|---|
@@ -49,27 +55,18 @@ What keeps that safe is everything around it: the spin economy is the rate
 limit (five free, then paid), every message passes the moderation engine before
 it is stored, and the recipient gets block and report from the very first
 screen — the chat opens with "they sent you a dandiya … you can block or
-report from the menu, they are never told". Each side still has its own free
-chat time, so replying costs the recipient nothing.
+report from the menu, they are never told".
+
+The chat header carries a **Spin again** button that goes straight back to the
+circle, with the city and gender already chosen for this browser session.
 
 The Circle tab is a conversation list with unread counts, newest first.
 Opening a chat is what marks it read.
 
-### The chat meter
-A match gives **each person** 5 free minutes on that conversation. The meter
-only moves while someone is actually there: the open chat sends a heartbeat
-every 10 seconds, and the server bills the gap between two heartbeats **capped
-at 20 seconds**. Close the tab, lock your phone, or go quiet for 45 seconds and
-the clock stops within one beat. Come back an hour later and that hour cost
-nothing.
-
-| Pack | Price |
-|---|---|
-| 5 more minutes | ₹21 |
-| 10 more minutes | ₹41 |
-
-Time is per person, per match, so one person running out never silences the
-other.
+### Chat is free
+There is no timer on a conversation and nothing to buy for it. Packs only buy
+spins. (The old per-person chat meter and its heartbeat endpoint are gone; its
+three columns on `chat_sessions` are unused and can be dropped in a migration.)
 
 ### Safety
 This is the part with the most care in it. See
@@ -227,7 +224,7 @@ button instead.
 
 ```bash
 npm run test:moderation   # 125 cases, pure functions, no database needed
-npm run test:e2e          # 66 cases against a running dev server
+npm run test:e2e          # 68 cases against a running dev server
 ```
 
 `test:moderation` covers every evasion above plus the false-positive guards,
@@ -258,13 +255,13 @@ src/
     setup/                   3-step profile wizard
     spin/                    the circle
     matches/                 invites and matches
-    chat/[matchId]/          chat with the meter
+    chat/[matchId]/          chat, free and untimed
     profile/
     api/                     route handlers
   components/                circle/ (Wheel, MatchSheet, PetalBurst), Sheet, PackSheet, …
   lib/
     moderation/              normalize · numbers · phone · abuse · lexicon
-    chat/billing.ts          the heartbeat meter
+    chat/session.ts          read receipts and the split-number buffer
     search/engine.ts         candidate selection and the spin economy
     payments/                Razorpay orders and verification
     db/schema.ts             11 tables
@@ -331,8 +328,8 @@ is quiet it says so — "be the first jodi in Surat tonight" — because social
 proof that can be caught lying is worth less than none.
 
 The same applies to money. Prices are shown before checkout, the unit price and
-the saving are arithmetic, purchases are one-time with no auto-renewal, and the
-chat meter bills only while someone is actually there.
+the saving are arithmetic, purchases are one-time with no auto-renewal, and
+chatting costs nothing.
 
 ## Notes
 

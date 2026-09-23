@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { quotaFor } from "@/lib/search/engine";
 import { tonightFor } from "@/lib/search/tonight";
+import { cityOptions } from "@/lib/search/cities";
 import { countPendingInvites } from "@/lib/matches/list";
 import { circleStats } from "@/lib/stats";
 import { navratriLine } from "@/lib/navratri";
@@ -12,10 +13,11 @@ export default async function SpinPage() {
   if (!user) redirect("/login");
   if (!user.profileComplete) redirect("/setup");
 
-  const [pendingInvites, stats, tonight] = await Promise.all([
+  const [pendingInvites, stats, tonight, cities] = await Promise.all([
     countPendingInvites(user.id),
     circleStats({ city: user.city }),
     tonightFor(user),
+    cityOptions(user.id),
   ]);
 
   return (
@@ -30,6 +32,7 @@ export default async function SpinPage() {
       }}
       stats={stats}
       tonight={tonight}
+      cities={cities}
       subtitle={navratriLine()}
     />
   );

@@ -9,9 +9,13 @@ import {
 } from "@/lib/search/engine";
 import { SPIN_PACKS } from "@/lib/constants";
 
+/**
+ * Every spin says where and who. "both" means no gender filter, so dancers
+ * who chose "other" on their profile are never left out of a search.
+ */
 const Body = z.object({
-  gender: z.enum(["male", "female", "other"]).optional().nullable(),
-  city: z.string().trim().max(60).optional().nullable(),
+  gender: z.enum(["female", "male", "both"]),
+  city: z.string().trim().min(1).max(80),
 });
 
 export async function POST(req: Request) {
@@ -24,9 +28,6 @@ export async function POST(req: Request) {
       return fail("Slow down a moment.", 429);
     }
 
-    const parsed = Body.safeParse((await req.json().catch(() => ({}))) ?? {});
-    const filters = parsed.success ? parsed.data : { gender: null, city: null };
-
     const quota = quotaFor(user);
     if (quota.totalRemaining <= 0) {
       return fail("Your free searches are done.", 402, {
@@ -36,20 +37,25 @@ export async function POST(req: Request) {
       });
     }
 
-    // City is free for everyone; gender is what a pack buys. A free pull in
-    // your own city is still a surprise, just not a pointless one.
-    const allowGender = quota.freeRemaining === 0 && quota.paidRemaining > 0;
-    const city = filters.city?.trim() || null;
-    const gender = allowGender ? (filters.gender ?? null) : null;
+    const parsed = Body.safeParse((await req.json().catch(() => ({}))) ?? {});
+    if (!parsed.success) {
+      return fail("Choose a city and who you'd like to meet first.", 400, {
+        needsFilters: true,
+      });
+    }
 
-    const partner = await pickPartner({ user, gender, city, allowGender });
+    // Filters cost nothing: the same city and gender choice applies to free
+    // and paid spins alike. A pack only buys more spins.
+    const city = parsed.data.city;
+    const gender = parsed.data.gender === "both" ? null : parsed.data.gender;
+
+    const partner = await pickPartner({ user, gender, city });
 
     if (!partner) {
       // Nothing was spent, so say so plainly.
+      const who = gender === "female" ? "No women" : gender === "male" ? "No men" : "No one";
       return fail(
-        city
-          ? `No one is dancing in ${city} right now. Try another city.`
-          : "The circle is still filling up. Try again in a little while.",
+        `${who} dancing in ${city} right now. Try another city.`,
         404,
         { emptyPool: true, charged: false },
       );

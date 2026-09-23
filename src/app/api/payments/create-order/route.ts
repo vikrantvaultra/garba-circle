@@ -2,12 +2,10 @@ import { z } from "zod";
 import { fail, guard, json, rateLimit } from "@/lib/api";
 import { requireUser } from "@/lib/auth/session";
 import { createOrder } from "@/lib/payments";
-import { loadMatchFor } from "@/lib/chat/match";
 import { findPack } from "@/lib/constants";
 
 const Body = z.object({
   packKey: z.string().min(2).max(24),
-  matchId: z.string().uuid().optional().nullable(),
 });
 
 export async function POST(req: Request) {
@@ -23,18 +21,7 @@ export async function POST(req: Request) {
     const pack = findPack(parsed.data.packKey);
     if (!pack) return fail("Unknown pack.");
 
-    // Chat time is only sellable for a chat this user is actually in.
-    if (pack.kind === "chat") {
-      if (!parsed.data.matchId) return fail("Which chat?");
-      const context = await loadMatchFor(user.id, parsed.data.matchId);
-      if (!context) return fail("Chat not found.", 404);
-    }
-
-    const order = await createOrder({
-      userId: user.id,
-      packKey: pack.key,
-      matchId: pack.kind === "chat" ? parsed.data.matchId : null,
-    });
+    const order = await createOrder({ userId: user.id, packKey: pack.key });
 
     return json({
       ok: true,

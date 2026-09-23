@@ -37,7 +37,8 @@ export async function createMatch(a: string, b: string): Promise<Match> {
 
   const match = created ?? (await findMatchBetween(a, b))!;
 
-  // Give both people their own meter immediately.
+  // One session row per person: read receipts and the phone-number filter's
+  // digit buffer live there.
   await db
     .insert(chatSessions)
     .values([

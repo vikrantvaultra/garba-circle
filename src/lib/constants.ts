@@ -6,25 +6,11 @@
 export const APP_NAME = "Garba Circle";
 export const APP_TAGLINE = "Apna Garba partner dhoondo";
 
-/** Free spins every new dancer gets before the gender/city filters unlock. */
+/** Free spins every new dancer gets. City and gender are chosen on every spin, free or paid. */
 export const FREE_SPINS = 5;
 
-/** Free chat time per person, per match. Burns only while actively chatting. */
-export const FREE_CHAT_SECONDS = 300; // 5 minutes
-
-/**
- * A heartbeat arrives every CHAT_HEARTBEAT_SECONDS while the chat is open and
- * the user is actually present. We only ever bill the gap between two beats up
- * to CHAT_MAX_TICK_SECONDS, so closing the tab or walking away stops the meter
- * within one beat instead of draining the balance.
- */
-export const CHAT_HEARTBEAT_SECONDS = 10;
-export const CHAT_MAX_TICK_SECONDS = 20;
-
-/** Idle window after which we consider the conversation "paused". */
-export const CHAT_IDLE_SECONDS = 45;
-
-export type PackKind = "spins" | "chat";
+/** Packs only buy spins. Chat is free and untimed. */
+export type PackKind = "spins";
 
 export type Pack = {
   key: string;
@@ -32,7 +18,7 @@ export type Pack = {
   label: string;
   sublabel: string;
   amountPaise: number;
-  /** spins granted (kind: spins) or seconds granted (kind: chat) */
+  /** Spins granted. */
   grant: number;
   badge?: string;
 };
@@ -42,7 +28,7 @@ export const SPIN_PACKS: Pack[] = [
     key: "spins_5",
     kind: "spins",
     label: "5 Searches",
-    sublabel: "Pick gender + city",
+    sublabel: "Keep spinning",
     amountPaise: 2100,
     grant: 5,
   },
@@ -57,27 +43,7 @@ export const SPIN_PACKS: Pack[] = [
   },
 ];
 
-export const CHAT_PACKS: Pack[] = [
-  {
-    key: "chat_5",
-    kind: "chat",
-    label: "5 more minutes",
-    sublabel: "Keep the baat-cheet going",
-    amountPaise: 2100,
-    grant: 300,
-  },
-  {
-    key: "chat_10",
-    kind: "chat",
-    label: "10 more minutes",
-    sublabel: "Best value — save ₹1",
-    amountPaise: 4100,
-    grant: 600,
-    badge: "POPULAR",
-  },
-];
-
-export const ALL_PACKS = [...SPIN_PACKS, ...CHAT_PACKS];
+export const ALL_PACKS = SPIN_PACKS;
 
 export function findPack(key: string): Pack | undefined {
   return ALL_PACKS.find((p) => p.key === key);

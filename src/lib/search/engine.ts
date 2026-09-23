@@ -1,7 +1,7 @@
 /**
- * The reel. Picks who the next pull lands on, and keeps the spin economy
- * honest: five free pulls with no filters, then paid pulls that unlock
- * gender and city.
+ * The circle. Picks who the next spin lands on, and keeps the spin economy
+ * honest: five free spins, then paid ones. Every spin, free or paid, is
+ * filtered by the city and gender the dancer chose.
  */
 
 import { sql } from "drizzle-orm";
@@ -13,11 +13,6 @@ export type SpinQuota = {
   freeRemaining: number;
   paidRemaining: number;
   totalRemaining: number;
-  /**
-   * Choosing a city is free for everyone — a dancer in Surat looking for
-   * someone in Delhi helps nobody. Choosing a gender is what a pack buys.
-   */
-  canPickGender: boolean;
   /** True when the free run is over and nothing has been bought yet. */
   needsPack: boolean;
 };
@@ -29,18 +24,15 @@ export function quotaFor(user: User): SpinQuota {
     freeRemaining,
     paidRemaining,
     totalRemaining: freeRemaining + paidRemaining,
-    canPickGender: paidRemaining > 0,
     needsPack: freeRemaining === 0 && paidRemaining === 0,
   };
 }
 
 type CandidateInput = {
   user: User;
-  /** Only honoured when allowGender is true. */
-  gender?: string | null;
-  /** Always honoured, on free and paid pulls alike. */
-  city?: string | null;
-  allowGender: boolean;
+  /** null means anyone. */
+  gender: "female" | "male" | null;
+  city: string;
 };
 
 type Row = Record<string, unknown>;
@@ -75,13 +67,10 @@ async function queryCandidate(
   excludeRecentlySeen: boolean,
 ): Promise<User | null> {
   const me = input.user.id;
-  const genderClause =
-    input.allowGender && input.gender
-      ? sql`and u.gender = ${input.gender}`
-      : sql``;
-  const cityClause = input.city
-    ? sql`and lower(u.city) = lower(${input.city})`
+  const genderClause = input.gender
+    ? sql`and u.gender = ${input.gender}`
     : sql``;
+  const cityClause = sql`and lower(trim(u.city)) = lower(trim(${input.city}))`;
   const recentClause = excludeRecentlySeen
     ? sql`and not exists (
         select 1 from spins s

@@ -86,9 +86,8 @@ async function main() {
   check("new account starts unfinished", me.data.signedIn === true &&
     (me.data.user as Record<string, unknown>)?.profileComplete === false);
   check(
-    "new account has 5 free spins and cannot pick a gender yet",
-    (me.data.quota as Record<string, unknown>)?.freeRemaining === 5 &&
-      (me.data.quota as Record<string, unknown>)?.canPickGender === false,
+    "new account has 5 free spins",
+    (me.data.quota as Record<string, unknown>)?.freeRemaining === 5,
   );
 
   const badOtp = await a.call("/api/auth/verify-otp", {
@@ -131,20 +130,46 @@ async function main() {
   // -- the free spins -----------------------------------------------------
   console.log("\nSpins");
   const seen: string[] = [];
-  for (let i = 1; i <= 3; i++) {
-    const spin = await a.call("/api/search/spin", { method: "POST", body: {} });
+
+  // Where and who are required on every spin, and nothing is charged
+  // for asking without them.
+  const bare = await a.call("/api/search/spin", { method: "POST", body: {} });
+  const noGender = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { city: "Pune" },
+  });
+  const noCity = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { gender: "both", city: "  " },
+  });
+  const afterRefused = await a.call("/api/me");
+  check(
+    "a spin without a city and gender is refused, and costs nothing",
+    bare.status === 400 &&
+      bare.data.needsFilters === true &&
+      noGender.status === 400 &&
+      noCity.status === 400 &&
+      (afterRefused.data.quota as Record<string, number>)?.freeRemaining === 5,
+  );
+
+  for (const [i, city] of ["Pune", "Bengaluru", "Jaipur"].entries()) {
+    const spin = await a.call("/api/search/spin", {
+      method: "POST",
+      body: { gender: "both", city },
+    });
     if (spin.status === 200) seen.push((spin.data.partner as Record<string, string>).id);
     check(
-      `free spin ${i} lands on someone`,
-      spin.status === 200 && spin.data.genderFilterApplied === false,
+      `free spin ${i + 1} lands on someone in ${city}`,
+      spin.status === 200 &&
+        spin.data.genderFilterApplied === false &&
+        (spin.data.partner as Record<string, string>)?.city === city,
       spin.status !== 200 ? JSON.stringify(spin.data).slice(0, 120) : "",
     );
   }
 
-  // City is free: a free pull must honour it.
   const freeCity = await a.call("/api/search/spin", {
     method: "POST",
-    body: { city: "Surat" },
+    body: { gender: "both", city: "Surat" },
   });
   if (freeCity.status === 200) seen.push((freeCity.data.partner as Record<string, string>).id);
   check(
@@ -155,22 +180,36 @@ async function main() {
     freeCity.status !== 200 ? JSON.stringify(freeCity.data).slice(0, 140) : "",
   );
 
-  // Gender is not free: asking for it on a free pull must be ignored, not
-  // honoured and not rejected.
+  const emptyCity = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { gender: "female", city: "Delhi" },
+  });
+  check(
+    "a city with nobody of that gender says so and charges nothing",
+    emptyCity.status === 404 && emptyCity.data.charged === false,
+  );
+
+  // Gender is free too: a free spin must honour it.
   const freeGender = await a.call("/api/search/spin", {
     method: "POST",
-    body: { gender: "female" },
+    body: { gender: "male", city: "Delhi" },
   });
   if (freeGender.status === 200) seen.push((freeGender.data.partner as Record<string, string>).id);
   check(
-    "a FREE spin ignores the gender filter",
-    freeGender.status === 200 && freeGender.data.genderFilterApplied === false,
+    "a FREE spin honours the gender filter",
+    freeGender.status === 200 &&
+      freeGender.data.genderFilterApplied === true &&
+      (freeGender.data.partner as Record<string, string>)?.gender === "male",
     freeGender.status !== 200 ? JSON.stringify(freeGender.data).slice(0, 140) : "",
   );
 
+
   check("free spins never repeat a dancer", new Set(seen).size === seen.length);
 
-  const sixth = await a.call("/api/search/spin", { method: "POST", body: {} });
+  const sixth = await a.call("/api/search/spin", {
+    method: "POST",
+    body: { gender: "both", city: "Pune" },
+  });
   check(
     "the 6th spin is paywalled",
     sixth.status === 402 && sixth.data.needsPack === true,
@@ -238,10 +277,9 @@ async function main() {
   );
 
   const chat = await a.call(`/api/chat/${matchId}`);
-  const meter = chat.data.meter as Record<string, number | boolean>;
   check(
-    "each side starts with 5 free minutes",
-    chat.status === 200 && meter.remainingSeconds === 300 && meter.locked === false,
+    "the chat opens with no meter: chatting is free",
+    chat.status === 200 && chat.data.meter === undefined,
   );
 
   const hello = await a.call(`/api/chat/${matchId}/messages`, {
@@ -407,54 +445,28 @@ async function main() {
     `chatBanned=${user.chatBanned} banSeen=${banSeen}`,
   );
 
-  // -- the meter ----------------------------------------------------------
-  console.log("\nChat meter");
-  const beat1 = await a.call(`/api/chat/${matchId}/heartbeat`, {
+  // -- free chat ---------------------------------------------------------
+  console.log("\nFree chat");
+  const heartbeat = await a.call(`/api/chat/${matchId}/heartbeat`, {
     method: "POST",
     body: { active: true },
   });
-  await new Promise((r) => setTimeout(r, 3000));
-  const beat2 = await a.call(`/api/chat/${matchId}/heartbeat`, {
-    method: "POST",
-    body: { active: true },
-  });
+  check("there is no heartbeat meter any more", heartbeat.status === 404);
 
-  const before = (beat1.data.meter as Record<string, number>).remainingSeconds;
-  const after = (beat2.data.meter as Record<string, number>).remainingSeconds;
-  check(
-    "being active spends time",
-    after < before,
-    `${before}s → ${after}s`,
-  );
-
-  await a.call(`/api/chat/${matchId}/heartbeat`, {
+  const chatPack = await a.call("/api/payments/create-order", {
     method: "POST",
-    body: { active: false },
+    body: { packKey: "chat_10" },
   });
-  await new Promise((r) => setTimeout(r, 3000));
-  const idleBeat = await a.call(`/api/chat/${matchId}/heartbeat`, {
+  check("chat time can no longer be bought", chatPack.status === 400);
+
+  const bReply = await b.call(`/api/chat/${matchId}/messages`, {
     method: "POST",
-    body: { active: false },
+    body: { body: "Main Surat mein, United Way garba!" },
   });
   check(
-    "going idle stops the clock",
-    (idleBeat.data.meter as Record<string, number>).remainingSeconds === after,
-    `${after}s → ${(idleBeat.data.meter as Record<string, number>).remainingSeconds}s`,
-  );
-
-  const timeOrder = await a.call("/api/payments/create-order", {
-    method: "POST",
-    body: { packKey: "chat_10", matchId },
-  });
-  const timeConfirm = await a.call("/api/payments/confirm", {
-    method: "POST",
-    body: { paymentId: timeOrder.data.paymentId, matchId },
-  });
-  check(
-    "₹41 buys 10 more minutes on this chat",
-    timeConfirm.status === 200 &&
-      (timeConfirm.data.meter as Record<string, number>)?.totalSeconds === 900,
-    JSON.stringify(timeConfirm.data.meter ?? timeConfirm.data).slice(0, 120),
+    "the other side replies with no time limit and no meter in the response",
+    bReply.status === 200 && bReply.data.meter === undefined,
+    `got ${bReply.status}`,
   );
 
   // -- safety -------------------------------------------------------------

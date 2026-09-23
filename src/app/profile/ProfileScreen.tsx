@@ -10,11 +10,9 @@ import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
 import type { PublicProfile } from "@/lib/api";
 import {
-  FREE_CHAT_SECONDS,
   SKILL_LEVELS,
   SPIN_PACKS,
   rupees,
-  CHAT_PACKS,
 } from "@/lib/constants";
 
 export function ProfileScreen({
@@ -139,7 +137,7 @@ export function ProfileScreen({
       <section className="panel mt-4 divide-y divide-white/8">
         <Item
           title="How the circle works"
-          body={`Your first spins are free and random. Buy a pack and you can pick gender and city. Every match gives you ${FREE_CHAT_SECONDS / 60} free minutes of chat, and the clock only runs while you’re both actually talking.`}
+          body={`Pick a city and who you’d like to meet, then spin. Your first 5 spins are free, and a pack only buys more spins. Chatting is always free, with no timer.`}
         />
         <Item
           title="What we block"
@@ -151,7 +149,7 @@ export function ProfileScreen({
         />
         <Item
           title="Pricing"
-          body={`${SPIN_PACKS.map((p) => `${p.grant} spins ${rupees(p.amountPaise)}`).join(" · ")} · ${CHAT_PACKS.map((p) => `${p.grant / 60} min ${rupees(p.amountPaise)}`).join(" · ")}. One-time payments, no subscription.`}
+          body={`${SPIN_PACKS.map((p) => `${p.grant} spins ${rupees(p.amountPaise)}`).join(" · ")}. Chat is free. One-time payments, no subscription.`}
         />
       </section>
 
@@ -168,7 +166,7 @@ export function ProfileScreen({
       <PackSheet
         open={showPacks}
         title="More spins"
-        subtitle="Packs also unlock gender and city filters on every paid spin."
+        subtitle="Packs are more spins. City and who you meet stay your choice on every one."
         packs={SPIN_PACKS}
         onClose={() => setShowPacks(false)}
         onPurchased={() => {

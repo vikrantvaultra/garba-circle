@@ -45,6 +45,8 @@ type Props = {
   ref?: Ref<WheelHandle>;
   /** No spins left: the garbo asks for more instead of spinning. */
   empty: boolean;
+  /** Something must be chosen first: a tap asks for it instead of spinning. */
+  blocked: boolean;
   label: string;
   ariaLabel: string;
   describedBy?: string;
@@ -56,6 +58,7 @@ type Props = {
   onSpin: (power: number) => Promise<boolean>;
   onSettled: (won: boolean, rect: DOMRect) => void;
   onEmptyTap: () => void;
+  onBlockedTap: () => void;
   onPhase: (phase: WheelPhase, power: number) => void;
 };
 
@@ -76,7 +79,7 @@ type Motion = {
 };
 
 export function Wheel(props: Props) {
-  const { ref, empty, label, ariaLabel, describedBy } = props;
+  const { ref, empty, blocked, label, ariaLabel, describedBy } = props;
 
   const latest = useRef(props);
   useLayoutEffect(() => {
@@ -115,7 +118,10 @@ export function Wheel(props: Props) {
   };
 
   const canSpin = () =>
-    !m.current.anim && !m.current.pending && !latest.current.empty;
+    !m.current.anim &&
+    !m.current.pending &&
+    !latest.current.empty &&
+    !latest.current.blocked;
 
   const settle = async () => {
     const s = m.current;
@@ -273,6 +279,7 @@ export function Wheel(props: Props) {
       ref={wheelRef}
       className={styles.wheel}
       data-empty={empty}
+      data-blocked={blocked}
       onContextMenu={(e) => e.preventDefault()}
     >
       <div className={styles.layer} aria-hidden>
@@ -366,9 +373,15 @@ export function Wheel(props: Props) {
             return;
           }
           sound.unlock();
-          if (latest.current.empty && !m.current.anim && !m.current.pending) {
-            latest.current.onEmptyTap();
-            return;
+          if (!m.current.anim && !m.current.pending) {
+            if (latest.current.empty) {
+              latest.current.onEmptyTap();
+              return;
+            }
+            if (latest.current.blocked) {
+              latest.current.onBlockedTap();
+              return;
+            }
           }
           // Keyboard (Enter/Space) arrives as a click with no pointer detail.
           if (e.detail === 0) startSpin(0.3);
