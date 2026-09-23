@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useImperativeHandle, useRef, type Ref } from "react";
+import { createPortal } from "react-dom";
+import { useIsClient } from "@/components/Sheet";
 import type { Tier } from "@/lib/compat";
 
 export type PetalBurstHandle = {
@@ -36,8 +38,10 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
   const petals = useRef<Petal[]>([]);
   const running = useRef(false);
   const rafRef = useRef(0);
+  const isClient = useIsClient();
 
   useEffect(() => {
+    if (!isClient) return;
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
@@ -54,7 +58,7 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
       cancelAnimationFrame(rafRef.current);
       running.current = false;
     };
-  }, []);
+  }, [isClient]);
 
   useImperativeHandle(ref, () => ({
     burst(x, y, count, tier) {
@@ -122,11 +126,14 @@ export function PetalBurst({ ref }: { ref?: Ref<PetalBurstHandle> }) {
     },
   }));
 
-  return (
+  // Portalled beside the sheets so the petals fall over an open sheet too.
+  if (!isClient) return null;
+  return createPortal(
     <canvas
       ref={canvasRef}
       aria-hidden
       className="pointer-events-none fixed inset-0 z-[55] h-full w-full"
-    />
+    />,
+    document.body,
   );
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Sheet } from "@/components/Sheet";
 import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
 import type { PublicProfile } from "@/lib/api";
@@ -27,6 +28,7 @@ export function ChatMenu({
   const [open, setOpen] = useState(false);
   const [reporting, setReporting] = useState(false);
   const [busy, setBusy] = useState(false);
+  const firstRef = useRef<HTMLButtonElement>(null);
 
   const report = async (reason: string) => {
     setBusy(true);
@@ -37,8 +39,7 @@ export function ChatMenu({
         reason,
       });
       toast.show("Reported. Our team will review it.", "success");
-      setReporting(false);
-      setOpen(false);
+      close();
     } catch (error) {
       toast.show(
         error instanceof Error ? error.message : "Could not report.",
@@ -64,101 +65,93 @@ export function ChatMenu({
     }
   };
 
+  const close = () => {
+    setOpen(false);
+    setReporting(false);
+  };
+
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpen(true)}
         aria-label="Chat options"
-        className="-mr-1 p-1.5"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        className="-mr-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-cream/60 transition-colors hover:bg-white/5 active:bg-white/10 focus-visible:outline-2 focus-visible:outline-marigold"
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5 text-cream/60" fill="currentColor">
+        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
           <circle cx="12" cy="5" r="1.8" />
           <circle cx="12" cy="12" r="1.8" />
           <circle cx="12" cy="19" r="1.8" />
         </svg>
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-40 flex items-end justify-center">
-          <button
-            aria-label="Close"
-            className="absolute inset-0 bg-night/80 backdrop-blur-sm"
-            onClick={() => {
-              setOpen(false);
-              setReporting(false);
-            }}
-          />
-          <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t border-gold/30 bg-gradient-to-b from-plum to-night px-5 pt-3 pb-safe">
-            <div className="mx-auto mb-4 h-1.5 w-11 rounded-full bg-cream/25" />
-
-            {reporting ? (
-              <>
-                <h3 className="font-display text-[20px] font-bold">
-                  What went wrong?
-                </h3>
-                <div className="mt-4 space-y-2">
-                  {REASONS.map((reason) => (
-                    <button
-                      key={reason.key}
-                      disabled={busy}
-                      onClick={() => report(reason.key)}
-                      className="panel w-full p-3.5 text-left text-[15px] disabled:opacity-50"
-                    >
-                      {reason.label}
-                    </button>
-                  ))}
-                </div>
+      <Sheet open={open} onClose={close} labelledBy="chat-menu-title" initialFocus={firstRef}>
+        {reporting ? (
+          <>
+            <h2 id="chat-menu-title" className="font-display text-[26px] leading-tight">
+              What went wrong?
+            </h2>
+            <p className="mt-1 text-[14px] text-muted">
+              They are never told who reported them.
+            </p>
+            <div className="mt-4 grid gap-2">
+              {REASONS.map((reason) => (
                 <button
-                  onClick={() => setReporting(false)}
-                  className="btn-ghost mt-3 mb-2"
+                  key={reason.key}
+                  type="button"
+                  disabled={busy}
+                  onClick={() => report(reason.key)}
+                  className="min-h-[50px] rounded-2xl border border-white/10 bg-deep/50 px-4 text-left text-[15px] font-medium transition-colors active:bg-white/5 disabled:opacity-50"
                 >
-                  Back
+                  {reason.label}
                 </button>
-              </>
-            ) : (
-              <>
-                <h3 className="font-display text-[20px] font-bold">
-                  {partner.name ?? "This dancer"}
-                </h3>
-                <p className="mt-1 text-[14px] text-cream/60">
-                  Keep yourself safe. Both actions are immediate.
-                </p>
-                <div className="mt-4 space-y-2.5">
-                  <button
-                    onClick={() => setReporting(true)}
-                    className="panel w-full p-4 text-left"
-                  >
-                    <span className="text-[16px] font-bold text-marigold">
-                      Report
-                    </span>
-                    <span className="mt-0.5 block text-[13.5px] text-cream/60">
-                      Send this conversation to our safety team
-                    </span>
-                  </button>
-                  <button
-                    onClick={block}
-                    disabled={busy}
-                    className="panel w-full p-4 text-left disabled:opacity-50"
-                  >
-                    <span className="text-[16px] font-bold text-rani">
-                      Block and leave
-                    </span>
-                    <span className="mt-0.5 block text-[13.5px] text-cream/60">
-                      They can never message or match with you again
-                    </span>
-                  </button>
-                </div>
-                <button
-                  onClick={() => setOpen(false)}
-                  className="btn-ghost mt-3 mb-2"
-                >
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+              ))}
+            </div>
+            <button type="button" onClick={() => setReporting(false)} className="btn-ghost mt-3">
+              Back
+            </button>
+          </>
+        ) : (
+          <>
+            <h2 id="chat-menu-title" className="font-display text-[26px] leading-tight">
+              {partner.name ?? "This dancer"}
+            </h2>
+            <p className="mt-1 text-[14px] text-muted">
+              Keep yourself safe. Both actions are immediate, and they are never
+              told.
+            </p>
+            <div className="mt-4 grid gap-2.5">
+              <button
+                ref={firstRef}
+                type="button"
+                onClick={() => setReporting(true)}
+                className="rounded-2xl border border-white/10 bg-deep/50 p-4 text-left transition-colors active:bg-white/5"
+              >
+                <span className="text-[16px] font-bold text-marigold">Report</span>
+                <span className="mt-0.5 block text-[13.5px] text-muted">
+                  Send this conversation to our safety team
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={block}
+                disabled={busy}
+                className="rounded-2xl border border-white/10 bg-deep/50 p-4 text-left transition-colors active:bg-white/5 disabled:opacity-50"
+              >
+                <span className="text-[16px] font-bold text-rani">Block and leave</span>
+                <span className="mt-0.5 block text-[13.5px] text-muted">
+                  They can never message or match with you again
+                </span>
+              </button>
+            </div>
+            <button type="button" onClick={close} className="btn-ghost mt-3">
+              Cancel
+            </button>
+          </>
+        )}
+      </Sheet>
     </>
   );
 }

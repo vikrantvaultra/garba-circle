@@ -1,13 +1,32 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode, type RefObject } from "react";
+import {
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  type ReactNode,
+  type RefObject,
+} from "react";
+import { createPortal } from "react-dom";
 import styles from "./sheet.module.css";
+
+const noop = () => () => {};
+
+/** False during server render and hydration, true once running in the browser. */
+export function useIsClient(): boolean {
+  return useSyncExternalStore(noop, () => true, () => false);
+}
 
 /**
  * A bottom sheet that stays mounted, so it can slide out as well as in.
  * While closed it is inert: invisible to screen readers and the tab order.
  * Escape and a tap on the backdrop close it, focus moves into it on open and
  * goes back where it came from on close.
+ *
+ * It is portalled to <body>. A fixed-position element is positioned against
+ * the nearest ancestor with a transform or backdrop-filter, so a sheet opened
+ * from inside a blurred header would otherwise be laid out inside that header
+ * and pushed off screen.
  */
 export function Sheet({
   open,
@@ -25,6 +44,7 @@ export function Sheet({
   children: ReactNode;
 }) {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const isClient = useIsClient();
   const onCloseRef = useRef(onClose);
 
   useEffect(() => {
@@ -48,7 +68,9 @@ export function Sheet({
     };
   }, [open, initialFocus]);
 
-  return (
+  if (!isClient) return null;
+
+  return createPortal(
     <div
       className={styles.backdrop}
       data-open={open}
@@ -69,6 +91,7 @@ export function Sheet({
         <div className={styles.grab} aria-hidden />
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
