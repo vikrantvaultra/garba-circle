@@ -7,7 +7,7 @@ const FEATURES = [
   {
     icon: "\u{1F3B0}",
     title: "Spin, don’t swipe",
-    body: `Pull the dandiya and the reel picks someone from the circle. Your first ${FREE_SPINS} spins are on us.`,
+    body: `Spin the circle and it stops on a real dancer. Your first ${FREE_SPINS} spins are on us.`,
   },
   {
     icon: "\u{1F6E1}️",
@@ -40,14 +40,14 @@ export default async function LandingPage() {
             </span>
           </div>
 
-          <p className="font-display text-[13px] font-semibold uppercase tracking-[0.28em] text-marigold/80">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.28em] text-marigold/80">
             Navratri {new Date().getFullYear()}
           </p>
           <h1 className="gold-text mt-1 font-display text-[46px] font-extrabold leading-[1.05]">
             Garba Circle
           </h1>
           <p className="mx-auto mt-3 max-w-[330px] text-[16.5px] leading-relaxed text-cream/75">
-            Nau raat, ek circle. Spin the reel and find someone to dance the
+            Nau raat, ek circle. Spin it and find someone to dance the
             whole night with.
           </p>
         </header>

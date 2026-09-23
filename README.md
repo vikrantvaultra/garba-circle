@@ -1,8 +1,8 @@
 # Garba Circle
 
 A Navratri partner-finding app for mobile. Sign in with your number, build a
-profile, pull a dandiya lever to spin a slot machine that lands on a real
-dancer, send an invite, and chat — with phone numbers and abuse blocked at the
+profile, spin a circle of garba dancers that stops on a real dancer, send a
+dandiya, and chat — with phone numbers and abuse blocked at the
 door.
 
 Built with Next.js 16 (App Router), Postgres, Drizzle and Tailwind v4.
@@ -12,8 +12,18 @@ Deploys to Vercel.
 
 ## How it works
 
-### The reel
-Every dancer gets **5 free spins**.
+### The circle
+Every dancer gets **5 free spins**. Tap the garbo in the middle to spin, or
+hold it to charge a bigger spin (bigger only in how long it turns — power
+never changes who you land on).
+
+Whoever it lands on comes with a compatibility score. It is not random: it
+is built in `src/lib/compat.ts` from shared dance styles, same city, same
+skill level and closeness in age, and the reason is printed under the
+number. Scores of 82+ are a "rare jodi", 96+ a "dandiya soulmate".
+"Tonight's jodis" lists everyone the circle landed on since 6 am IST (garba
+nights run past midnight), and the streak counts consecutive nights with a
+spin — both read from the spins log.
 
 **Choosing a city is free on every spin** — a dancer in Surat looking for
 someone in Delhi helps nobody. **Choosing a gender is what a pack buys.** Until
@@ -246,12 +256,12 @@ src/
     page.tsx                 landing
     login/                   phone + OTP
     setup/                   3-step profile wizard
-    spin/                    the slot machine
+    spin/                    the circle
     matches/                 invites and matches
     chat/[matchId]/          chat with the meter
     profile/
     api/                     route handlers
-  components/                Ambience, SlotMachine, ProfileCard, PackSheet, …
+  components/                circle/ (Wheel, MatchSheet, PetalBurst), Sheet, PackSheet, …
   lib/
     moderation/              normalize · numbers · phone · abuse · lexicon
     chat/billing.ts          the heartbeat meter
@@ -310,8 +320,8 @@ vercel --prod
 
 ## On engagement, and where the line is
 
-The app is built to be genuinely compelling: a machine that feels good to pull,
-a portrait reveal worth waiting for, haptics, and a live strip above the reel
+The app is built to be genuinely compelling: a circle that feels good to throw,
+synthesised dhol and chimes, haptics, a petal burst on landing, and a live line above the circle
 showing how many dancers are in the circle and where jodis are forming.
 
 Every number in that strip is a real query. There is no invented "247 people

@@ -48,11 +48,11 @@ export function SafetyNotice() {
   };
 
   return (
-    <div className="animate-rise mb-4 rounded-2xl border border-peacock/35 bg-peacock/8 p-3.5">
+    <div className="animate-rise mb-4 rounded-2xl border border-parrot/35 bg-parrot/8 p-3.5">
       <div className="flex items-start gap-2.5">
         <span className="text-[17px] leading-none">{"\u{1F6E1}️"}</span>
         <div className="min-w-0 flex-1">
-          <p className="font-display text-[14.5px] font-bold text-peacock">
+          <p className="text-[14.5px] font-bold text-parrot">
             This chat is protected
           </p>
           <p className="mt-0.5 text-[13px] leading-snug text-cream/70">
@@ -62,7 +62,7 @@ export function SafetyNotice() {
           </p>
           <button
             onClick={dismiss}
-            className="mt-2 text-[13px] font-semibold text-peacock"
+            className="mt-2 text-[13px] font-semibold text-parrot"
           >
             Got it
           </button>

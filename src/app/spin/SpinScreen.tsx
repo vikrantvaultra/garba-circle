@@ -1,22 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+
+import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { SlotMachine, TOTAL_SPIN_MS } from "@/components/SlotMachine";
-import { ProfileCard, type PublicProfile } from "@/components/ProfileCard";
+import { Wheel, type WheelHandle, type WheelPhase } from "@/components/circle/Wheel";
+import { MatchSheet } from "@/components/circle/MatchSheet";
+import { PetalBurst, type PetalBurstHandle } from "@/components/circle/PetalBurst";
+import { dancerColor, initials } from "@/components/circle/dancer";
 import { PackSheet } from "@/components/PackSheet";
 import { BottomNav } from "@/components/BottomNav";
 import { CircleLive } from "@/components/CircleLive";
 import { FirstRunGuide } from "@/components/FirstRunGuide";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
-import {
-  FREE_SPINS,
-  GENDERS,
-  POPULAR_CITIES,
-  SPIN_PACKS,
-} from "@/lib/constants";
+import { buzz, sound } from "@/lib/client/sound";
+import { compatibility, type Landing } from "@/lib/compat";
+import type { PublicProfile } from "@/lib/api";
+import { FREE_SPINS, POPULAR_CITIES, SPIN_PACKS } from "@/lib/constants";
 import type { CircleStats } from "@/lib/stats";
+import type { Tonight } from "@/lib/search/tonight";
+import styles from "./spin.module.css";
 
 type Quota = {
   freeRemaining: number;
@@ -26,196 +30,353 @@ type Quota = {
   needsPack: boolean;
 };
 
-const SCAN_CITIES = POPULAR_CITIES.slice(0, 10);
+type Me = {
+  city: string | null;
+  danceStyles: string[];
+  skillLevel: string | null;
+  age: number | null;
+};
+
+const CHIP_CITIES = ["Mumbai", "Ahmedabad", "Vadodara", "Surat", "Pune"];
+
+const WHO = [
+  { value: "female", label: "Women" },
+  { value: "male", label: "Men" },
+  { value: "other", label: "Other" },
+  { value: "", label: "Everyone" },
+];
+
+/** What the quota will be once the server has taken this spin: free ones go first. */
+function afterOneSpin(q: Quota): Quota {
+  const free = q.freeRemaining > 0 ? q.freeRemaining - 1 : 0;
+  const paid = q.freeRemaining > 0 ? q.paidRemaining : Math.max(0, q.paidRemaining - 1);
+  return {
+    freeRemaining: free,
+    paidRemaining: paid,
+    totalRemaining: free + paid,
+    canPickGender: paid > 0,
+    needsPack: free === 0 && paid === 0,
+  };
+}
+
+const reducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function SpinScreen({
   initialQuota,
   pendingInvites,
-  myStyles,
+  me,
   stats,
+  tonight,
+  subtitle,
 }: {
   initialQuota: Quota;
   pendingInvites: number;
-  /** Used to highlight what the viewer shares with whoever the reel lands on. */
-  myStyles: string[];
+  /** The viewer's own choices, used to score whoever the circle lands on. */
+  me: Me;
   stats: CircleStats;
+  tonight: Tonight;
+  subtitle: string;
 }) {
   const router = useRouter();
   const toast = useToast();
 
   const [quota, setQuota] = useState<Quota>(initialQuota);
-  const [spinning, setSpinning] = useState(false);
-  const [partner, setPartner] = useState<PublicProfile | null>(null);
-  const [inviteState, setInviteState] = useState<"idle" | "sending" | "sent">("idle");
-  const [showPacks, setShowPacks] = useState(false);
-  const [gender, setGender] = useState<string | null>(null);
+  const [phase, setPhase] = useState<{ phase: WheelPhase; power: number }>({
+    phase: "idle",
+    power: 0,
+  });
+  const [sheet, setSheet] = useState<"none" | "match" | "packs">("none");
+  const [landing, setLanding] = useState<Landing | null>(null);
+  const [haul, setHaul] = useState<Landing[]>(tonight.landings);
+  const [inviting, setInviting] = useState(false);
+  const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
-  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(
-    () => () => {
-      if (settleTimer.current) clearTimeout(settleTimer.current);
-    },
-    [],
-  );
+  const soundOn = useSyncExternalStore(sound.subscribe, () => sound.enabled, () => true);
 
-  /**
-   * Nothing about filters or prices exists until the free run is spent. A
-   * first-time dancer should meet the reel, not a price list.
-   */
+  const wheelRef = useRef<WheelHandle>(null);
+  const burstRef = useRef<PetalBurstHandle>(null);
+  const resultRef = useRef<Landing | null>(null);
+  const failureRef = useRef<unknown>(null);
+
   const onFreeRun = quota.freeRemaining > 0;
-  const hasPaidSpins = quota.paidRemaining > 0;
   const outOfSpins = quota.totalRemaining === 0;
+  // Gender is what a pack buys; the server only honours it on a paid pull.
+  const canPickGender = quota.freeRemaining === 0 && quota.paidRemaining > 0;
 
-  const refreshQuota = useCallback(async () => {
+  const refreshQuota = async () => {
     try {
       const res = await api.get<{ quota: Quota }>("/api/me");
       setQuota(res.quota);
     } catch {
       /* the next spin surfaces any problem */
     }
-  }, []);
+  };
 
-  const spin = async () => {
-    if (spinning) return;
-    if (quota.totalRemaining <= 0) {
-      setShowPacks(true);
-      return;
-    }
-
-    setSpinning(true);
-    setPartner(null);
-    setInviteState("idle");
-
-    const startedAt = Date.now();
-    const settle = (run: () => void) => {
-      const wait = Math.max(0, TOTAL_SPIN_MS - (Date.now() - startedAt));
-      settleTimer.current = setTimeout(run, wait);
-    };
-
+  const onSpin = async (): Promise<boolean> => {
+    const before = quota;
+    const useGender = before.freeRemaining === 0 && before.paidRemaining > 0;
+    setQuota(afterOneSpin(before));
+    resultRef.current = null;
+    failureRef.current = null;
     try {
       const res = await api.post<{ partner: PublicProfile; quota: Quota }>(
         "/api/search/spin",
         // City travels on every pull; gender only once it is unlocked.
-        { gender: hasPaidSpins ? gender : null, city: city.trim() || null },
+        { gender: useGender && gender ? gender : null, city: city.trim() || null },
       );
-      // Never cut the reel short, however fast the API answered.
-      settle(() => {
-        setPartner(res.partner);
-        setQuota(res.quota);
-        setSpinning(false);
-      });
+      setQuota(res.quota);
+      resultRef.current = { ...compatibility(me, res.partner), profile: res.partner };
+      return true;
     } catch (error) {
-      settle(() => {
-        setSpinning(false);
-        if (error instanceof ApiFailure && error.status === 402) {
-          setShowPacks(true);
-          return;
-        }
+      // Nothing is charged when the server says no, so put the count back.
+      setQuota(before);
+      failureRef.current = error;
+      return false;
+    }
+  };
+
+  const onSettled = (won: boolean, rect: DOMRect) => {
+    const result = resultRef.current;
+    if (!won || !result) {
+      const error = failureRef.current;
+      if (error instanceof ApiFailure && error.status === 402) {
+        setSheet("packs");
+      } else if (error) {
         toast.show(
           error instanceof Error ? error.message : "Could not spin.",
           error instanceof ApiFailure && error.status === 404 ? "warn" : "error",
         );
-      });
+      }
+      return;
     }
+
+    buzz(result.tier === "soulmate" ? [40, 50, 40, 50, 90] : [30, 40, 30], false);
+    burstRef.current?.burst(
+      rect.left + rect.width / 2,
+      rect.top + 14,
+      result.tier === "soulmate" ? 140 : result.tier === "rare" ? 80 : 45,
+      result.tier,
+    );
+    setHaul((prev) => [result, ...prev.filter((h) => h.profile.id !== result.profile.id)]);
+    setLanding(result);
+    const wait = reducedMotion() ? 0 : result.tier === "soulmate" ? 900 : 600;
+    setTimeout(() => setSheet("match"), wait);
+  };
+
+  const closeMatch = () => {
+    setSheet("none");
+    wheelRef.current?.reset();
+  };
+
+  const spinAgain = () => {
+    closeMatch();
+    if (outOfSpins) {
+      setTimeout(() => setSheet("packs"), 250);
+      return;
+    }
+    setTimeout(() => wheelRef.current?.spin(0.3), 350);
   };
 
   const invite = async () => {
-    if (!partner) return;
-    setInviteState("sending");
+    if (!landing) return;
+    setInviting(true);
     try {
       const res = await api.post<{ matchId: string }>("/api/interest", {
-        toUserId: partner.id,
+        toUserId: landing.profile.id,
       });
       // Straight into the conversation — there is nothing to wait for.
       router.push(`/chat/${res.matchId}`);
     } catch (error) {
-      setInviteState("idle");
+      setInviting(false);
       toast.show(error instanceof Error ? error.message : "Could not send.", "error");
     }
   };
 
-  return (
-    <main className="app-shell min-h-dvh pt-safe pb-32">
-      <header className="flex items-end justify-between py-4">
-        <div>
-          <h1 className="gold-text font-display text-[25px] font-extrabold leading-none">
-            Garba Circle
-          </h1>
-          <p className="mt-1.5 text-[13px] text-cream/55">
-            {onFreeRun
-              ? `${quota.freeRemaining} free ${quota.freeRemaining === 1 ? "spin" : "spins"} left`
-              : hasPaidSpins
-                ? `${quota.paidRemaining} ${quota.paidRemaining === 1 ? "spin" : "spins"} left`
-                : "Out of spins"}
-          </p>
-        </div>
+  const share = async () => {
+    const data = {
+      title: "Garba Circle",
+      text: "Find your dandiya partner this Navratri on Garba Circle.",
+      url: window.location.origin,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else {
+        await navigator.clipboard?.writeText(data.url);
+        toast.show("Link copied", "success");
+      }
+    } catch {
+      /* they closed the share sheet */
+    }
+  };
 
-        {/* Free spins as diya that go out as they are spent. */}
-        {onFreeRun ? (
-          <div className="flex items-center gap-1.5 rounded-full border border-gold/30 bg-night/60 px-3 py-2">
-            {Array.from({ length: FREE_SPINS }).map((_, i) => (
-              <span
-                key={i}
-                className="block h-2.5 w-2.5 rounded-full transition-all duration-500"
-                style={
-                  i < quota.freeRemaining
-                    ? { background: "#ffb627", boxShadow: "0 0 9px #ffb627" }
-                    : { background: "rgba(255,244,224,0.16)" }
-                }
+  let hint: ReactNode;
+  if (phase.phase === "charging") {
+    hint = (
+      <>
+        <strong>Keep holding…</strong> release to spin
+      </>
+    );
+  } else if (phase.phase === "spinning") {
+    hint = phase.power > 0.8 ? "Full power spin!" : "Finding your partner in the circle…";
+  } else if (outOfSpins) {
+    hint = "You're out of spins. Tap the garbo for more.";
+  } else if (quota.totalRemaining === 1) {
+    hint = (
+      <>
+        <strong>{onFreeRun ? "Last free spin." : "Last spin in your pack."}</strong> Make it
+        a big one.
+      </>
+    );
+  } else {
+    hint = (
+      <>
+        Tap, or <strong>hold for a bigger spin</strong>
+      </>
+    );
+  }
+
+  const lit = Math.min(quota.totalRemaining, FREE_SPINS);
+  const spinsPill = (
+    <>
+      <span className={styles.diyas} aria-hidden>
+        {Array.from({ length: FREE_SPINS }, (_, i) => (
+          <i key={i} data-used={i >= lit} />
+        ))}
+      </span>
+      <span>
+        <b>{quota.totalRemaining}</b> {quota.totalRemaining === 1 ? "spin" : "spins"} left
+      </span>
+    </>
+  );
+  const low = quota.totalRemaining > 0 && quota.totalRemaining <= 2;
+
+  const special = haul.filter((h) => h.tier !== "jodi").length;
+  const streak = tonight.pastStreak + (haul.length > 0 ? 1 : 0);
+  const streakText = streak >= 2 ? `${streak}-night streak.` : "";
+  const haulText =
+    haul.length === 0
+      ? `Spin to start tonight's collection.${streakText ? ` You're on a ${streakText}` : ""}`
+      : `${haul.length} ${haul.length === 1 ? "jodi" : "jodis"} tonight${
+          special ? `, ${special} rare` : ""
+        }.${streakText ? ` ${streakText}` : ""}`;
+
+  const typedCity = city.trim().toLowerCase();
+
+  return (
+    <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)] pt-[calc(env(safe-area-inset-top,0px)+28px)]">
+      <header className={styles.top}>
+        <div className={styles.brand}>
+          <p className={styles.gu} lang="gu" aria-hidden>
+            ગરબા
+          </p>
+          <h1>Garba Circle</h1>
+          <p className={styles.sub}>{subtitle}</p>
+        </div>
+        <div className={styles.hud}>
+          {/* Prices stay out of sight until the free run is over. */}
+          {onFreeRun ? (
+            <div className={styles.spins} data-low={low} role="status">
+              {spinsPill}
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.spins}
+              data-low={low}
+              onClick={() => setSheet("packs")}
+              aria-label={`${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left. Get more spins`}
+            >
+              {spinsPill}
+            </button>
+          )}
+          <button
+            type="button"
+            className={styles.iconBtn}
+            aria-pressed={soundOn}
+            aria-label={soundOn ? "Sound on" : "Sound off"}
+            onClick={() => {
+              sound.unlock();
+              sound.setEnabled(!soundOn);
+            }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+              <path
+                d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"
+                style={{ opacity: soundOn ? 1 : 0.2 }}
               />
-            ))}
-          </div>
-        ) : hasPaidSpins ? (
-          <div className="flex items-center gap-1.5 rounded-full border border-peacock/40 bg-peacock/10 px-3.5 py-2">
-            <span className="font-display text-[15px] font-extrabold text-peacock">
-              {quota.paidRemaining}
-            </span>
-            <span className="text-[11.5px] font-semibold text-peacock/75">left</span>
-          </div>
-        ) : null}
+            </svg>
+          </button>
+        </div>
       </header>
 
       <CircleLive initial={stats} />
 
-      <SlotMachine
-        spinning={spinning}
-        onPull={spin}
-        outOfSpins={outOfSpins}
-        scanningCities={city.trim() ? [city.trim()] : SCAN_CITIES}
-        idleHint={
-          outOfSpins
-            ? "Tap for more spins"
-            : partner
-              ? "Spin again for someone new"
-              : "Tap SPIN to find your partner"
-        }
-      />
+      <section className={styles.stage} aria-label="Spin the circle">
+        <Wheel
+          ref={wheelRef}
+          empty={outOfSpins}
+          label={outOfSpins ? "Get spins" : "Spin"}
+          ariaLabel={outOfSpins ? "Get more spins" : "Spin the circle. Hold for a bigger spin"}
+          describedBy="spin-hint"
+          onSpin={onSpin}
+          onSettled={onSettled}
+          onEmptyTap={() => setSheet("packs")}
+          onPhase={(p, power) => setPhase({ phase: p, power })}
+        />
+        <p className={styles.hint} id="spin-hint" aria-live="polite">
+          {hint}
+        </p>
+      </section>
+
+      <section className={styles.haul} aria-label="Tonight's jodis">
+        <div className="min-w-0">
+          <h2>Tonight&rsquo;s jodis</h2>
+          <p>{haulText}</p>
+        </div>
+        {haul.length > 0 && (
+          <div className={styles.stack}>
+            {haul
+              .slice(0, 5)
+              .reverse()
+              .map((h) => (
+                <button
+                  key={h.profile.id}
+                  type="button"
+                  data-tier={h.tier}
+                  style={{ background: dancerColor(h.profile.id) }}
+                  aria-label={`See ${h.profile.name ?? "this dancer"} again`}
+                  onClick={() => {
+                    setLanding(h);
+                    setSheet("match");
+                  }}
+                >
+                  {h.profile.avatarUrl ? (
+                    <img src={h.profile.avatarUrl} alt="" />
+                  ) : (
+                    initials(h.profile.name)
+                  )}
+                </button>
+              ))}
+          </div>
+        )}
+      </section>
 
       {/* Choosing a city is free on every pull. Gender is what a pack buys. */}
-      <section className="panel mt-4 p-4">
-        <div className="mb-2.5 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 font-display text-[14.5px] font-bold tracking-wide">
-            <svg viewBox="0 0 24 24" className="h-4 w-4 text-marigold" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" />
-              <circle cx="12" cy="10" r="2.6" />
-            </svg>
-            Where are you dancing?
-          </h2>
-          {city.trim() && (
-            <button
-              onClick={() => setCity("")}
-              className="text-[12.5px] font-semibold text-cream/50"
-            >
-              Any city
-            </button>
-          )}
-        </div>
-
+      <section className={styles.prefs} aria-label="Your preferences">
+        <label className={styles.q} htmlFor="spin-city">
+          Where are you dancing?
+        </label>
         <input
+          id="spin-city"
           className="field focus:field-focus"
+          type="text"
           list="spin-cities"
           placeholder="Any city in India"
+          autoComplete="address-level2"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
@@ -224,125 +385,91 @@ export function SpinScreen({
             <option key={c} value={c} />
           ))}
         </datalist>
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Popular cities">
+          {CHIP_CITIES.map((c) => {
+            const on = typedCity === c.toLowerCase();
+            return (
+              <button
+                key={c}
+                type="button"
+                aria-pressed={on}
+                className={`chip focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream ${on ? "chip-on" : ""}`}
+                onClick={() => setCity(on ? "" : c)}
+              >
+                {c}
+              </button>
+            );
+          })}
+        </div>
 
-        {hasPaidSpins && (
-          <div className="mt-4 border-t border-white/10 pt-3.5">
-            <h3 className="mb-2.5 flex items-center gap-2 font-display text-[14.5px] font-bold tracking-wide">
-              <span className="text-marigold">&#10038;</span>
-              Who you meet
-            </h3>
-            <div className="flex gap-2">
-              {GENDERS.map((g) => (
-                <button
-                  key={g.key}
-                  type="button"
-                  onClick={() => setGender(gender === g.key ? null : g.key)}
-                  className={`chip flex-1 justify-center ${gender === g.key ? "chip-on" : ""}`}
-                >
-                  {g.label}
-                </button>
+        {canPickGender && (
+          <fieldset className={styles.seg}>
+            <legend className={styles.q}>Who you&rsquo;d like to meet</legend>
+            <div className={styles.segTrack}>
+              {WHO.map((w) => (
+                <label key={w.value || "all"}>
+                  <input
+                    type="radio"
+                    name="meet"
+                    value={w.value}
+                    checked={gender === w.value}
+                    onChange={() => setGender(w.value)}
+                  />
+                  <span>{w.label}</span>
+                </label>
               ))}
             </div>
-          </div>
+            <p className={styles.segNote}>Included with every paid spin.</p>
+          </fieldset>
         )}
       </section>
 
-      {partner && !spinning && (
-        <section
-          className="mt-4"
-          style={{ animation: "spotlight-in 520ms cubic-bezier(.2,.9,.3,1) both" }}
-        >
-          <ProfileCard
-            profile={partner}
-            myStyles={myStyles}
-            footer={
-              <div className="flex gap-2.5">
-                <button onClick={spin} className="btn-ghost w-auto flex-1" disabled={spinning}>
-                  Next
-                </button>
-                <button
-                  onClick={invite}
-                  disabled={inviteState !== "idle"}
-                  className="btn-primary active:btn-primary-active flex-[1.6] disabled:opacity-60"
-                >
-                  {inviteState === "sending"
-                    ? "Opening chat…"
-                    : "Send dandiya & chat"}
-                </button>
-              </div>
-            }
-          />
-          <p className="mt-2.5 text-center text-[12.5px] leading-snug text-cream/45">
-            Sending a dandiya opens the chat right away {"\u2014"} no waiting for
-            them to accept.
-          </p>
-        </section>
-      )}
-
-      {/* The one moment filters and prices are introduced: after the free run. */}
-      {outOfSpins && !spinning && (
-        <section
-          className="panel mt-4 overflow-hidden"
-          style={{ animation: "spotlight-in 520ms cubic-bezier(.2,.9,.3,1) both" }}
-        >
-          <div className="flex h-1.5 w-full">
-            <span className="flex-1 bg-marigold" />
-            <span className="flex-1 bg-rani" />
-            <span className="flex-1 bg-peacock" />
-          </div>
-          <div className="p-5">
-            <h2 className="font-display text-[20px] font-extrabold leading-tight">
-              That&rsquo;s your {FREE_SPINS} free spins
-            </h2>
-            <p className="mt-1.5 text-[14.5px] leading-snug text-cream/70">
-              Keep going, and this time you decide who the reel lands on.
-            </p>
-            <div className="mt-4 space-y-2.5">
-              {[
-                ["♀♂", "Choose who you meet", "Search only women, only men, or everyone"],
-                ["\u{1F4CD}", "Your city stays free", "Picking a city never costs anything"],
-              ].map(([icon, title, body]) => (
-                <div key={title} className="flex items-start gap-3">
-                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-marigold/25 to-rani/15 text-[13px]">
-                    {icon}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="font-display text-[14.5px] font-bold leading-tight">{title}</p>
-                    <p className="text-[12.5px] leading-snug text-cream/55">{body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowPacks(true)}
-              className="btn-primary active:btn-primary-active mt-5"
-            >
-              Unlock more spins
-            </button>
-          </div>
-        </section>
-      )}
-
-      {!partner && !spinning && onFreeRun && (
-        <p className="mt-6 text-center text-[13.5px] leading-relaxed text-cream/45">
-          Every pull lands on a real dancer.
-          <br />
-          Nau raat, and the circle is already turning.
-        </p>
-      )}
+      <MatchSheet
+        open={sheet === "match"}
+        landing={landing}
+        againNote={outOfSpins ? "Get more spins" : `${quota.totalRemaining} left`}
+        inviting={inviting}
+        onAgain={spinAgain}
+        onInvite={invite}
+        onClose={closeMatch}
+      />
 
       <PackSheet
-        open={showPacks}
-        title="Keep the reel spinning"
-        subtitle="Every paid spin also lets you choose who the reel lands on."
+        open={sheet === "packs"}
+        title={outOfSpins ? "Keep dancing tonight" : "Top up your spins"}
+        subtitle={
+          outOfSpins
+            ? `You've used your ${FREE_SPINS} free spins. ${stats.dancers} ${stats.dancers === 1 ? "dancer is" : "dancers are"} in the circle.`
+            : `You have ${quota.totalRemaining} ${quota.totalRemaining === 1 ? "spin" : "spins"} left. Top up any time.`
+        }
         packs={SPIN_PACKS}
-        onClose={() => setShowPacks(false)}
+        teaser={
+          <p className="m-0">
+            <b className="text-[#FF9FCF]">Choose who you meet.</b> Every paid spin lets
+            you pick women, men or everyone. Your city always stays free.
+          </p>
+        }
+        footer={
+          <button type="button" className="btn-ghost h-auto py-3 text-left" onClick={share}>
+            <span className="w-full">
+              Invite your garba group
+              <small className="mt-0.5 block text-[12px] font-medium opacity-80">
+                Send them the link to Garba Circle
+              </small>
+            </span>
+          </button>
+        }
+        onClose={() => setSheet("none")}
         onPurchased={() => {
-          setShowPacks(false);
-          refreshQuota();
+          setSheet("none");
+          void refreshQuota();
+          const rect = document.getElementById("spin-hint")?.getBoundingClientRect();
+          if (rect) burstRef.current?.burst(rect.left + rect.width / 2, rect.top - 160, 60, "rare");
+          sound.chime("rare");
         }}
       />
 
+      <PetalBurst ref={burstRef} />
       <BottomNav badge={pendingInvites} />
       <FirstRunGuide />
     </main>

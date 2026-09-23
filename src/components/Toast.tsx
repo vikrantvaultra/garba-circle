@@ -20,11 +20,12 @@ export function useToast() {
   return useContext(ToastContext);
 }
 
+/** A small mark in front of the text; the pill itself is always ivory. */
 const TONES: Record<Tone, string> = {
-  info: "border-white/20 bg-white/10 text-cream",
-  success: "border-peacock/50 bg-peacock/15 text-peacock",
-  warn: "border-marigold/50 bg-marigold/15 text-marigold",
-  error: "border-rani/50 bg-rani/15 text-rani",
+  info: "bg-plum/40",
+  success: "bg-parrot",
+  warn: "bg-marigold",
+  error: "bg-kumkum",
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -44,15 +45,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={value}>
       {children}
       <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-50 flex flex-col items-center gap-2 pt-safe px-4"
+        className="pointer-events-none fixed inset-x-0 z-[60] flex flex-col items-center gap-2 px-5"
+        style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 104px)" }}
         role="status"
         aria-live="polite"
       >
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`animate-rise w-full max-w-[420px] rounded-2xl border px-4 py-3 text-[14.5px] leading-snug backdrop-blur-xl ${TONES[t.tone]}`}
+            className="animate-rise flex max-w-[400px] items-center gap-2.5 rounded-xl bg-cream px-[18px] py-3 text-[14px] font-semibold leading-snug text-plum shadow-[0_12px_30px_rgba(0,0,0,0.4)]"
           >
+            <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${TONES[t.tone]}`} />
             {t.text}
           </div>
         ))}

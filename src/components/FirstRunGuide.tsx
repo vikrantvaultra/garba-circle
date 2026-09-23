@@ -32,8 +32,8 @@ const STEPS = [
         <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
       </>
     ),
-    title: "Tap SPIN",
-    body: "The reel lands on a real dancer. Your first five spins are free.",
+    title: "Tap the garbo",
+    body: "The circle stops on a real dancer. Hold for a bigger spin. Your first five spins are free.",
   },
   {
     icon: <path d="M6 5l12 14M18 5L6 19" />,
@@ -80,7 +80,7 @@ export function FirstRunGuide() {
       <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t border-gold/30 bg-gradient-to-b from-plum to-night px-5 pt-3 pb-safe">
         <div className="mx-auto mb-5 h-1.5 w-11 rounded-full bg-cream/25" />
 
-        <p className="font-display text-[12.5px] font-bold uppercase tracking-[0.25em] text-marigold">
+        <p className="text-[12.5px] font-bold uppercase tracking-[0.25em] text-marigold">
           How it works
         </p>
         <h2 className="gold-text mt-1 font-display text-[27px] font-extrabold leading-tight">

@@ -64,11 +64,11 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
             No chats yet
           </p>
           <p className="mt-1 text-[14px] leading-snug text-cream/60">
-            Spin the reel, and when someone catches your eye send a dandiya.
+            Spin the circle, and when someone catches your eye send a dandiya.
             The chat opens straight away.
           </p>
           <Link href="/spin" className="btn-primary active:btn-primary-active mt-4">
-            Spin the reel
+            Spin the circle
           </Link>
         </div>
       ) : (

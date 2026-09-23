@@ -6,7 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
-import type { PublicProfile } from "@/components/ProfileCard";
+import type { PublicProfile } from "@/lib/api";
 import {
   CHAT_HEARTBEAT_SECONDS,
   CHAT_IDLE_SECONDS,
@@ -248,10 +248,10 @@ export function ChatScreen({
 
           <button
             onClick={() => setShowPacks(true)}
-            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-display text-[13.5px] font-bold tabular-nums transition-colors ${
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13.5px] font-bold tabular-nums transition-colors ${
               lowTime
                 ? "border-rani/50 bg-rani/15 text-rani"
-                : "border-peacock/40 bg-peacock/10 text-peacock"
+                : "border-parrot/40 bg-parrot/10 text-parrot"
             }`}
           >
             <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
@@ -270,7 +270,7 @@ export function ChatScreen({
             className={`h-full transition-[width] duration-1000 ease-linear ${
               lowTime
                 ? "bg-gradient-to-r from-rani to-magenta"
-                : "bg-gradient-to-r from-peacock to-royal"
+                : "bg-gradient-to-r from-parrot to-royal"
             }`}
             style={{
               width: `${Math.max(0, Math.min(100, (meter.remainingSeconds / Math.max(1, meter.totalSeconds)) * 100))}%`,

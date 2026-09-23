@@ -8,7 +8,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
-import type { PublicProfile } from "@/components/ProfileCard";
+import type { PublicProfile } from "@/lib/api";
 import {
   FREE_CHAT_SECONDS,
   SKILL_LEVELS,
@@ -75,7 +75,7 @@ export function ProfileScreen({
         </div>
 
         {level && (
-          <span className="mt-4 inline-block rounded-full bg-peacock/15 px-3 py-1 text-[12px] font-semibold text-peacock">
+          <span className="mt-4 inline-block rounded-full bg-parrot/15 px-3 py-1 text-[12px] font-semibold text-parrot">
             {level.label}
           </span>
         )}
@@ -115,7 +115,7 @@ export function ProfileScreen({
           onClick={() => setShowPacks(true)}
           className="panel p-4 text-center transition-transform active:scale-[0.98]"
         >
-          <p className="font-display text-[30px] font-extrabold leading-none text-peacock">
+          <p className="font-display text-[30px] font-extrabold leading-none text-parrot">
             {rupees(SPIN_PACKS[0].amountPaise)}
           </p>
           <p className="mt-1 text-[12.5px] text-cream/55">
@@ -126,7 +126,7 @@ export function ProfileScreen({
 
       {strikes > 0 && (
         <section className="mt-4 rounded-2xl border border-rani/40 bg-rani/10 p-4">
-          <p className="font-display text-[15px] font-bold text-rani">
+          <p className="text-[15px] font-bold text-rani">
             {strikes} rule warning{strikes === 1 ? "" : "s"} on your account
           </p>
           <p className="mt-1 text-[13.5px] leading-snug text-cream/70">
@@ -185,7 +185,7 @@ export function ProfileScreen({
 function Item({ title, body }: { title: string; body: string }) {
   return (
     <div className="p-4">
-      <h3 className="font-display text-[15px] font-bold">{title}</h3>
+      <h3 className="text-[15px] font-bold">{title}</h3>
       <p className="mt-1 text-[13.5px] leading-snug text-cream/60">{body}</p>
     </div>
   );

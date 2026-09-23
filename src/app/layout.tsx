@@ -1,31 +1,32 @@
 import type { Metadata, Viewport } from "next";
-import { Baloo_2, Outfit } from "next/font/google";
+import { Hind_Vadodara, Rozha_One } from "next/font/google";
 import { Ambience } from "@/components/Ambience";
 import { DemoBanner } from "@/components/DemoBanner";
 import { ToastProvider } from "@/components/Toast";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 import "./globals.css";
 
-// Baloo 2 carries Devanagari as well as Latin, so Hindi and Marathi names
-// render in the same festive face as everything else.
-const baloo = Baloo_2({
+// Rozha One for headlines and names; it carries Devanagari as well as Latin,
+// so Hindi and Marathi names render in the same face. Hind Vadodara for body
+// text, which covers Gujarati.
+const rozha = Rozha_One({
   subsets: ["latin", "devanagari"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-baloo",
+  weight: "400",
+  variable: "--font-rozha",
   display: "swap",
 });
 
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-outfit",
+const hind = Hind_Vadodara({
+  subsets: ["latin", "gujarati"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hind",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: `${APP_NAME} — ${APP_TAGLINE}`,
   description:
-    "Spin the reel, find your Garba partner for Navratri, and chat safely inside Garba Circle.",
+    "Spin the circle, find your Garba partner for Navratri, and chat safely inside Garba Circle.",
   applicationName: APP_NAME,
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "black-translucent" },
   openGraph: {
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#120520",
+  themeColor: "#140a33",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -47,7 +48,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${baloo.variable} ${outfit.variable}`}>
+    <html lang="en" className={`${rozha.variable} ${hind.variable}`}>
       <body className="antialiased">
         <Ambience />
         <ToastProvider>

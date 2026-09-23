@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { rupees, type Pack } from "@/lib/constants";
+import { CheckoutCancelled, purchasePack } from "@/lib/client/checkout";
+import { Sheet } from "./Sheet";
+import { useToast } from "./Toast";
 
 /**
  * Honest value maths. The unit price and the saving are both derived from the
- * real prices, so a "SAVE 26%" badge is arithmetic rather than marketing.
+ * real prices, so a "save 26%" badge is arithmetic rather than marketing.
  */
 function unitPrice(pack: Pack): number {
   const units = pack.kind === "spins" ? pack.grant : pack.grant / 60;
@@ -14,10 +17,8 @@ function unitPrice(pack: Pack): number {
 
 function unitLabel(pack: Pack): string {
   const per = unitPrice(pack) / 100;
-  return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} per ${pack.kind === "spins" ? "spin" : "minute"}`;
+  return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a ${pack.kind === "spins" ? "spin" : "minute"}`;
 }
-import { CheckoutCancelled, purchasePack } from "@/lib/client/checkout";
-import { useToast } from "./Toast";
 
 export function PackSheet({
   open,
@@ -25,6 +26,8 @@ export function PackSheet({
   subtitle,
   packs,
   matchId,
+  teaser,
+  footer,
   onClose,
   onPurchased,
 }: {
@@ -33,13 +36,21 @@ export function PackSheet({
   subtitle: string;
   packs: Pack[];
   matchId?: string | null;
+  /** A highlighted line about what a pack gets you. */
+  teaser?: ReactNode;
+  /** Anything free that sits under the paid options. */
+  footer?: ReactNode;
   onClose: () => void;
-  onPurchased: () => void;
+  onPurchased: (pack: Pack) => void;
 }) {
-  const [busy, setBusy] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [chosen, setChosen] = useState(
+    () => (packs.find((p) => p.badge) ?? packs[packs.length - 1]).key,
+  );
+  const payRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
 
-  if (!open) return null;
+  const selected = packs.find((p) => p.key === chosen) ?? packs[0];
 
   // The smallest pack is the baseline everything else is compared against.
   const baseline = packs.reduce(
@@ -51,88 +62,100 @@ export function PackSheet({
     return saved >= 0.05 ? Math.round(saved * 100) : 0;
   };
 
-  const buy = async (pack: Pack) => {
-    setBusy(pack.key);
+  const buy = async () => {
+    setBusy(true);
     try {
-      await purchasePack({ packKey: pack.key, matchId });
-      toast.show(`${pack.label} added. Jai Mataji!`, "success");
-      onPurchased();
+      await purchasePack({ packKey: selected.key, matchId });
+      toast.show(`${selected.label} added. Jai Mataji!`, "success");
+      onPurchased(selected);
     } catch (error) {
       if (error instanceof CheckoutCancelled) {
         toast.show("Payment cancelled.", "info");
       } else {
-        toast.show(
-          error instanceof Error ? error.message : "Payment failed.",
-          "error",
-        );
+        toast.show(error instanceof Error ? error.message : "Payment failed.", "error");
       }
     } finally {
-      setBusy(null);
+      setBusy(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center">
-      <button
-        aria-label="Close"
-        className="absolute inset-0 bg-night/80 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t border-gold/30 bg-gradient-to-b from-plum to-night px-5 pt-3 pb-safe shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.9)]">
-        <div className="mx-auto mb-4 h-1.5 w-11 rounded-full bg-cream/25" />
+    <Sheet open={open} onClose={onClose} labelledBy="packs-title" initialFocus={payRef}>
+      <h2 id="packs-title" className="font-display text-[32px] leading-[1.1]">
+        {title}
+      </h2>
+      <p className="mt-1.5 text-[15px] leading-normal text-muted">{subtitle}</p>
 
-        <h2 className="font-display text-[23px] font-bold leading-tight">
-          {title}
-        </h2>
-        <p className="mt-1 text-[14.5px] leading-snug text-cream/65">{subtitle}</p>
-
-        <div className="mt-5 space-y-3">
-          {packs.map((pack) => (
-            <button
-              key={pack.key}
-              onClick={() => buy(pack)}
-              disabled={busy !== null}
-              className="panel relative flex w-full items-center gap-4 p-4 text-left transition-transform active:scale-[0.985] disabled:opacity-60"
-            >
-              {savingFor(pack) > 0 ? (
-                <span className="absolute -top-2 right-4 rounded-full bg-gradient-to-r from-peacock to-royal px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-night">
-                  SAVE {savingFor(pack)}%
-                </span>
-              ) : pack.badge ? (
-                <span className="absolute -top-2 right-4 rounded-full bg-gradient-to-r from-rani to-magenta px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-white">
-                  {pack.badge}
-                </span>
-              ) : null}
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-marigold/30 to-rani/20 text-xl">
-                {pack.kind === "spins" ? "\u{1F3B0}" : "⏱️"}
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="font-display text-[17px] font-bold">
-                  {pack.label}
-                </div>
-                <div className="text-[13px] text-cream/60">{pack.sublabel}</div>
-              </div>
-              <div className="shrink-0 text-right">
-                <div className="gold-text font-display text-[21px] font-extrabold">
-                  {busy === pack.key ? "…" : rupees(pack.amountPaise)}
-                </div>
-                <div className="text-[11px] font-medium text-cream/45">
-                  {unitLabel(pack)}
-                </div>
-              </div>
-            </button>
-          ))}
+      {teaser && (
+        <div className="mt-[18px] flex items-center gap-3.5 rounded-2xl border border-rani/35 bg-rani/10 p-3.5 text-[14px] leading-[1.45]">
+          {teaser}
         </div>
+      )}
 
-        <p className="mt-4 text-center text-[12px] leading-relaxed text-cream/45">
-          Secure UPI, card and wallet payments. One-time purchase, no
-          subscription, no auto-debit.
-        </p>
-
-        <button onClick={onClose} className="btn-ghost mt-3 mb-2">
-          Maybe later
-        </button>
+      <div role="radiogroup" aria-label="Packs" className="mt-[18px] grid gap-2.5">
+        {packs.map((pack) => {
+          const on = pack.key === selected.key;
+          const saving = savingFor(pack);
+          return (
+            <label
+              key={pack.key}
+              className={`relative flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] px-4 py-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cream ${
+                on ? "border-marigold bg-marigold/10" : "border-white/12 bg-deep/50"
+              }`}
+            >
+              <input
+                type="radio"
+                name="pack"
+                value={pack.key}
+                checked={on}
+                onChange={() => setChosen(pack.key)}
+                className="absolute opacity-0"
+              />
+              <span
+                aria-hidden
+                className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
+                  on ? "border-marigold" : "border-white/30"
+                }`}
+              >
+                {on && <span className="h-2.5 w-2.5 rounded-full bg-marigold" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <b className="block text-[16px]">{pack.label}</b>
+                <small className="text-[13px] text-muted">
+                  {unitLabel(pack)}
+                  {saving > 0 ? `, save ${saving}%` : ""}
+                </small>
+              </span>
+              <span className="font-display text-[22px]">{rupees(pack.amountPaise)}</span>
+            </label>
+          );
+        })}
       </div>
-    </div>
+
+      <button
+        ref={payRef}
+        type="button"
+        onClick={buy}
+        disabled={busy}
+        className="btn-primary active:btn-primary-active mt-4 min-h-[56px] disabled:opacity-60"
+      >
+        {busy ? "Opening payment…" : `Pay ${rupees(selected.amountPaise)}`}
+      </button>
+      <p className="mt-2.5 text-center text-[12px] text-muted">
+        One-time payment by UPI or card. Nothing renews automatically.
+      </p>
+
+      {footer && (
+        <div className="mt-[18px] grid gap-2.5 border-t border-white/8 pt-4">{footer}</div>
+      )}
+
+      <button
+        type="button"
+        onClick={onClose}
+        className="mx-auto mt-3 block min-h-[44px] px-4 text-[14px] font-semibold text-muted"
+      >
+        Maybe later
+      </button>
+    </Sheet>
   );
 }

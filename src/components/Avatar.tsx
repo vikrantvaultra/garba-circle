@@ -3,9 +3,9 @@
 const GRADIENTS = [
   "from-marigold to-rani",
   "from-rani to-royal",
-  "from-peacock to-royal",
+  "from-parrot to-royal",
   "from-marigold-deep to-magenta",
-  "from-royal to-peacock",
+  "from-royal to-parrot",
 ];
 
 function pickGradient(seed: string): string {

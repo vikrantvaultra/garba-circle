@@ -103,7 +103,7 @@ export function SetupWizard({
             </div>
           ))}
         </div>
-        <p className="mt-2.5 font-display text-[12.5px] font-semibold uppercase tracking-[0.2em] text-marigold/80">
+        <p className="mt-2.5 text-[12.5px] font-semibold uppercase tracking-[0.2em] text-marigold/80">
           Step {step + 1} of 3 {"\u00b7"} {STEPS[step]}
         </p>
       </header>
@@ -318,7 +318,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block font-display text-[13.5px] font-semibold tracking-wide text-cream/70">
+      <span className="mb-2 block text-[13.5px] font-semibold tracking-wide text-cream/70">
         {label}
       </span>
       {children}

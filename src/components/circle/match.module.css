@@ -1,0 +1,148 @@
+.head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.avatar {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid var(--color-marigold);
+  box-shadow: 0 0 24px rgba(246, 169, 27, 0.35);
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: var(--color-cream);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.kicker {
+  margin: 0;
+  color: var(--color-marigold);
+  font-weight: 700;
+  font-size: 14px;
+}
+.name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.1;
+  margin: 2px 0;
+  overflow-wrap: anywhere;
+}
+.meta {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 15px;
+}
+
+.compat {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  min-width: 3.2ch;
+  font-variant-numeric: tabular-nums;
+}
+.bar {
+  height: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--color-kumkum), var(--color-marigold));
+}
+.reason {
+  display: block;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-top: 4px;
+}
+
+.line {
+  margin: 16px 0 12px;
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.styles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.styles span {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.styles span[data-shared="true"] {
+  border-color: var(--color-marigold);
+  background: rgba(246, 169, 27, 0.14);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+.actions small {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+.fine {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-muted);
+}
+
+/* Tiers */
+.tier_rare .kicker {
+  color: #ff7fc0;
+}
+.tier_rare .avatar {
+  border-color: var(--color-rani);
+  box-shadow: 0 0 30px rgba(226, 58, 147, 0.6);
+}
+.tier_soulmate .kicker {
+  background: linear-gradient(90deg, #ffd66b, #fff4d6, #f6a91b, #ffd66b);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 2s linear infinite;
+  font-size: 16px;
+}
+.tier_soulmate .avatar {
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 0 40px rgba(255, 214, 107, 0.8);
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
-import type { PublicProfile } from "@/components/ProfileCard";
+import type { PublicProfile } from "@/lib/api";
 
 const REASONS = [
   { key: "abusive", label: "Abusive language" },
@@ -128,7 +128,7 @@ export function ChatMenu({
                     onClick={() => setReporting(true)}
                     className="panel w-full p-4 text-left"
                   >
-                    <span className="font-display text-[16px] font-bold text-marigold">
+                    <span className="text-[16px] font-bold text-marigold">
                       Report
                     </span>
                     <span className="mt-0.5 block text-[13.5px] text-cream/60">
@@ -140,7 +140,7 @@ export function ChatMenu({
                     disabled={busy}
                     className="panel w-full p-4 text-left disabled:opacity-50"
                   >
-                    <span className="font-display text-[16px] font-bold text-rani">
+                    <span className="text-[16px] font-bold text-rani">
                       Block and leave
                     </span>
                     <span className="mt-0.5 block text-[13.5px] text-cream/60">

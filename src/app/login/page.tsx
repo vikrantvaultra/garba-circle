@@ -104,7 +104,7 @@ export default function LoginPage() {
             }}
           >
             <div className="panel flex items-center gap-2 p-1.5 pl-4">
-              <span className="font-display text-[17px] font-semibold text-cream/70">
+              <span className="text-[17px] font-semibold text-cream/70">
                 +91
               </span>
               <span className="h-6 w-px bg-cream/20" />
@@ -143,11 +143,11 @@ export default function LoginPage() {
             }}
           >
             {devCode && (
-              <div className="rounded-2xl border border-peacock/40 bg-peacock/10 px-4 py-3 text-center">
-                <p className="text-[12px] uppercase tracking-wider text-peacock/80">
+              <div className="rounded-2xl border border-parrot/40 bg-parrot/10 px-4 py-3 text-center">
+                <p className="text-[12px] uppercase tracking-wider text-parrot/80">
                   Test mode — no SMS provider configured
                 </p>
-                <p className="font-display text-[26px] font-bold tracking-[0.3em] text-peacock">
+                <p className="font-display text-[26px] font-bold tracking-[0.3em] text-parrot">
                   {devCode}
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function LoginPage() {
                 {Array.from({ length: OTP_LENGTH }).map((_, i) => (
                   <div
                     key={i}
-                    className={`grid h-[58px] flex-1 place-items-center rounded-2xl border font-display text-[24px] font-bold transition-colors ${
+                    className={`grid h-[58px] flex-1 place-items-center rounded-2xl border text-[24px] font-bold transition-colors ${
                       i === code.length
                         ? "border-marigold bg-marigold/10"
                         : "border-gold/25 bg-night/50"

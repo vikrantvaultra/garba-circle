@@ -1,0 +1,55 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(8, 3, 22, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.backdrop[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  width: min(440px, 100%);
+  max-height: 92dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 14px 22px calc(env(safe-area-inset-bottom, 0px) + 24px);
+  background: linear-gradient(180deg, #2c1364, #170a3a);
+  border-radius: 28px 28px 0 0;
+  border-top: 1px solid rgba(246, 169, 27, 0.4);
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.backdrop[data-open="true"] .sheet {
+  transform: none;
+}
+.sheet:focus {
+  outline: none;
+}
+
+.grab {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 auto 20px;
+}
+
+/* Tiers, set by the match sheet. */
+.sheet[data-tier="rare"] {
+  border-top-color: var(--color-rani);
+}
+.sheet[data-tier="soulmate"] {
+  background: linear-gradient(180deg, #4a2464, #1b0b3f 60%);
+  border-top: 2px solid var(--color-gold);
+}

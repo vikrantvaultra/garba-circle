@@ -1,19 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/lib/client/api";
 import type { CircleStats } from "@/lib/stats";
 
+function ago(minutes: number): string {
+  if (minutes <= 1) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.round(minutes / 60);
+  return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+}
+
 /**
- * A live strip above the reel. Every number here is a real query against the
- * database — no invented "247 people viewing", no countdown that resets. If
- * the circle is quiet it says so, because a proof that can be caught lying is
- * worse than no proof.
+ * A live line under the header. Every number here is a real query against
+ * the database — no invented "247 people viewing", no countdown that resets.
+ * Recent pairings name a city, never a person. If the circle is quiet it says
+ * so, because a proof that can be caught lying is worse than no proof.
  */
 export function CircleLive({ initial }: { initial: CircleStats }) {
   const [stats, setStats] = useState(initial);
   const [tick, setTick] = useState(0);
-  const tickerRef = useRef<HTMLSpanElement | null>(null);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     const refresh = setInterval(async () => {
@@ -24,60 +31,57 @@ export function CircleLive({ initial }: { initial: CircleStats }) {
       }
     }, 45_000);
 
-    const rotate = setInterval(() => setTick((t) => t + 1), 4200);
+    let swap: ReturnType<typeof setTimeout>;
+    const rotate = setInterval(() => {
+      setVisible(false);
+      swap = setTimeout(() => {
+        setTick((t) => t + 1);
+        setVisible(true);
+      }, 350);
+    }, 4500);
     return () => {
       clearInterval(refresh);
       clearInterval(rotate);
+      clearTimeout(swap);
     };
   }, []);
 
-  const lines: string[] = [];
-  for (const row of stats.recent.slice(0, 4)) {
-    lines.push(
-      `A jodi formed in ${row.city} · ${row.minutesAgo}m ago`,
-    );
-  }
+  const lines: string[] = stats.recent
+    .slice(0, 4)
+    .map((row) => `A pair got talking in ${row.city}, ${ago(row.minutesAgo)}`);
   if (stats.jodisToday > 0) {
     lines.push(
-      `${stats.jodisToday} ${stats.jodisToday === 1 ? "jodi" : "jodis"} made today`,
+      `${stats.jodisToday} ${stats.jodisToday === 1 ? "pair" : "pairs"} got talking today`,
     );
   }
-  if (stats.city && stats.dancersInCity > 0) {
-    lines.push(
-      `${stats.dancersInCity} ${stats.dancersInCity === 1 ? "dancer" : "dancers"} in ${stats.city}`,
-    );
+  if (stats.city && stats.dancersInCity > 1) {
+    lines.push(`${stats.dancersInCity} of them dance in ${stats.city}`);
   }
   if (lines.length === 0) {
     lines.push(
       stats.city
-        ? `Be the first jodi in ${stats.city} tonight`
+        ? `Be the first pair in ${stats.city} tonight`
         : "The circle is just getting started",
     );
   }
-
   const line = lines[tick % lines.length];
 
   return (
-    <div className="mb-3 flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 backdrop-blur-sm">
-      <span className="relative flex h-2 w-2 shrink-0">
-        <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-peacock" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-peacock" />
+    <div className="mt-5 flex items-center gap-2.5 text-[14px] text-muted">
+      <span aria-hidden className="relative h-2 w-2 shrink-0 rounded-full bg-parrot">
+        <span className="absolute -inset-1 animate-pulse-ring rounded-full border-[1.5px] border-parrot" />
       </span>
-
-      <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-[13px] font-bold leading-tight">
-          {stats.dancers} {stats.dancers === 1 ? "dancer" : "dancers"} in the
-          circle
-        </p>
+      <p className="m-0 flex flex-wrap gap-x-2">
+        <b className="font-semibold text-cream">
+          {stats.dancers} {stats.dancers === 1 ? "dancer" : "dancers"} in the circle
+        </b>
         <span
-          ref={tickerRef}
-          key={line}
-          className="block truncate text-[12px] leading-tight text-cream/55"
-          style={{ animation: "rise 420ms ease-out both" }}
+          className="transition-opacity duration-300"
+          style={{ opacity: visible ? 1 : 0 }}
         >
           {line}
         </span>
-      </div>
+      </p>
     </div>
   );
 }

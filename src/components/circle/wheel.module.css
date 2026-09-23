@@ -1,0 +1,180 @@
+/* The circle: a ring of twelve dancers around a brass garbo lamp.
+   Phase lives in data attributes written by the animation loop, so React
+   re-renders never clobber it:
+     data-phase = idle | charging | spinning | landed
+     data-full  = the charge is maxed out
+     data-empty = no spins left (set by React) */
+
+.wheel {
+  --charge: 0;
+  position: relative;
+  width: min(340px, 86vw);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.wheel::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 169, 27, 0.28), rgba(214, 40, 69, 0.08) 45%, transparent 70%);
+  transform: scale(calc(1 + var(--charge) * 0.35));
+  opacity: calc(0.7 + var(--charge) * 0.3);
+}
+.wheel[data-phase="spinning"]::before {
+  animation: beat 0.42s ease-in-out infinite alternate;
+}
+@keyframes beat {
+  to { opacity: 0.5; }
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+.layer svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.chargeArc {
+  transition: stroke-dashoffset 0.08s linear;
+  filter: drop-shadow(0 0 6px #f6a91b);
+}
+.ring {
+  will-change: transform;
+}
+
+.dancer {
+  transition: opacity 0.5s;
+}
+.fig {
+  animation: bob 0.9s ease-in-out infinite alternate;
+}
+.dancer:nth-child(odd) .fig {
+  animation-delay: -0.45s;
+}
+.wheel[data-phase="charging"] .fig,
+.wheel[data-phase="spinning"] .fig {
+  animation-duration: 0.28s;
+}
+@keyframes bob {
+  to { transform: translateY(-2.2px); }
+}
+.halo {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.ring[data-win="true"] .dancer:not([data-win="true"]) {
+  opacity: 0.28;
+}
+.dancer[data-win="true"] .halo {
+  opacity: 1;
+}
+
+.pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 20px;
+  height: 26px;
+  transform: translateX(-50%);
+  transform-origin: 50% 30%;
+  filter: drop-shadow(0 0 6px rgba(246, 169, 27, 0.9));
+}
+.kick {
+  animation: kick 0.12s ease-out;
+}
+@keyframes kick {
+  50% { transform: translateX(-50%) rotate(-16deg); }
+}
+
+/* The garbo: the pierced brass lamp in the middle of every garba circle, and
+   the one control on the screen. */
+.garbo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  color: var(--color-cream);
+  transform: translate(-50%, -50%) scale(calc(1 - var(--charge) * 0.06));
+  background: radial-gradient(circle at 50% 38%, #3e1c7e, #1b0b44 72%);
+  box-shadow:
+    0 0 0 1px rgba(246, 169, 27, 0.5),
+    0 0 0 9px rgba(246, 169, 27, calc(0.06 + var(--charge) * 0.2)),
+    0 20px 44px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font: 700 15px var(--font-body);
+  letter-spacing: 0.03em;
+  transition: box-shadow 0.2s ease;
+}
+.wheel[data-full="true"] .garbo {
+  animation: shake 0.08s linear infinite;
+}
+@keyframes shake {
+  25% { margin-left: 1px; }
+  75% { margin-left: -1px; }
+}
+.garbo svg {
+  width: 56%;
+  height: auto;
+  overflow: visible;
+}
+.garbo:focus-visible {
+  outline: 3px solid var(--color-marigold);
+  outline-offset: 5px;
+}
+.wheel[data-empty="true"] .garbo svg {
+  opacity: 0.45;
+}
+.wheel[data-empty="true"] .garbo span {
+  color: var(--color-marigold);
+}
+
+.flame {
+  transform-origin: 50px 32px;
+  animation: flicker-flame 1.8s ease-in-out infinite;
+}
+.wheel[data-phase="charging"] .flame {
+  transform: scale(calc(1 + var(--charge) * 0.5));
+}
+.wheel[data-phase="spinning"] .flame,
+.wheel[data-phase="charging"] .flame {
+  animation-duration: 0.3s;
+}
+@keyframes flicker-flame {
+  0%, 100% { transform: scale(1, 1) rotate(0); }
+  40%      { transform: scale(0.94, 1.06) rotate(-3deg); }
+  70%      { transform: scale(1.04, 0.95) rotate(2deg); }
+}
+.holes circle {
+  fill: #ffe7a0;
+}
+.wheel[data-phase="spinning"] .holes {
+  animation: beat 0.42s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fig,
+  .flame,
+  .holes,
+  .kick,
+  .wheel::before,
+  .wheel[data-full="true"] .garbo {
+    animation: none !important;
+  }
+}
