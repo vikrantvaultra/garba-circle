@@ -2,38 +2,16 @@
 
 import { useRef, useState } from "react";
 import { Avatar } from "./Avatar";
+import { PhotoEditor } from "./PhotoEditor";
 import { useToast } from "./Toast";
 import { api } from "@/lib/client/api";
 
-const TARGET_PX = 512;
-const QUALITY = 0.82;
-
 /**
- * Crops to a centre square and re-encodes to WebP in the browser, so what
- * reaches the server is ~30 KB instead of a 6 MB phone photo. That is what
- * makes storing avatars on a free-tier database reasonable.
+ * Pick a photo, then crop, straighten and touch it up in the editor before
+ * it is uploaded. The editor re-encodes to a 512px WebP in the browser, so
+ * what reaches the server is ~30 KB instead of a 6 MB phone photo. That is
+ * what makes storing avatars on a free-tier database reasonable.
  */
-async function compress(file: File): Promise<string> {
-  const bitmap = await createImageBitmap(file);
-  const side = Math.min(bitmap.width, bitmap.height);
-  const sx = (bitmap.width - side) / 2;
-  const sy = (bitmap.height - side) / 2;
-
-  const canvas = document.createElement("canvas");
-  canvas.width = TARGET_PX;
-  canvas.height = TARGET_PX;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Could not read that image.");
-  ctx.drawImage(bitmap, sx, sy, side, side, 0, 0, TARGET_PX, TARGET_PX);
-  bitmap.close();
-
-  const webp = canvas.toDataURL("image/webp", QUALITY);
-  // Older Safari ignores the WebP request and hands back a PNG.
-  return webp.startsWith("data:image/webp")
-    ? webp
-    : canvas.toDataURL("image/jpeg", QUALITY);
-}
-
 export function AvatarPicker({
   value,
   name,
@@ -44,32 +22,34 @@ export function AvatarPicker({
   onChange: (url: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [editing, setEditing] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const toast = useToast();
 
-  const pick = async (file: File | undefined) => {
+  const choose = () => inputRef.current?.click();
+
+  const pick = (file: File | undefined) => {
+    // Cleared so picking the same file again still fires a change.
+    if (inputRef.current) inputRef.current.value = "";
     if (!file) return;
     if (!file.type.startsWith("image/")) {
       toast.show("Please choose an image.", "error");
       return;
     }
+    setEditing(file);
+  };
+
+  const upload = async (dataUrl: string) => {
     setBusy(true);
     try {
-      const dataUrl = await compress(file);
-      const res = await api.post<{ avatarUrl: string }>(
-        "/api/profile/avatar",
-        { dataUrl },
-      );
+      const res = await api.post<{ avatarUrl: string }>("/api/profile/avatar", { dataUrl });
       onChange(res.avatarUrl);
+      setEditing(null);
       toast.show("Looking good!", "success");
     } catch (error) {
-      toast.show(
-        error instanceof Error ? error.message : "Could not upload that photo.",
-        "error",
-      );
+      toast.show(error instanceof Error ? error.message : "Could not upload that photo.", "error");
     } finally {
       setBusy(false);
-      if (inputRef.current) inputRef.current.value = "";
     }
   };
 
@@ -77,10 +57,10 @@ export function AvatarPicker({
     <div className="flex flex-col items-center">
       <button
         type="button"
-        onClick={() => inputRef.current?.click()}
+        onClick={choose}
         disabled={busy}
         className="relative"
-        aria-label="Choose a profile photo"
+        aria-label={value ? "Change your profile photo" : "Choose a profile photo"}
       >
         <span className="absolute inset-0 -z-10 animate-pulse-ring rounded-full border-2 border-havmor/40" />
         <Avatar src={value} name={name || "?"} size={132} />
@@ -107,6 +87,16 @@ export function AvatarPicker({
       <p className="mt-3 text-center text-[13px] font-semibold text-choco-2">
         {value ? "Tap to change your photo" : "Add a clear photo of yourself"}
       </p>
+      <p className="mt-0.5 text-center text-[12px] text-cocoa">
+        You can crop, straighten and add a filter before it&rsquo;s saved.
+      </p>
+
+      <PhotoEditor
+        file={editing}
+        onCancel={() => setEditing(null)}
+        onChooseAnother={choose}
+        onDone={upload}
+      />
     </div>
   );
 }
