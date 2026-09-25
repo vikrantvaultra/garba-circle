@@ -67,12 +67,12 @@ export function CircleLive({ initial }: { initial: CircleStats }) {
   const line = lines[tick % lines.length];
 
   return (
-    <div className="mt-5 flex items-center gap-2.5 text-[14px] text-muted">
-      <span aria-hidden className="relative h-2 w-2 shrink-0 rounded-full bg-parrot">
-        <span className="absolute -inset-1 animate-pulse-ring rounded-full border-[1.5px] border-parrot" />
+    <div className="flex items-center gap-2.5 text-[14px] font-semibold text-choco-2">
+      <span aria-hidden className="relative h-2 w-2 shrink-0 rounded-full bg-pista">
+        <span className="absolute -inset-1 animate-pulse-ring rounded-full border-[1.5px] border-pista" />
       </span>
       <p className="m-0 flex flex-wrap gap-x-2">
-        <b className="font-semibold text-cream">
+        <b className="font-extrabold text-choco">
           {stats.dancers} {stats.dancers === 1 ? "dancer" : "dancers"} in the circle
         </b>
         <span

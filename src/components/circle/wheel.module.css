@@ -1,4 +1,4 @@
-/* The circle: a ring of twelve dancers around a brass garbo lamp.
+/* The circle: a ring of twelve dancers around a Havmor cone.
    Phase lives in data attributes written by the animation loop, so React
    re-renders never clobber it:
      data-phase = idle | charging | spinning | landed
@@ -12,20 +12,30 @@
   aspect-ratio: 1;
   margin: 0 auto;
   /* The circle is most of a phone's width: a swipe that starts on it must
-     still scroll the page. Only the garbo takes the hold, below. */
+     still scroll the page. Only the cone takes the hold, below. */
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
+/* The dance floor: a wafer-coloured disc under the ring. */
+.wheel::after {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 30%, #fff6e9 62%, #f7e6c8 100%);
+  box-shadow: 0 24px 50px -24px rgba(89, 51, 42, 0.55), inset 0 0 0 1px rgba(89, 51, 42, 0.08);
+}
 .wheel::before {
   content: "";
   position: absolute;
-  inset: 12%;
+  inset: 14%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(246, 169, 27, 0.28), rgba(214, 40, 69, 0.08) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 80, 97, 0.32), rgba(255, 184, 28, 0.1) 45%, transparent 70%);
   transform: scale(calc(1 + var(--charge) * 0.35));
-  opacity: calc(0.7 + var(--charge) * 0.3);
+  opacity: calc(0.6 + var(--charge) * 0.4);
   /* Its own layer: charging rescales it every frame without repainting. */
   will-change: transform, opacity;
 }
@@ -33,7 +43,7 @@
   animation: beat 0.42s ease-in-out infinite alternate;
 }
 @keyframes beat {
-  to { opacity: 0.5; }
+  to { opacity: 0.45; }
 }
 
 .layer {
@@ -48,7 +58,7 @@
 }
 .chargeArc {
   transition: stroke-dashoffset 0.08s linear;
-  filter: drop-shadow(0 0 6px #f6a91b);
+  filter: drop-shadow(0 0 5px rgba(211, 0, 43, 0.55));
 }
 .ring {
   will-change: transform;
@@ -91,25 +101,26 @@
   transition: opacity 0.5s;
 }
 .ring[data-win="true"] .dancer:not([data-win="true"]) {
-  opacity: 0.28;
+  opacity: 0.25;
 }
 .dancer[data-win="true"] .halo {
   opacity: 1;
 }
 
+/* The pointer is a drop of melted strawberry. */
 .pointer {
   position: absolute;
-  top: -10px;
+  top: -12px;
   left: 50%;
-  width: 20px;
-  height: 26px;
+  width: 22px;
+  height: 29px;
   transform: translateX(-50%);
   transform-origin: 50% 30%;
-  filter: drop-shadow(0 0 6px rgba(246, 169, 27, 0.9));
+  filter: drop-shadow(0 3px 4px rgba(163, 0, 31, 0.45));
 }
 
-/* The garbo: the pierced brass lamp in the middle of every garba circle, and
-   the one control on the screen. */
+/* The cone: Havmor in the middle of the garba, and the one control on the
+   screen. */
 .garbo {
   position: absolute;
   left: 50%;
@@ -119,21 +130,22 @@
   border-radius: 50%;
   border: 0;
   cursor: pointer;
-  color: var(--color-cream);
+  color: #fff;
   transform: translate(-50%, -50%) scale(calc(1 - var(--charge) * 0.06));
-  background: radial-gradient(circle at 50% 38%, #3e1c7e, #1b0b44 72%);
+  background: radial-gradient(circle at 50% 30%, #ff3050, var(--color-havmor) 55%, var(--color-havmor-deep));
   box-shadow:
-    0 0 0 1px rgba(246, 169, 27, 0.5),
-    0 0 0 9px rgba(246, 169, 27, calc(0.06 + var(--charge) * 0.2)),
-    0 20px 44px rgba(0, 0, 0, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.08);
+    0 0 0 5px #fff,
+    0 0 0 calc(10px + var(--charge) * 8px) rgba(211, 0, 43, calc(0.1 + var(--charge) * 0.2)),
+    0 18px 34px -8px rgba(163, 0, 31, 0.6),
+    inset 0 -6px 0 rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  font: 700 15px var(--font-body);
-  letter-spacing: 0.03em;
+  gap: 0;
+  font: 900 15px var(--font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   transition: box-shadow 0.2s ease;
   /* A still finger charges; one that moves up or down scrolls the page, and
      the browser cancels the hold (pointercancel) instead of spinning. */
@@ -142,7 +154,7 @@
 .wheel[data-full="true"] .garbo {
   animation: shake 0.08s linear infinite;
 }
-/* `translate` stacks on the garbo's transform and stays on the compositor;
+/* `translate` stacks on the cone's transform and stays on the compositor;
    animating margin would re-run layout every frame. */
 @keyframes shake {
   25% { translate: 1px 0; }
@@ -150,8 +162,9 @@
 }
 .lamp {
   position: relative;
-  width: 56%;
+  width: 50%;
   aspect-ratio: 100 / 104;
+  margin-top: -4%;
 }
 .lamp svg {
   position: absolute;
@@ -161,37 +174,39 @@
   overflow: visible;
 }
 .garbo:focus-visible {
-  outline: 3px solid var(--color-marigold);
-  outline-offset: 5px;
+  outline: 3px solid var(--color-havmor);
+  outline-offset: 9px;
 }
 .wheel[data-blocked="true"] .lamp,
 .wheel[data-empty="true"] .lamp {
-  opacity: 0.45;
+  opacity: 0.55;
 }
 .wheel[data-empty="true"] .garbo span {
-  color: var(--color-marigold);
+  color: var(--color-mango);
 }
 
+/* The cherry on top: it wobbles at rest and grows as the spin charges. */
 .flame {
-  /* (50, 32) in the lamp's 100 x 104 box. */
-  transform-origin: 50% 30.77%;
-  animation: flicker-flame 1.8s ease-in-out infinite;
+  /* (50, 27) in the cone's 100 x 104 box: where the cherry sits on the scoop. */
+  transform-origin: 50% 25.96%;
+  animation: wobble-cherry 1.8s ease-in-out infinite;
 }
 .wheel[data-phase="charging"] .flame {
-  transform: scale(calc(1 + var(--charge) * 0.5));
+  transform: scale(calc(1 + var(--charge) * 0.45));
 }
 .wheel[data-phase="spinning"] .flame,
 .wheel[data-phase="charging"] .flame {
   animation-duration: 0.3s;
 }
-@keyframes flicker-flame {
-  0%, 100% { transform: scale(1, 1) rotate(0); }
-  40%      { transform: scale(0.94, 1.06) rotate(-3deg); }
-  70%      { transform: scale(1.04, 0.95) rotate(2deg); }
+@keyframes wobble-cherry {
+  0%, 100% { transform: rotate(0); }
+  40%      { transform: rotate(-9deg); }
+  70%      { transform: rotate(6deg); }
 }
-.holes circle {
-  fill: #ffe7a0;
-}
+/* Sprinkles on the scoop, which pulse with the beat of a spin. */
+.holes circle:nth-child(3n + 1) { fill: #ff5061; }
+.holes circle:nth-child(3n + 2) { fill: #4e9a3a; }
+.holes circle:nth-child(3n) { fill: #ffb81c; }
 .wheel[data-phase="spinning"] .holes {
   animation: beat 0.42s ease-in-out infinite alternate;
 }

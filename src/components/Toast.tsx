@@ -20,12 +20,12 @@ export function useToast() {
   return useContext(ToastContext);
 }
 
-/** A small mark in front of the text; the pill itself is always ivory. */
+/** A small mark in front of the text; the pill itself is always white. */
 const TONES: Record<Tone, string> = {
-  info: "bg-plum/40",
-  success: "bg-parrot",
-  warn: "bg-marigold",
-  error: "bg-kumkum",
+  info: "bg-cocoa/50",
+  success: "bg-pista",
+  warn: "bg-mango",
+  error: "bg-havmor",
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -53,9 +53,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="animate-rise flex max-w-[400px] items-center gap-2.5 rounded-xl bg-cream px-[18px] py-3 text-[14px] font-semibold leading-snug text-plum shadow-[0_12px_30px_rgba(0,0,0,0.4)]"
+            className="animate-rise flex max-w-[400px] items-center gap-2.5 rounded-2xl border border-choco/8 bg-white px-[18px] py-3 text-[14px] font-bold leading-snug text-choco shadow-[0_14px_30px_-8px_rgba(89,51,42,0.45)]"
           >
-            <span aria-hidden className={`h-2 w-2 shrink-0 rounded-full ${TONES[t.tone]}`} />
+            <span aria-hidden className={`h-2.5 w-2.5 shrink-0 rounded-full ${TONES[t.tone]}`} />
             {t.text}
           </div>
         ))}

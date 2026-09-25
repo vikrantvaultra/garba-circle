@@ -1,52 +1,49 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------------
-   Garba Circle design tokens.
-   The palette is a Navratri night: an indigo sky, marigold garlands and
-   brass diyas, kumkum red, rani pink and parrot green chaniya cholis, and
-   ivory for everything that has to be read.
+   Havmor Garba Circle design tokens.
+   Havmor's own palette: the red of the drip logo, vanilla cream for every
+   surface, and chocolate for everything that has to be read. The flavours
+   (strawberry, pista, mango, blueberry, caramel) are the accents — dancers'
+   outfits, map pins, sprinkles.
    `static` so the CSS modules can use every token, not just the ones a
    utility class happens to reference.
    ------------------------------------------------------------------------ */
 @theme static {
-  --color-night: #140a33;
-  --color-night-2: #1b0b44;
-  --color-deep: #0c0522;
-  --color-plum: #2a1260;
-  --color-plum-2: #3e1c7e;
+  --color-havmor: #d3002b;
+  --color-havmor-deep: #a3001f;
+  --color-havmor-soft: #ffe3e6;
+  --color-strawberry: #ff5061;
 
-  --color-marigold: #f6a91b;
-  --color-marigold-deep: #e0911f;
-  --color-gold: #ffd66b;
-  --color-kumkum: #d62845;
-  --color-rani: #e23a93;
-  --color-magenta: #c2185b;
-  --color-parrot: #37b26c;
-  --color-royal: #7c8cf0;
-  --color-cream: #fbefd9;
-  --color-sand: #e8d5b7;
-  --color-muted: #b9a9d6;
+  --color-vanilla: #fffcf0;
+  --color-cream: #fff6e9;
+  --color-wafer: #f7e6c8;
+  --color-cone: #f2b65a;
+  --color-caramel: #c7822b;
 
-  --font-display: var(--font-rozha), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-hind), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-choco: #3b1d15;
+  --color-choco-2: #59332a;
+  --color-cocoa: #8a6558;
 
-  --radius-card: 22px;
+  --color-pista: #4e9a3a;
+  --color-mango: #ffb81c;
+  --color-blueberry: #5b4fcf;
 
-  --animate-flicker: flicker 2.6s ease-in-out infinite;
-  --animate-shimmer: shimmer 2.6s linear infinite;
+  --font-display: var(--font-nunito), var(--font-hind), system-ui, sans-serif;
+  --font-body: var(--font-nunito), var(--font-hind), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-card: 24px;
+
+  --animate-wobble: wobble 2.6s ease-in-out infinite;
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both;
   --animate-sheet: sheet 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
   --animate-pulse-ring: pulse-ring 2s ease-out infinite;
 }
 
-@keyframes flicker {
-  0%, 100% { opacity: 1;    transform: scaleY(1); }
-  45%      { opacity: 0.82; transform: scaleY(0.94); }
-  70%      { opacity: 0.95; transform: scaleY(1.04); }
-}
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+@keyframes wobble {
+  0%, 100% { transform: rotate(0); }
+  40%      { transform: rotate(-6deg); }
+  70%      { transform: rotate(4deg); }
 }
 @keyframes rise {
   0%   { transform: translateY(16px); opacity: 0; }
@@ -66,32 +63,31 @@
 * { -webkit-tap-highlight-color: transparent; }
 
 html {
-  background: var(--color-deep);
+  background: var(--color-vanilla);
+  color-scheme: light;
   /* Stops iOS zooming the page when an input gets focus. */
   -webkit-text-size-adjust: 100%;
-  /* Rozha One ships one weight. Never fake a bold on it. */
-  font-synthesis-weight: none;
   scroll-padding-top: env(safe-area-inset-top, 0px);
 }
 
 body {
   min-height: 100dvh;
-  color: var(--color-cream);
+  color: var(--color-choco);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  /* The indigo sky is painted by <Ambience> on its own fixed layer. A
+  /* The cream backdrop is painted by <Ambience> on its own fixed layer. A
      `background-attachment: fixed` here would make phones repaint the whole
      screen on every scroll frame. */
-  background: var(--color-deep);
+  background: var(--color-vanilla);
   overflow-x: hidden;
 }
 
-::selection { background: var(--color-rani); color: white; }
+::selection { background: var(--color-havmor); color: white; }
 
 /* Scrollbars stay out of the way but remain usable on desktop. */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(246, 169, 27, 0.35);
+  background: rgba(211, 0, 43, 0.3);
   border-radius: 99px;
 }
 
@@ -102,23 +98,28 @@ body {
   padding-inline: 20px;
 }
 
-/* The app's main surface: a deep indigo card with a faint hairline. */
+/* The app's main surface: a white card on vanilla, with a warm hairline. */
 @utility panel {
   position: relative;
-  background: linear-gradient(180deg, rgba(42, 18, 96, 0.6), rgba(20, 10, 51, 0.5));
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #fff;
+  border: 1px solid rgba(89, 51, 42, 0.1);
   border-radius: var(--radius-card);
+  box-shadow: 0 1px 0 rgba(89, 51, 42, 0.04), 0 10px 28px -18px rgba(89, 51, 42, 0.35);
 }
 
-@utility gold-text {
-  background: linear-gradient(90deg, #ffd66b, #fff4d6, #f6a91b, #ffd66b);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  /* One sweep as the heading arrives. Animating background-position can't run
-     on the compositor, so an endless shimmer would repaint every frame. */
-  animation: shimmer 2.6s linear 1;
+/* Havmor's headline voice: Nunito at its heaviest, set tight. */
+@utility headline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* A small uppercase label over a heading, like Havmor's "CHOOSE YOUR". */
+@utility eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 @utility btn-primary {
@@ -129,20 +130,20 @@ body {
   gap: 8px;
   width: 100%;
   min-height: 52px;
-  padding-inline: 20px;
-  border-radius: 14px;
+  padding-inline: 22px;
+  border-radius: 999px;
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
   line-height: 1.2;
-  color: var(--color-plum);
-  background: var(--color-marigold);
-  box-shadow: 0 8px 24px rgba(246, 169, 27, 0.35);
-  transition: transform 0.14s ease, filter 0.14s ease;
+  color: #fff;
+  background: var(--color-havmor);
+  box-shadow: 0 10px 22px -10px rgba(211, 0, 43, 0.75), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 0.14s ease, background 0.14s ease;
 }
 @utility btn-primary-active {
   transform: scale(0.975);
-  filter: brightness(0.96);
+  background: var(--color-havmor-deep);
 }
 
 @utility btn-ghost {
@@ -153,14 +154,14 @@ body {
   width: 100%;
   min-height: 50px;
   padding-inline: 18px;
-  border-radius: 14px;
+  border-radius: 999px;
   font-family: var(--font-body);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 16px;
   line-height: 1.2;
-  color: var(--color-cream);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-havmor);
+  background: #fff;
+  border: 1.5px solid rgba(211, 0, 43, 0.35);
   transition: background 0.14s ease, transform 0.14s ease;
 }
 
@@ -168,19 +169,19 @@ body {
   width: 100%;
   min-height: 52px;
   padding: 14px 16px;
-  border-radius: 14px;
+  border-radius: 16px;
   /* 16px minimum or iOS Safari zooms on focus. */
-  font: 500 16px var(--font-body);
-  color: var(--color-cream);
-  background: rgba(12, 5, 34, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  font: 600 16px var(--font-body);
+  color: var(--color-choco);
+  background: #fff;
+  border: 1.5px solid rgba(89, 51, 42, 0.16);
   outline: none;
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
-  &::placeholder { color: rgba(185, 169, 214, 0.7); }
+  &::placeholder { color: rgba(138, 101, 88, 0.7); font-weight: 500; }
 }
 @utility field-focus {
-  border-color: var(--color-marigold);
-  box-shadow: 0 0 0 3px rgba(246, 169, 27, 0.2);
+  border-color: var(--color-havmor);
+  box-shadow: 0 0 0 4px rgba(211, 0, 43, 0.12);
 }
 
 @utility chip {
@@ -190,22 +191,22 @@ body {
   padding: 7px 14px;
   border-radius: 999px;
   font-size: 14px;
-  font-weight: 500;
-  color: var(--color-muted);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-weight: 700;
+  color: var(--color-choco-2);
+  background: #fff;
+  border: 1.5px solid rgba(89, 51, 42, 0.16);
   transition: all 0.16s ease;
 }
 @utility chip-on {
-  color: var(--color-cream);
-  background: rgba(246, 169, 27, 0.14);
-  border-color: var(--color-marigold);
+  color: #fff;
+  background: var(--color-havmor);
+  border-color: var(--color-havmor);
 }
 
 /* Loading placeholders. Only opacity animates, so it stays on the compositor. */
 @utility skeleton {
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(89, 51, 42, 0.08);
   animation: skeleton-pulse 1.2s ease-in-out infinite alternate;
 }
 @keyframes skeleton-pulse {

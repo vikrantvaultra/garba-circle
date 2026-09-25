@@ -1,33 +1,3 @@
-.top {
-  position: relative;
-  isolation: isolate;
-}
-.top h1 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 40px;
-  line-height: 1.05;
-  margin: 0;
-}
-.gu {
-  position: absolute;
-  left: -6px;
-  top: -26px;
-  z-index: -1;
-  margin: 0;
-  font-weight: 700;
-  font-size: 72px;
-  line-height: 1;
-  color: var(--color-marigold);
-  opacity: 0.16;
-  pointer-events: none;
-}
-.sub {
-  margin: 8px 0 0;
-  color: var(--color-muted);
-  font-size: 15px;
-}
-
 .picker {
   position: relative;
   z-index: 5;
@@ -35,7 +5,7 @@
 }
 .q {
   display: block;
-  font-weight: 600;
+  font-weight: 900;
   font-size: 16px;
   margin: 0 0 10px;
 }
@@ -59,32 +29,36 @@
   min-height: 36px;
   padding: 0 13px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: transparent;
-  color: var(--color-muted);
-  font: 500 14px var(--font-body);
+  border: 1.5px solid rgba(89, 51, 42, 0.16);
+  background: #fff;
+  color: var(--color-choco-2);
+  font: 700 14px var(--font-body);
   cursor: pointer;
 }
 .filters button[aria-pressed="true"] {
-  background: rgba(246, 169, 27, 0.14);
-  border-color: var(--color-marigold);
-  color: var(--color-cream);
+  background: var(--color-havmor);
+  border-color: var(--color-havmor);
+  color: #fff;
+}
+.filters button[aria-pressed="true"] .dot {
+  box-shadow: 0 0 0 2px #fff;
 }
 .filters button:focus-visible {
-  outline: 2px solid var(--color-cream);
+  outline: 2px solid var(--color-havmor);
   outline-offset: 2px;
 }
 
+/* Kinds wear the map's pin colours: caramel, pista, strawberry, blueberry. */
 .dot {
   width: 9px;
   height: 9px;
   border-radius: 50%;
   flex-shrink: 0;
-  background: var(--color-marigold);
+  background: #d9861a;
 }
-.dot[data-kind="free"] { background: var(--color-parrot); }
-.dot[data-kind="community"] { background: var(--color-rani); }
-.dot[data-kind="members"] { background: var(--color-royal); }
+.dot[data-kind="free"] { background: #4e9a3a; }
+.dot[data-kind="community"] { background: #e0457b; }
+.dot[data-kind="members"] { background: #5b4fcf; }
 
 .mapWrap {
   position: relative;
@@ -102,14 +76,15 @@
 .listHead h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 24px;
+  letter-spacing: -0.02em;
 }
 .note {
   margin: 0 0 14px;
   font-size: 13px;
   line-height: 1.45;
-  color: var(--color-muted);
+  color: var(--color-choco-2);
 }
 
 .list {
@@ -123,15 +98,16 @@
 .card {
   position: relative;
   padding: 16px 16px 14px;
-  border-radius: 20px;
-  background: linear-gradient(180deg, rgba(42, 18, 96, 0.6), rgba(20, 10, 51, 0.5));
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(89, 51, 42, 0.1);
+  box-shadow: 0 10px 26px -20px rgba(89, 51, 42, 0.45);
   transition: border-color 0.2s, box-shadow 0.2s;
   scroll-margin: 90px 0 120px;
 }
 .card[data-selected="true"] {
-  border-color: var(--color-marigold);
-  box-shadow: 0 0 0 3px rgba(246, 169, 27, 0.18);
+  border-color: var(--color-havmor);
+  box-shadow: 0 0 0 4px rgba(211, 0, 43, 0.12);
 }
 .cardMain {
   display: block;
@@ -145,7 +121,7 @@
   font: inherit;
 }
 .cardMain:focus-visible {
-  outline: 2px solid var(--color-marigold);
+  outline: 2px solid var(--color-havmor);
   outline-offset: 6px;
   border-radius: 12px;
 }
@@ -155,8 +131,8 @@
   align-items: center;
   gap: 6px 10px;
   font-size: 12.5px;
-  font-weight: 600;
-  color: var(--color-muted);
+  font-weight: 700;
+  color: var(--color-choco-2);
 }
 .kind {
   display: inline-flex;
@@ -164,30 +140,32 @@
   gap: 6px;
 }
 .status {
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 999px;
   font-size: 11.5px;
+  font-weight: 800;
 }
 .status[data-status="confirmed-2026"] {
-  color: #7fe0a6;
-  background: rgba(55, 178, 108, 0.14);
+  color: #2f6b22;
+  background: rgba(78, 154, 58, 0.14);
 }
 .status[data-status="recurring"] {
-  color: var(--color-gold);
-  background: rgba(246, 169, 27, 0.12);
+  color: #8a5a10;
+  background: rgba(255, 184, 28, 0.2);
 }
 .name {
   margin: 8px 0 2px;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 22px;
+  font-weight: 900;
+  font-size: 21px;
   line-height: 1.15;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
 .venue {
   margin: 0;
   font-size: 14px;
-  color: var(--color-muted);
+  color: var(--color-choco-2);
   overflow-wrap: anywhere;
 }
 .facts {
@@ -207,7 +185,7 @@
   width: 17px;
   height: 17px;
   margin-top: 1px;
-  color: var(--color-marigold);
+  color: var(--color-havmor);
 }
 .fact dt {
   position: absolute;
@@ -224,7 +202,7 @@
   margin: 12px 0 0;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(251, 239, 217, 0.85);
+  color: var(--color-choco-2);
 }
 .actions {
   display: flex;
@@ -233,44 +211,48 @@
   gap: 8px 14px;
   margin-top: 14px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px dashed rgba(89, 51, 42, 0.15);
 }
 .directions {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 40px;
-  padding: 0 14px;
-  border-radius: 12px;
-  background: var(--color-marigold);
-  color: var(--color-plum);
-  font-weight: 700;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--color-havmor);
+  color: #fff;
+  font-weight: 800;
   font-size: 14px;
+  box-shadow: 0 6px 14px -6px rgba(211, 0, 43, 0.7);
 }
 .source {
   font-size: 13px;
-  color: var(--color-muted);
+  font-weight: 600;
+  color: var(--color-cocoa);
   text-decoration: underline;
-  text-decoration-color: rgba(185, 169, 214, 0.4);
+  text-decoration-color: rgba(138, 101, 88, 0.4);
   text-underline-offset: 3px;
 }
 .directions:focus-visible,
 .source:focus-visible {
-  outline: 2px solid var(--color-cream);
+  outline: 2px solid var(--color-havmor);
   outline-offset: 2px;
 }
 
 .empty {
   margin-top: 16px;
   padding: 18px;
-  border-radius: 18px;
-  border: 1px dashed rgba(246, 169, 27, 0.28);
+  border-radius: 22px;
+  background: #fff;
+  border: 1.5px dashed rgba(211, 0, 43, 0.3);
   font-size: 14px;
   line-height: 1.5;
-  color: var(--color-muted);
+  color: var(--color-choco-2);
 }
 .empty b {
-  color: var(--color-cream);
+  color: var(--color-choco);
+  font-weight: 900;
 }
 .cityGrid {
   display: flex;
@@ -279,48 +261,48 @@
   margin-top: 12px;
 }
 
-/* "Find a garba partner", at the top of the page. */
+/* "Find a garba partner", just under the header. */
 .partner {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  border-radius: 18px;
-  background: linear-gradient(100deg, rgba(246, 169, 27, 0.2), rgba(214, 40, 69, 0.14));
-  border: 1px solid rgba(246, 169, 27, 0.5);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
-  color: var(--color-cream);
+  border-radius: 22px;
+  background: #fff;
+  border: 1.5px solid rgba(211, 0, 43, 0.25);
+  box-shadow: 0 12px 26px -16px rgba(211, 0, 43, 0.55);
+  color: var(--color-choco);
   transition: transform 0.14s ease, border-color 0.14s ease;
 }
 .partner:hover {
-  border-color: var(--color-marigold);
+  border-color: var(--color-havmor);
 }
 .partner:active {
   transform: scale(0.985);
 }
 .partner:focus-visible {
-  outline: 2px solid var(--color-cream);
+  outline: 2px solid var(--color-havmor);
   outline-offset: 3px;
 }
 .partner b {
   display: block;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 900;
 }
 .partner small {
   display: block;
   font-size: 13px;
-  color: var(--color-muted);
+  color: var(--color-choco-2);
 }
 .partnerIcon {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
-  border-radius: 12px;
-  background: var(--color-marigold);
-  color: var(--color-plum);
+  border-radius: 50%;
+  background: var(--color-havmor);
+  color: #fff;
 }
 .partnerIcon svg {
   width: 22px;
@@ -330,5 +312,5 @@
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: var(--color-marigold);
+  color: var(--color-havmor);
 }

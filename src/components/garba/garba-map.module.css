@@ -5,9 +5,8 @@
   margin-left: calc(50% - 50vw);
   height: min(60dvh, 520px);
   min-height: 340px;
-  background: #f2efe9;
-  border-block: 1px solid rgba(246, 169, 27, 0.35);
-  box-shadow: 0 -6px 0 -3px rgba(246, 169, 27, 0.9);
+  background: var(--color-cream);
+  border-block: 3px solid var(--color-havmor);
   /* MapLibre's controls stack on their own z-indexes; keep them inside. */
   isolation: isolate;
   scroll-margin-top: 12px;
@@ -24,7 +23,8 @@
   padding: 24px;
   text-align: center;
   font-size: 14px;
-  color: #6b4a3a;
+  font-weight: 600;
+  color: var(--color-choco-2);
 }
 
 /* ---- Chips floating over the map, top left ---- */
@@ -48,17 +48,17 @@
   max-width: 100%;
   margin: 0;
   padding: 6px 10px;
-  border-radius: 10px;
-  background: #fffdf8;
-  color: #5a1e1a;
-  font: 600 12px/1.35 var(--font-body);
-  box-shadow: 0 2px 8px rgba(58, 20, 16, 0.18);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--color-choco);
+  font: 700 12px/1.35 var(--font-body);
+  box-shadow: 0 3px 10px rgba(59, 29, 21, 0.18);
 }
 .chip svg {
   width: 13px;
   height: 13px;
   flex-shrink: 0;
-  color: #d62845;
+  color: var(--color-havmor);
 }
 .chip b {
   font-weight: 700;
@@ -83,8 +83,8 @@
   font: 700 9px var(--font-body);
   font-style: normal;
   color: #fff;
-  background: #5a1e1a;
-  box-shadow: 0 0 0 1.5px #fbefd9;
+  background: var(--color-havmor);
+  box-shadow: 0 0 0 1.5px #fffcf0;
 }
 @media (max-width: 480px) {
   /* On a phone, keep the map visible: only the count stays. */
@@ -96,7 +96,7 @@
 /* ---- MapLibre controls, warmed to match the chips ---- */
 .frame :global(.maplibregl-ctrl-group) {
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(58, 20, 16, 0.2);
+  box-shadow: 0 3px 10px rgba(59, 29, 21, 0.2);
 }
 .frame :global(.maplibregl-ctrl-group button) {
   width: 34px;
@@ -104,48 +104,50 @@
 }
 .frame :global(.maplibregl-cooperative-gesture-screen) {
   font-family: var(--font-body);
-  background: rgba(20, 10, 51, 0.55);
+  background: rgba(59, 29, 21, 0.55);
 }
 
 /* ---- Popup ---- */
 .popup :global(.maplibregl-popup-content) {
   padding: 12px 14px 12px;
-  border-radius: 14px;
-  background: #fffdf8;
-  color: #2a120e;
+  border-radius: 16px;
+  background: #fff;
+  color: var(--color-choco);
   font-family: var(--font-body);
-  box-shadow: 0 10px 28px rgba(58, 20, 16, 0.28);
+  border-top: 4px solid var(--color-havmor);
+  box-shadow: 0 10px 28px rgba(59, 29, 21, 0.28);
 }
 .popup :global(.maplibregl-popup-close-button) {
   width: 28px;
   height: 28px;
   font-size: 18px;
-  color: #6b4a3a;
+  color: var(--color-cocoa);
 }
 .popKind {
   margin: 0 0 2px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .popTitle {
   margin: 0 22px 4px 0;
   font-family: var(--font-display);
+  font-weight: 900;
   font-size: 17px;
   line-height: 1.2;
-  color: #3a1410;
+  color: var(--color-choco);
 }
 .popMeta {
   margin: 0;
   font-size: 13px;
   line-height: 1.45;
-  color: #6b4a3a;
+  color: var(--color-choco-2);
 }
 .popLink {
   display: inline-block;
   margin-top: 8px;
   font-size: 13px;
-  font-weight: 700;
-  color: #b3541e !important;
+  font-weight: 800;
+  color: var(--color-havmor) !important;
 }

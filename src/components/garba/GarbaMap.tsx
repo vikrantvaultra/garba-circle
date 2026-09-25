@@ -25,11 +25,12 @@ const INDIA_BOUNDS: LngLatBoundsLike = [
   [90, 31],
 ];
 
+/** Flavour colours: caramel, pista, strawberry, blueberry. */
 export const KIND_COLOR: Record<GarbaKind, string> = {
-  ticketed: "#E0911F",
-  free: "#2E9E5E",
-  community: "#D6337F",
-  members: "#5B6BD8",
+  ticketed: "#D9861A",
+  free: "#4E9A3A",
+  community: "#E0457B",
+  members: "#5B4FCF",
 };
 
 const escape = (text: string) =>
@@ -167,10 +168,10 @@ export function GarbaMap({
             source: "garbas",
             filter: ["has", "point_count"],
             paint: {
-              "circle-color": "#5A1E1A",
+              "circle-color": "#D3002B",
               "circle-radius": ["step", ["get", "point_count"], 16, 5, 20, 15, 25],
               "circle-stroke-width": 3,
-              "circle-stroke-color": "#FBEFD9",
+              "circle-stroke-color": "#FFFCF0",
             },
           });
           map.addLayer({
@@ -217,7 +218,7 @@ export function GarbaMap({
               "circle-color": kindColor,
               "circle-radius": 13,
               "circle-stroke-width": 4,
-              "circle-stroke-color": "#FFD66B",
+              "circle-stroke-color": "#FFB81C",
             },
           });
           map.addLayer({
@@ -236,7 +237,7 @@ export function GarbaMap({
               "text-optional": true,
             },
             paint: {
-              "text-color": "#3A1410",
+              "text-color": "#3B1D15",
               "text-halo-color": "#FFFFFF",
               "text-halo-width": 1.6,
             },

@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { useToast } from "@/components/Toast";
+import { Scoop } from "@/components/brand/Scoop";
+import { Wordmark } from "@/components/brand/Wordmark";
+import { levelFlavour } from "@/lib/havmor";
 import { api, ApiFailure } from "@/lib/client/api";
 import {
   DANCE_STYLES,
@@ -92,18 +95,19 @@ export function SetupWizard({
   return (
     <main className="app-shell flex min-h-dvh flex-col pt-safe pb-safe">
       <header className="py-5">
+        <Wordmark tone="red" width={76} className="mb-4" />
         <div className="flex gap-1.5">
           {STEPS.map((label, i) => (
             <div key={label} className="flex-1">
               <div
                 className={`h-1.5 rounded-full transition-colors ${
-                  i <= step ? "bg-gradient-to-r from-marigold to-marigold-deep" : "bg-cream/15"
+                  i <= step ? "bg-havmor" : "bg-choco/10"
                 }`}
               />
             </div>
           ))}
         </div>
-        <p className="mt-2.5 text-[12.5px] font-semibold uppercase tracking-[0.2em] text-marigold/80">
+        <p className="eyebrow mt-2.5 text-havmor">
           Step {step + 1} of 3 {"\u00b7"} {STEPS[step]}
         </p>
       </header>
@@ -111,10 +115,10 @@ export function SetupWizard({
       <div key={step} className="animate-rise flex-1 pb-4">
         {step === 0 && (
           <section>
-            <h1 className="font-display text-[28px] font-extrabold leading-tight">
+            <h1 className="headline text-[30px] leading-tight">
               Show your smile
             </h1>
-            <p className="mt-1.5 text-[15px] leading-snug text-cream/65">
+            <p className="mt-1.5 text-[15px] leading-snug text-choco-2">
               A real photo gets far more dandiya invites. You can skip it, but
               profiles with photos get matched three times as often.
             </p>
@@ -131,10 +135,10 @@ export function SetupWizard({
         {step === 1 && (
           <section className="space-y-5">
             <div>
-              <h1 className="font-display text-[28px] font-extrabold leading-tight">
+              <h1 className="headline text-[30px] leading-tight">
                 About you
               </h1>
-              <p className="mt-1.5 text-[15px] leading-snug text-cream/65">
+              <p className="mt-1.5 text-[15px] leading-snug text-choco-2">
                 This is what the circle sees. Your mobile number never is.
               </p>
             </div>
@@ -202,10 +206,10 @@ export function SetupWizard({
         {step === 2 && (
           <section className="space-y-5">
             <div>
-              <h1 className="font-display text-[28px] font-extrabold leading-tight">
+              <h1 className="headline text-[30px] leading-tight">
                 Your style
               </h1>
-              <p className="mt-1.5 text-[15px] leading-snug text-cream/65">
+              <p className="mt-1.5 text-[15px] leading-snug text-choco-2">
                 What do you love to dance, and how many rounds can you survive?
               </p>
             </div>
@@ -234,29 +238,30 @@ export function SetupWizard({
                     onClick={() => set("skillLevel", level.key)}
                     className={`panel flex w-full items-center gap-3 p-3.5 text-left transition-colors ${
                       draft.skillLevel === level.key
-                        ? "border-marigold/70 bg-marigold/10"
+                        ? "border-havmor bg-havmor-soft/50"
                         : ""
                     }`}
                   >
                     <span
                       className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
                         draft.skillLevel === level.key
-                          ? "border-marigold bg-marigold"
-                          : "border-cream/30"
+                          ? "border-havmor bg-havmor"
+                          : "border-choco/25"
                       }`}
                     >
                       {draft.skillLevel === level.key && (
-                        <span className="h-1.5 w-1.5 rounded-full bg-night" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-white" />
                       )}
                     </span>
-                    <span className="min-w-0">
-                      <span className="block font-display text-[15.5px] font-bold">
+                    <span className="min-w-0 flex-1">
+                      <span className="headline block text-[15.5px]">
                         {level.label}
                       </span>
-                      <span className="block text-[13px] text-cream/60">
+                      <span className="block text-[13px] text-choco-2">
                         {level.hint}
                       </span>
                     </span>
+                    <LevelScoop level={level.key} />
                   </button>
                 ))}
               </div>
@@ -270,7 +275,7 @@ export function SetupWizard({
                 value={draft.bio}
                 onChange={(e) => set("bio", e.target.value)}
               />
-              <p className="mt-1 text-right text-[12px] text-cream/40">
+              <p className="mt-1 text-right text-[12px] text-cocoa">
                 {draft.bio.length}/240
               </p>
             </Field>
@@ -318,10 +323,22 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-[13.5px] font-semibold tracking-wide text-cream/70">
+      <span className="mb-2 block text-[13.5px] font-extrabold tracking-wide text-choco-2">
         {label}
       </span>
       {children}
     </label>
+  );
+}
+
+/** Each level's Havmor flavour, as a small cone beside it. */
+function LevelScoop({ level }: { level: string }) {
+  const scoop = levelFlavour(level);
+  if (!scoop) return null;
+  return (
+    <span className="flex w-[64px] shrink-0 flex-col items-center gap-0.5 text-center">
+      <Scoop flavour={scoop.flavour} size={34} />
+      <span className="text-[10.5px] font-bold leading-tight text-cocoa">{scoop.flavour.name}</span>
+    </span>
   );
 }

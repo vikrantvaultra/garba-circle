@@ -43,7 +43,7 @@ never changes who you land on).
 Whoever it lands on comes with a compatibility score. It is not random: it
 is built in `src/lib/compat.ts` from shared dance styles, same city, same
 skill level and closeness in age, and the reason is printed under the
-number. Scores of 82+ are a "rare jodi", 96+ a "dandiya soulmate".
+number. Scores of 82+ are a "double-scoop jodi", 96+ a "dandiya soulmate".
 "Tonight's jodis" lists everyone the circle landed on since 6 am IST (garba
 nights run past midnight), and the streak counts consecutive nights with a
 spin — both read from the spins log.

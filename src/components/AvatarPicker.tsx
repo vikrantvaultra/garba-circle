@@ -82,9 +82,9 @@ export function AvatarPicker({
         className="relative"
         aria-label="Choose a profile photo"
       >
-        <span className="absolute inset-0 -z-10 animate-pulse-ring rounded-full border border-marigold/50" />
+        <span className="absolute inset-0 -z-10 animate-pulse-ring rounded-full border-2 border-havmor/40" />
         <Avatar src={value} name={name || "?"} size={132} />
-        <span className="absolute bottom-1 right-1 grid h-10 w-10 place-items-center rounded-full border-2 border-night bg-gradient-to-br from-marigold to-marigold-deep text-night shadow-lg">
+        <span className="absolute bottom-1 right-1 grid h-10 w-10 place-items-center rounded-full border-[3px] border-vanilla bg-havmor text-white shadow-lg">
           {busy ? (
             <span className="text-[13px] font-bold">{"…"}</span>
           ) : (
@@ -104,7 +104,7 @@ export function AvatarPicker({
         onChange={(e) => pick(e.target.files?.[0])}
       />
 
-      <p className="mt-3 text-center text-[13px] text-cream/55">
+      <p className="mt-3 text-center text-[13px] font-semibold text-choco-2">
         {value ? "Tap to change your photo" : "Add a clear photo of yourself"}
       </p>
     </div>

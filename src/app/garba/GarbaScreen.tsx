@@ -4,9 +4,13 @@ import { useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BottomNav } from "@/components/BottomNav";
+import { BrandHeader } from "@/components/brand/BrandHeader";
+import { FlavourCard } from "@/components/brand/FlavourCard";
 import { CityPicker } from "@/components/circle/CityPicker";
 import { directionsUrl, hostOf } from "@/components/garba/links";
 import { KIND_LABEL, type GarbaCity, type GarbaEvent, type GarbaKind } from "@/lib/garba/schema";
+import { FULL_NAME } from "@/lib/constants";
+import type { Flavour } from "@/lib/havmor";
 import styles from "./garba.module.css";
 
 // Leaflet needs `window`; the map renders only in the browser.
@@ -15,7 +19,7 @@ const GarbaMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="ml-[calc(50%-50vw)] grid h-[min(60dvh,520px)] min-h-[340px] w-screen place-items-center bg-[#f2efe9] text-[14px] text-[#6b4a3a]">
+      <div className="ml-[calc(50%-50vw)] grid h-[min(60dvh,520px)] min-h-[340px] w-screen place-items-center bg-cream text-[14px] font-semibold text-choco-2">
         Loading the map…
       </div>
     ),
@@ -146,6 +150,7 @@ export function GarbaScreen({
   status,
   checkedOn,
   signedIn,
+  tonight,
 }: {
   events: GarbaEvent[];
   cities: GarbaCity[];
@@ -154,6 +159,8 @@ export function GarbaScreen({
   status: string | null;
   checkedOn: string | null;
   signedIn: boolean;
+  /** Tonight's Havmor flavour, picked on the server so it can't flip on hydration. */
+  tonight: { flavour: Flavour; label: string };
 }) {
   const [city, setCity] = useState<string | null>(initialCity);
   const [kind, setKind] = useState<GarbaKind | "all">("all");
@@ -217,7 +224,14 @@ export function GarbaScreen({
   };
 
   return (
-    <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)] pt-[calc(env(safe-area-inset-top,0px)+28px)]">
+    <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)]">
+      <BrandHeader
+        eyebrow="Havmor Garba Circle"
+        title={<>Where&rsquo;s the garba?</>}
+        sub={`${status ? `${status} ` : ""}Pick a city to see every garba on the map.`}
+        watermark={{ text: "ગરબા", lang: "gu" }}
+      />
+
       {/* The other half of the app: someone to dance with once you're there. */}
       <Link href="/spin" className={styles.partner}>
         <span className={styles.partnerIcon} aria-hidden>
@@ -235,16 +249,6 @@ export function GarbaScreen({
           <path d="M9 6l6 6-6 6" />
         </svg>
       </Link>
-
-      <header className={`${styles.top} mt-7`}>
-        <p className={styles.gu} lang="gu" aria-hidden>
-          ગરબા
-        </p>
-        <h1>Where&rsquo;s the garba?</h1>
-        <p className={styles.sub}>
-          {status ? `${status} ` : ""}Pick a city to see every garba on the map.
-        </p>
-      </header>
 
       <section className={styles.picker} aria-label="Choose a city">
         <label className={styles.q} htmlFor="garba-city">
@@ -292,7 +296,7 @@ export function GarbaScreen({
           <div className={styles.cityGrid}>
             {cities.slice(0, 8).map((c) => (
               <button key={c.name} type="button" className="chip" onClick={() => chooseCity(c.name)}>
-                {c.name} <span className="text-muted">{c.count}</span>
+                {c.name} <span className="text-cocoa">{c.count}</span>
               </button>
             ))}
           </div>
@@ -323,10 +327,12 @@ export function GarbaScreen({
         </section>
       )}
 
+      <FlavourCard flavour={tonight.flavour} label={tonight.label} className="mt-6" />
+
       {!signedIn && (
-        <div className={`${styles.empty} mt-6`}>
-          <b>Going to a garba?</b> Find someone to dance with on Garba Circle.{" "}
-          <Link href="/login" className="font-semibold text-marigold underline underline-offset-4">
+        <div className={`${styles.empty} mt-4`}>
+          <b>Going to a garba?</b> Find someone to dance with on {FULL_NAME}.{" "}
+          <Link href="/login" className="font-extrabold text-havmor underline underline-offset-4">
             Sign in
           </Link>
         </div>

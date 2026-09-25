@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { Wordmark } from "@/components/brand/Wordmark";
 
 const KEY = "gc_guide_seen_v1";
 const EVENT = "gc-guide-dismissed";
@@ -33,12 +34,12 @@ const STEPS = [
       </>
     ),
     title: "Choose, then spin",
-    body: "Pick a city and who you’d like to meet, then tap the garbo. It stops on a real dancer. Your first five spins are free.",
+    body: "Pick a city and who you’d like to meet, then tap the cone in the middle. It stops on a real dancer. Your first five spins are free.",
   },
   {
     icon: <path d="M6 5l12 14M18 5L6 19" />,
     title: "Send a dandiya",
-    body: "Like who you see? Send a dandiya — no waiting for them to accept.",
+    body: "Like who you see? Send a dandiya — no waiting for them to accept. Every jodi comes with a Havmor scoop to share.",
   },
   {
     icon: (
@@ -74,16 +75,17 @@ export function FirstRunGuide() {
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       <button
         aria-label="Close"
-        className="absolute inset-0 bg-night/90"
+        className="absolute inset-0 bg-choco/60"
         onClick={dismiss}
       />
-      <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t border-gold/30 bg-gradient-to-b from-plum to-night px-5 pt-3 pb-safe">
-        <div className="mx-auto mb-5 h-1.5 w-11 rounded-full bg-cream/25" />
+      <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t-[5px] border-havmor bg-vanilla px-5 pt-3 pb-safe">
+        <div className="mx-auto mb-5 h-1.5 w-11 rounded-full bg-choco/15" />
 
-        <p className="text-[12.5px] font-bold uppercase tracking-[0.25em] text-marigold">
-          How it works
-        </p>
-        <h2 className="gold-text mt-1 font-display text-[27px] font-extrabold leading-tight">
+        <div className="flex items-center justify-between gap-3">
+          <p className="eyebrow text-havmor">How it works</p>
+          <Wordmark tone="red" width={70} />
+        </div>
+        <h2 className="headline mt-1 text-[28px] leading-tight">
           Three taali, that&rsquo;s it
         </h2>
 
@@ -91,10 +93,10 @@ export function FirstRunGuide() {
           {STEPS.map((step, i) => (
             <div key={step.title} className="flex gap-3.5">
               <div className="relative flex flex-col items-center">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-gold/30 bg-gradient-to-br from-marigold/25 to-rani/15">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-havmor text-white shadow-[0_6px_14px_-6px_rgba(211,0,43,0.7)]">
                   <svg
                     viewBox="0 0 24 24"
-                    className="h-[21px] w-[21px] text-marigold"
+                    className="h-[21px] w-[21px]"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.8"
@@ -105,15 +107,15 @@ export function FirstRunGuide() {
                   </svg>
                 </span>
                 {i < STEPS.length - 1 && (
-                  <span className="mt-1 h-4 w-px bg-gradient-to-b from-gold/40 to-transparent" />
+                  <span className="mt-1 h-4 w-0.5 rounded-full bg-havmor/25" />
                 )}
               </div>
               <div className="min-w-0 flex-1 pt-1">
-                <h3 className="font-display text-[16px] font-bold leading-tight">
-                  <span className="mr-1.5 text-marigold">{i + 1}.</span>
+                <h3 className="headline text-[16px] leading-tight">
+                  <span className="mr-1.5 text-havmor">{i + 1}.</span>
                   {step.title}
                 </h3>
-                <p className="mt-0.5 text-[13.5px] leading-snug text-cream/65">
+                <p className="mt-0.5 text-[13.5px] leading-snug text-choco-2">
                   {step.body}
                 </p>
               </div>

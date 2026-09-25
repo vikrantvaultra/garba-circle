@@ -1,14 +1,12 @@
 import { BottomNav } from "@/components/BottomNav";
 import { Bone } from "@/components/Skeleton";
+import { BrandHeader } from "@/components/brand/BrandHeader";
 
 /** Shown the instant the Chat tab is tapped, while the list loads. */
 export default function Loading() {
   return (
-    <main aria-busy="true" className="app-shell min-h-dvh pt-safe pb-32">
-      <header className="py-4">
-        <h1 className="font-display text-[26px] leading-none text-gold">Your chats</h1>
-        <Bone className="mt-2 h-[16px] w-32 rounded-md" />
-      </header>
+    <main aria-busy="true" className="app-shell min-h-dvh pb-32">
+      <BrandHeader title="Your chats" sub={<span className="block h-[20px]" />} />
       <div className="space-y-2.5">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="panel flex items-center gap-3 p-3.5">

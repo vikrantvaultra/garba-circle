@@ -1,44 +1,44 @@
 import type { Metadata, Viewport } from "next";
-import { Hind_Vadodara, Rozha_One } from "next/font/google";
+import { Hind_Vadodara, Nunito } from "next/font/google";
 import { Ambience } from "@/components/Ambience";
 import { DemoBanner } from "@/components/DemoBanner";
 import { MessageNotifier } from "@/components/MessageNotifier";
 import { ToastProvider } from "@/components/Toast";
-import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
+import { APP_NAME, APP_TAGLINE, FULL_NAME } from "@/lib/constants";
 import "./globals.css";
 
-// Rozha One for headlines and names; it carries Devanagari as well as Latin,
-// so Hindi and Marathi names render in the same face. Hind Vadodara for body
-// text, which covers Gujarati.
-const rozha = Rozha_One({
-  subsets: ["latin", "devanagari"],
-  weight: "400",
-  variable: "--font-rozha",
+// Nunito is Havmor's own typeface: Black for headlines, the lighter weights
+// for everything else. Hind Vadodara sits behind it for Gujarati (ગરબા), which
+// Nunito doesn't carry; Hindi and Marathi names fall through to the system.
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
 const hind = Hind_Vadodara({
-  subsets: ["latin", "gujarati"],
-  weight: ["400", "500", "600", "700"],
+  subsets: ["gujarati"],
+  weight: ["500", "700"],
   variable: "--font-hind",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: `${APP_NAME} — ${APP_TAGLINE}`,
+  title: `${FULL_NAME} — ${APP_TAGLINE}`,
   description:
-    "Spin the circle, find your Garba partner for Navratri, and chat safely inside Garba Circle.",
-  applicationName: APP_NAME,
+    "Havmor Garba Circle: spin the circle, find your garba partner for Navratri, and chat safely.",
+  applicationName: FULL_NAME,
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "black-translucent" },
   openGraph: {
-    title: `${APP_NAME} — ${APP_TAGLINE}`,
-    description: "Nau raat, ek circle. Find your Garba partner this Navratri.",
+    title: `${FULL_NAME} — ${APP_TAGLINE}`,
+    description: "Nau raat, ek circle, and more scoops of sweetness. Find your garba partner this Navratri.",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#140a33",
+  themeColor: "#d3002b",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -49,7 +49,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${rozha.variable} ${hind.variable}`}>
+    <html lang="en" className={`${nunito.variable} ${hind.variable}`}>
       <body className="antialiased">
         <Ambience />
         <ToastProvider>

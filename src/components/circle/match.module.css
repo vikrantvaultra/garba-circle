@@ -5,19 +5,20 @@
 }
 .avatar {
   position: relative;
-  width: 78px;
-  height: 78px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   flex-shrink: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 2px solid var(--color-marigold);
-  box-shadow: 0 0 24px rgba(246, 169, 27, 0.35);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 3px var(--color-havmor), 0 12px 24px -8px rgba(211, 0, 43, 0.5);
   font-family: var(--font-display);
+  font-weight: 900;
   font-size: 30px;
-  color: var(--color-cream);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 .avatar img {
   width: 100%;
@@ -26,22 +27,26 @@
 }
 .kicker {
   margin: 0;
-  color: var(--color-marigold);
-  font-weight: 700;
-  font-size: 14px;
+  color: var(--color-havmor);
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .name {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 900;
   font-size: 30px;
-  line-height: 1.1;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   margin: 2px 0;
   overflow-wrap: anywhere;
 }
 .meta {
   margin: 0;
-  color: var(--color-muted);
+  color: var(--color-choco-2);
   font-size: 15px;
+  font-weight: 600;
 }
 
 .compat {
@@ -52,29 +57,32 @@
 }
 .num {
   font-family: var(--font-display);
+  font-weight: 900;
   font-size: 40px;
   line-height: 1;
   min-width: 3.2ch;
+  color: var(--color-havmor);
   font-variant-numeric: tabular-nums;
 }
 .bar {
-  height: 8px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 10px;
+  border-radius: 10px;
+  background: rgba(89, 51, 42, 0.1);
   overflow: hidden;
 }
 .bar i {
   display: block;
   height: 100%;
   width: 0;
-  border-radius: 8px;
-  background: linear-gradient(90deg, var(--color-kumkum), var(--color-marigold));
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--color-strawberry), var(--color-havmor));
 }
 .reason {
   display: block;
   font-size: 13px;
-  color: var(--color-muted);
-  margin-top: 4px;
+  font-weight: 600;
+  color: var(--color-choco-2);
+  margin-top: 5px;
 }
 
 .line {
@@ -92,24 +100,61 @@
   padding: 5px 12px;
   border-radius: 999px;
   font-size: 13px;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+  background: #fff;
+  border: 1.5px solid rgba(89, 51, 42, 0.14);
 }
 .styles span[data-shared="true"] {
-  border-color: var(--color-marigold);
-  background: rgba(246, 169, 27, 0.14);
+  border-color: var(--color-havmor);
+  background: var(--color-havmor-soft);
+  color: var(--color-havmor-deep);
+}
+
+/* The Havmor flavour this jodi should share. */
+.scoop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(89, 51, 42, 0.1);
+}
+.scoopArt {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.25);
+}
+.scoopName {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 17px;
+  line-height: 1.15;
+}
+.scoopLine {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-choco-2);
 }
 
 .actions {
   display: grid;
   grid-template-columns: 1fr 1.6fr;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 .actions small {
   display: block;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
   opacity: 0.8;
   margin-top: 2px;
@@ -119,30 +164,20 @@
   text-align: center;
   font-size: 12.5px;
   line-height: 1.45;
-  color: var(--color-muted);
+  color: var(--color-cocoa);
 }
 
 /* Tiers */
 .tier_rare .kicker {
-  color: #ff7fc0;
+  color: var(--color-strawberry);
 }
 .tier_rare .avatar {
-  border-color: var(--color-rani);
-  box-shadow: 0 0 30px rgba(226, 58, 147, 0.6);
+  box-shadow: 0 0 0 3px var(--color-strawberry), 0 0 30px rgba(255, 80, 97, 0.55);
 }
 .tier_soulmate .kicker {
-  background: linear-gradient(90deg, #ffd66b, #fff4d6, #f6a91b, #ffd66b);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 2s linear infinite;
-  font-size: 16px;
+  color: var(--color-caramel);
+  font-size: 14px;
 }
 .tier_soulmate .avatar {
-  border: 3px solid var(--color-gold);
-  box-shadow: 0 0 40px rgba(255, 214, 107, 0.8);
-}
-@keyframes shimmer {
-  to { background-position: -200% 0; }
+  box-shadow: 0 0 0 4px var(--color-mango), 0 0 40px rgba(255, 184, 28, 0.75);
 }

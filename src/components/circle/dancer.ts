@@ -1,5 +1,5 @@
-/** Chaniya choli colours, picked per dancer so the same person keeps theirs. */
-const COLORS = ["#D62845", "#37B26C", "#E23A93", "#E0911F"];
+/** Flavour colours, picked per dancer so the same person keeps theirs. */
+const COLORS = ["#FF5061", "#4E9A3A", "#5B4FCF", "#E39A00"];
 
 export function dancerColor(seed: string): string {
   let hash = 0;
