@@ -1,7 +1,7 @@
 /**
  * Builds the Havmor brand assets from their sources:
- *   src/app/icon.svg          -> public/icons/*.png and src/app/apple-icon.png
  *   public/brand/havmor-logo.png -> public/brand/havmor-wordmark.png
+ *                                -> src/app/icon.png, src/app/apple-icon.png, public/icons/*.png
  *   brand-src/products/*        -> public/brand/products/*.webp (cut-outs)
  *   brand-src/wheel/*           -> public/brand/wheel/*.webp (spin wheel art)
  *
@@ -10,30 +10,11 @@
  * swapping in the hi-res logo from Havmor's brand team:
  *   node scripts/brand-assets.mjs
  */
-import { mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 
 const root = join(import.meta.dirname, "..");
-const icon = readFileSync(join(root, "src/app/icon.svg"));
-
-// Square app icons, straight from the SVG.
-for (const [file, size] of [
-  ["public/icons/icon-192.png", 192],
-  ["public/icons/icon-512.png", 512],
-  ["src/app/apple-icon.png", 180],
-]) {
-  await sharp(icon, { density: 72 * (size / 64) }).resize(size, size).png().toFile(join(root, file));
-}
-
-// Maskable: launchers crop to a circle, so the mark sits inside the middle 80%
-// on a full-bleed red square.
-const inner = await sharp(icon, { density: 72 * (410 / 64) }).resize(410, 410).png().toBuffer();
-await sharp({ create: { width: 512, height: 512, channels: 4, background: "#d3002b" } })
-  .composite([{ input: inner, top: 51, left: 51 }])
-  .png()
-  .toFile(join(root, "public/icons/maskable-512.png"));
-
 // Notification badge: Android paints only the alpha, so a white silhouette.
 const badge = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="#fff">
   <circle cx="32" cy="8" r="3.4"/><circle cx="49" cy="15" r="3.4"/><circle cx="56" cy="32" r="3.4"/>
@@ -61,6 +42,37 @@ await sharp(out, { raw: info })
   .trim({ threshold: 1 })
   .png()
   .toFile(join(root, "public/brand/havmor-wordmark.png"));
+
+// ---- App icons ----
+// Havmor's own favicon (havmor.com/sites/default/files/32x32_0.jpg): the
+// white wordmark on their red, 88% of the width, centred. They only publish
+// it at 32px, so it is rebuilt here at every size from the same wordmark.
+const HAVMOR_RED = "#df2238";
+const wordmark = join(root, "public/brand/havmor-wordmark.png");
+
+/** A red square of `size` with the wordmark `share` of its width, centred. */
+async function havmorIcon(size, share) {
+  const mark = await sharp(wordmark)
+    .resize({ width: Math.round(size * share), kernel: "lanczos3" })
+    .png()
+    .toBuffer();
+  const { width, height } = await sharp(mark).metadata();
+  return sharp({ create: { width: size, height: size, channels: 4, background: HAVMOR_RED } })
+    .composite([{ input: mark, left: Math.round((size - width) / 2), top: Math.round((size - height) / 2) }])
+    .png();
+}
+
+for (const [file, size] of [
+  ["src/app/icon.png", 512],
+  ["src/app/apple-icon.png", 180],
+  ["public/icons/icon-192.png", 192],
+  ["public/icons/icon-512.png", 512],
+]) {
+  await (await havmorIcon(size, 0.88)).toFile(join(root, file));
+}
+// Maskable: launchers crop to a circle, so the wordmark stays inside the
+// middle 80% (the safe zone) of the full-bleed red.
+await (await havmorIcon(512, 0.7)).toFile(join(root, "public/icons/maskable-512.png"));
 
 // ---- Product cut-outs ----
 // Havmor's product shots sit on a flat cream (#FFFDF1). Everything connected
