@@ -77,14 +77,14 @@ export async function purchasePack(input: {
       key: order.keyId,
       amount: order.amountPaise,
       currency: order.currency,
-      name: "Garba Circle",
+      name: "Havmor Garba Circle",
       description: order.pack.label,
       order_id: order.orderId,
       prefill: {
         contact: order.prefill.contact,
         name: order.prefill.name,
       },
-      theme: { color: "#ff8a00" },
+      theme: { color: "#d3002b" },
       handler: (response: Record<string, string>) => resolve(response),
       modal: { ondismiss: () => reject(new CheckoutCancelled()) },
     });

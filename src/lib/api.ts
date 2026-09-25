@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { SuspendedError, UnauthorizedError } from "@/lib/auth/session";
 import type { User } from "@/lib/db/schema";
 import { PaymentConfigError } from "@/lib/payments";
+import { isDemoDeployment, isProduction } from "@/lib/env";
 
 export function json<T>(data: T, status = 200) {
   return NextResponse.json(data, { status });
@@ -32,7 +33,14 @@ export async function guard(
       error instanceof Error && error.message.includes("DATABASE_URL")
         ? error.message
         : "Something went wrong. Please try again.";
-    return fail(message, 500);
+    // A demo or local build already shows sign-in codes on screen; the real
+    // error beside the message saves a trip to the function logs. Real
+    // deployments never send it.
+    const detail =
+      (!isProduction() || isDemoDeployment()) && error instanceof Error
+        ? `${error.name}: ${error.message}${error.cause instanceof Error ? ` (${error.cause.message})` : ""}`
+        : undefined;
+    return fail(message, 500, detail ? { detail } : undefined);
   }
 }
 

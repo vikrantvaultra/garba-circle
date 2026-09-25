@@ -22,10 +22,11 @@
   align-items: center;
   gap: 4px;
   padding: 6px;
-  border-radius: 20px;
-  background: #fbefd9;
-  color: #2a1260;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+  border-radius: 22px;
+  background: #fff;
+  color: var(--color-choco);
+  border-left: 5px solid var(--color-havmor);
+  box-shadow: 0 16px 36px -8px rgba(59, 29, 21, 0.45);
 }
 
 .main {
@@ -45,7 +46,7 @@
 }
 .main:focus-visible,
 .close:focus-visible {
-  outline: 2px solid var(--color-marigold);
+  outline: 2px solid var(--color-havmor);
   outline-offset: 1px;
 }
 
@@ -56,9 +57,9 @@
   height: 40px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-marigold), var(--color-rani));
-  color: var(--color-night);
-  font: 400 19px var(--font-display);
+  background: var(--color-havmor);
+  color: #fff;
+  font: 900 18px var(--font-display);
 }
 
 .text {
@@ -68,14 +69,14 @@
 }
 .text b {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .text span {
   font-size: 14px;
-  color: rgba(42, 18, 96, 0.75);
+  color: var(--color-choco-2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,7 +91,7 @@
   border: 0;
   border-radius: 12px;
   background: none;
-  color: rgba(42, 18, 96, 0.55);
+  color: var(--color-cocoa);
   cursor: pointer;
 }
 .close svg {

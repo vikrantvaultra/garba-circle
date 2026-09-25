@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { getCurrentUser } from "@/lib/auth/session";
 import { GARBA_EVENTS, garbaCities, lastChecked } from "@/lib/garba";
 import { navratriStatus } from "@/lib/navratri";
+import { flavourOfTheNight } from "@/lib/havmor";
 import { GarbaScreen } from "./GarbaScreen";
 
 export const metadata: Metadata = {
-  title: "Garba map — Garba Circle",
+  title: "Garba map — Havmor Garba Circle",
   description: "Every Navratri garba in your city on one map, with dates, timings and entry.",
 };
 
@@ -29,6 +30,7 @@ export default async function GarbaPage({
       status={navratriStatus()}
       checkedOn={lastChecked()}
       signedIn={Boolean(user)}
+      tonight={flavourOfTheNight()}
     />
   );
 }

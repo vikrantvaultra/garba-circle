@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 
+/** Flavour scoops: strawberry, mango, pista, blueberry, caramel. */
 const GRADIENTS = [
-  "from-marigold to-rani",
-  "from-rani to-royal",
-  "from-parrot to-royal",
-  "from-marigold-deep to-magenta",
-  "from-royal to-parrot",
+  "from-strawberry to-havmor",
+  "from-mango to-caramel",
+  "from-pista to-[#2f6b22]",
+  "from-blueberry to-[#372c9a]",
+  "from-cone to-caramel",
 ];
 
 function pickGradient(seed: string): string {
@@ -31,7 +32,7 @@ export function Avatar({
   ring?: boolean;
 }) {
   const initial = (name ?? "?").trim().charAt(0).toUpperCase() || "?";
-  const ringClass = ring ? "ring-2 ring-gold/45" : "";
+  const ringClass = ring ? "ring-2 ring-white shadow-[0_0_0_4px_rgba(211,0,43,0.16)]" : "";
 
   if (src) {
     return (
@@ -52,7 +53,7 @@ export function Avatar({
       style={{ width: size, height: size }}
     >
       <span
-        className="font-display font-bold text-night"
+        className="font-display font-black text-white"
         style={{ fontSize: size * 0.42 }}
       >
         {initial}

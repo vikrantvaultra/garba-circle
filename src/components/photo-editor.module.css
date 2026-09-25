@@ -1,0 +1,278 @@
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.reset {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-havmor);
+}
+.reset:disabled {
+  opacity: 0.4;
+}
+
+/* ---- The frame ----
+   A square the photo is drawn into, darkened outside the round crop the
+   avatar will have. The photo takes every touch: drag and pinch are ours,
+   not the page's. */
+.stage {
+  position: relative;
+  width: min(100%, 320px);
+  aspect-ratio: 1;
+  margin: 16px auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #2a1510;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+}
+.stage[data-dragging="true"] {
+  cursor: grabbing;
+}
+.stage:focus-visible {
+  box-shadow: 0 0 0 3px var(--color-havmor);
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Everything outside the circle, dimmed; a gold hairline marks the edge. */
+  background: radial-gradient(circle closest-side, transparent 99%, rgba(20, 8, 5, 0.6) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.mask::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px rgba(255, 224, 150, 0.9);
+}
+/* A rule-of-thirds grid while a finger is on the photo. */
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background:
+    linear-gradient(90deg, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.5) calc(33.33% - 0.5px), rgba(255, 255, 255, 0.5) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.5) calc(66.66% - 0.5px), rgba(255, 255, 255, 0.5) calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px)),
+    linear-gradient(180deg, transparent calc(33.33% - 0.5px), rgba(255, 255, 255, 0.5) calc(33.33% - 0.5px), rgba(255, 255, 255, 0.5) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px), transparent calc(66.66% - 0.5px), rgba(255, 255, 255, 0.5) calc(66.66% - 0.5px), rgba(255, 255, 255, 0.5) calc(66.66% + 0.5px), transparent calc(66.66% + 0.5px));
+}
+.stage[data-dragging="true"] .grid {
+  opacity: 1;
+}
+.status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff6e9;
+}
+
+/* ---- Tabs ---- */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 16px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--color-cream);
+  border: 1.5px solid rgba(89, 51, 42, 0.1);
+}
+.tabs button {
+  min-height: 40px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--color-choco-2);
+  transition: background 0.2s, color 0.2s;
+}
+.tabs button[aria-selected="true"] {
+  background: var(--color-havmor);
+  color: #fff;
+  box-shadow: 0 6px 14px -6px rgba(211, 0, 43, 0.7);
+}
+.tabs button:focus-visible {
+  outline: 2px solid var(--color-havmor);
+  outline-offset: 2px;
+}
+
+.panel {
+  display: grid;
+  gap: 14px;
+  min-height: 150px;
+  margin-top: 16px;
+}
+
+/* ---- Sliders ---- */
+.slider {
+  display: block;
+}
+.sliderHead {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 800;
+}
+.sliderHead output {
+  font-weight: 700;
+  color: var(--color-cocoa);
+  font-variant-numeric: tabular-nums;
+}
+.slider input {
+  --fill: 50%;
+  width: 100%;
+  height: 28px;
+  margin: 2px 0 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.slider input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--color-havmor) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
+}
+.slider input::-moz-range-track {
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--color-havmor) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
+}
+.slider input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--color-havmor);
+  box-shadow: 0 2px 6px rgba(89, 51, 42, 0.3);
+}
+.slider input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--color-havmor);
+  box-shadow: 0 2px 6px rgba(89, 51, 42, 0.3);
+}
+.slider input:focus-visible {
+  outline: 2px solid var(--color-havmor);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---- Rotate / flip ---- */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 64px;
+  padding: 8px 4px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1.5px solid rgba(89, 51, 42, 0.12);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--color-choco-2);
+  transition: border-color 0.15s, background 0.15s;
+}
+.tool svg {
+  width: 22px;
+  height: 22px;
+  color: var(--color-havmor);
+}
+.tool:active {
+  background: var(--color-havmor-soft);
+}
+.tool[aria-pressed="true"] {
+  border-color: var(--color-havmor);
+  background: var(--color-havmor-soft);
+}
+.tool:focus-visible {
+  outline: 2px solid var(--color-havmor);
+  outline-offset: 2px;
+}
+
+/* ---- Filters ---- */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin: 0 -22px;
+  padding: 2px 22px 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.filters::-webkit-scrollbar {
+  display: none;
+}
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--color-choco-2);
+}
+.thumb {
+  display: block;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-cream);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px rgba(89, 51, 42, 0.12);
+  transition: box-shadow 0.15s;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.filter[aria-checked="true"] {
+  color: var(--color-havmor);
+}
+.filter[aria-checked="true"] .thumb {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px var(--color-havmor);
+}
+.filter:focus-visible {
+  outline: 2px solid var(--color-havmor);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 10px;
+  margin-top: 18px;
+}

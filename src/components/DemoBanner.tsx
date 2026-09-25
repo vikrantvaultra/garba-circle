@@ -12,7 +12,7 @@ export function DemoBanner() {
   if (devPaymentsAllowed()) parts.push("payments are simulated");
 
   return (
-    <div className="relative z-20 bg-rani/90 px-4 py-1.5 text-center text-[11.5px] font-semibold leading-snug text-white">
+    <div className="relative z-20 bg-choco px-4 py-1.5 text-center text-[11.5px] font-bold leading-snug text-white">
       DEMO {"—"} {parts.join(", ")}. Don&rsquo;t share with real users.
     </div>
   );

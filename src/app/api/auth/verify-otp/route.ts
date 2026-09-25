@@ -4,8 +4,8 @@ import { fail, guard, json, rateLimit } from "@/lib/api";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { normalizeIndianMobile } from "@/lib/phone-number";
-import { verifyCode } from "@/lib/auth/otp";
-import { createSession } from "@/lib/auth/session";
+import { releaseCode, verifyCode } from "@/lib/auth/otp";
+import { authConfigured, createSession } from "@/lib/auth/session";
 
 const Body = z.object({
   phone: z.string().min(6).max(20),
@@ -31,31 +31,49 @@ export async function POST(req: Request) {
       return fail("Too many attempts. Try again later.", 429);
     }
 
+    // Without a session secret nobody can be signed in: say so now, before a
+    // code is issued (or used up) that can never work.
+    if (!authConfigured()) {
+      console.error("[auth] AUTH_SECRET is missing or shorter than 24 characters on this deployment.");
+      return fail("Sign-in isn’t set up on this deployment yet. Please try later.", 503);
+    }
+
     const result = await verifyCode(phone, parsed.data.code.trim());
     if (!result.ok) return fail(MESSAGES[result.reason], 400);
 
-    const existing = await db
-      .select()
-      .from(users)
-      .where(eq(users.phone, phone))
-      .limit(1);
-
-    let user = existing[0];
-    if (!user) {
-      const [created] = await db.insert(users).values({ phone }).returning();
-      user = created;
-    } else {
-      await db
-        .update(users)
-        .set({ lastSeenAt: new Date() })
-        .where(eq(users.id, user.id));
+    try {
+      return await signIn(phone);
+    } catch (error) {
+      // Our failure, not theirs: the same code works on a retry.
+      await releaseCode(result.codeId).catch(() => {});
+      throw error;
     }
-
-    if (user.suspendedAt) {
-      return fail("This account has been suspended.", 403);
-    }
-
-    await createSession(user.id);
-    return json({ ok: true, profileComplete: user.profileComplete });
   });
+}
+
+/** Finds or creates the dancer for this number and starts their session. */
+async function signIn(phone: string) {
+  const existing = await db
+    .select()
+    .from(users)
+    .where(eq(users.phone, phone))
+    .limit(1);
+
+  let user = existing[0];
+  if (!user) {
+    const [created] = await db.insert(users).values({ phone }).returning();
+    user = created;
+  } else {
+    await db
+      .update(users)
+      .set({ lastSeenAt: new Date() })
+      .where(eq(users.id, user.id));
+  }
+
+  if (user.suspendedAt) {
+    return fail("This account has been suspended.", 403);
+  }
+
+  await createSession(user.id);
+  return json({ ok: true, profileComplete: user.profileComplete });
 }

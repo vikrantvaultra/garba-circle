@@ -58,7 +58,7 @@ export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
   return (
     <nav
       aria-label="Main"
-      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-4 gap-1 rounded-[22px] border border-white/8 bg-night/95 p-1.5 shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
+      className="fixed left-1/2 z-20 grid w-[min(400px,calc(100%-32px))] -translate-x-1/2 grid-cols-4 gap-1 rounded-full border border-choco/8 bg-white p-1.5 shadow-[0_14px_34px_-10px_rgba(89,51,42,0.45)]"
       style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)" }}
     >
       {ITEMS.map((item) => {
@@ -68,7 +68,7 @@ export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className="rounded-2xl focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-marigold"
+            className="rounded-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-havmor"
           >
             <NavItem active={active} label={item.label}>
               <span className="relative">
@@ -77,7 +77,7 @@ export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
                   className="h-[22px] w-[22px]"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.8"
+                  strokeWidth="1.9"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden
@@ -85,7 +85,7 @@ export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
                   {item.icon}
                 </svg>
                 {item.href === "/matches" && badge > 0 && (
-                  <span className="absolute -right-2.5 -top-1.5 grid h-[17px] min-w-[17px] place-items-center rounded-full bg-rani px-1 text-[10px] font-bold text-white">
+                  <span className="absolute -right-2.5 -top-1.5 grid h-[17px] min-w-[17px] place-items-center rounded-full border-2 border-white bg-mango px-1 text-[10px] font-black text-choco">
                     {badge > 9 ? "9+" : badge}
                     <span className="sr-only"> unread</span>
                   </span>
@@ -116,8 +116,8 @@ function NavItem({
   const on = active || pending;
   return (
     <span
-      className={`flex flex-col items-center gap-1 rounded-2xl pb-[7px] pt-[9px] text-[12px] font-semibold transition-colors duration-150 ${
-        on ? "bg-marigold/10 text-marigold" : "text-muted"
+      className={`flex flex-col items-center gap-0.5 rounded-full pb-[7px] pt-[8px] text-[12px] font-extrabold transition-colors duration-150 ${
+        on ? "bg-havmor text-white" : "text-cocoa"
       }`}
     >
       {children}

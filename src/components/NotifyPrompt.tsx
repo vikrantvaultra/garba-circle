@@ -67,18 +67,18 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
 
   if (state === "needs-install") {
     return (
-      <div className={variant === "bar" ? "mb-2.5 rounded-2xl border border-marigold/30 bg-marigold/8 px-3.5 py-3" : "panel mb-3 p-4"}>
+      <div className={variant === "bar" ? "mb-2.5 rounded-2xl border border-havmor/20 bg-havmor-soft/50 px-3.5 py-3" : "panel mb-3 p-4"}>
         <div className="flex gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-marigold/15 text-marigold">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-havmor text-white">
             <Bell className="h-5 w-5" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[14.5px] font-bold">Get message alerts on your iPhone</p>
-            <p className="mt-0.5 text-[13px] leading-snug text-cream/65">
-              Tap Share <span aria-hidden>{"⎋"}</span>, then <b className="text-cream/85">Add to Home Screen</b>. Open
+            <p className="text-[14.5px] font-black">Get message alerts on your iPhone</p>
+            <p className="mt-0.5 text-[13px] leading-snug text-choco-2">
+              Tap Share <span aria-hidden>{"⎋"}</span>, then <b className="text-choco">Add to Home Screen</b>. Open
               Garba Circle from there and turn notifications on.
             </p>
-            <button type="button" onClick={snooze} className="mt-2 min-h-[36px] text-[13px] font-semibold text-marigold">
+            <button type="button" onClick={snooze} className="mt-2 min-h-[36px] text-[13px] font-extrabold text-havmor">
               Got it
             </button>
           </div>
@@ -89,20 +89,20 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
 
   if (variant === "bar") {
     return (
-      <div className="animate-rise mb-2.5 flex items-center gap-2.5 rounded-2xl border border-marigold/30 bg-marigold/8 py-2 pl-3 pr-1.5">
-        <Bell className="h-5 w-5 shrink-0 text-marigold" />
-        <p className="min-w-0 flex-1 text-[13.5px] leading-snug text-cream/85">
+      <div className="animate-rise mb-2.5 flex items-center gap-2.5 rounded-full border border-havmor/20 bg-havmor-soft/50 py-1.5 pl-3.5 pr-1.5">
+        <Bell className="h-5 w-5 shrink-0 text-havmor" />
+        <p className="min-w-0 flex-1 text-[13.5px] font-semibold leading-snug text-choco">
           Get notified when {who ?? "they"} {who ? "replies" : "reply"}
         </p>
         <button
           type="button"
           onClick={turnOn}
           disabled={busy}
-          className="min-h-[36px] shrink-0 rounded-xl bg-marigold px-3 text-[13.5px] font-bold text-plum disabled:opacity-60"
+          className="min-h-[36px] shrink-0 rounded-full bg-havmor px-3.5 text-[13.5px] font-extrabold text-white disabled:opacity-60"
         >
           Turn on
         </button>
-        <button type="button" onClick={snooze} aria-label="Not now" className="grid h-9 w-9 shrink-0 place-items-center text-cream/50">
+        <button type="button" onClick={snooze} aria-label="Not now" className="grid h-9 w-9 shrink-0 place-items-center text-cocoa">
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
@@ -114,12 +114,12 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
   return (
     <div className="panel animate-rise mb-3 p-4">
       <div className="flex gap-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-marigold/15 text-marigold">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-havmor text-white">
           <Bell className="h-[22px] w-[22px]" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-display text-[17px] leading-tight">Know when they write</p>
-          <p className="mt-1 text-[13.5px] leading-snug text-cream/65">
+          <p className="headline text-[17px] leading-tight">Know when they write</p>
+          <p className="mt-1 text-[13.5px] leading-snug text-choco-2">
             Get a notification for every new message, even when the app is closed.
           </p>
           <div className="mt-3 flex items-center gap-2">
@@ -127,11 +127,11 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
               type="button"
               onClick={turnOn}
               disabled={busy}
-              className="min-h-[40px] rounded-xl bg-marigold px-4 text-[14px] font-bold text-plum disabled:opacity-60"
+              className="min-h-[40px] rounded-full bg-havmor px-4 text-[14px] font-extrabold text-white disabled:opacity-60"
             >
               {busy ? "Turning on…" : "Turn on notifications"}
             </button>
-            <button type="button" onClick={snooze} className="min-h-[40px] px-3 text-[14px] font-semibold text-muted">
+            <button type="button" onClick={snooze} className="min-h-[40px] px-3 text-[14px] font-bold text-cocoa">
               Not now
             </button>
           </div>
@@ -175,8 +175,8 @@ export function NotifySetting() {
   return (
     <div className="flex items-center gap-3 p-4">
       <div className="min-w-0 flex-1">
-        <h3 className="text-[15px] font-bold">Message notifications</h3>
-        <p className="mt-1 text-[13.5px] leading-snug text-cream/60">{note}</p>
+        <h3 className="text-[15px] font-black">Message notifications</h3>
+        <p className="mt-1 text-[13.5px] leading-snug text-choco-2">{note}</p>
       </div>
       {canToggle && (
         <button
@@ -186,11 +186,11 @@ export function NotifySetting() {
           aria-label="Message notifications"
           disabled={busy}
           onClick={toggle}
-          className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors duration-200 disabled:opacity-60 ${on ? "bg-marigold" : "bg-white/15"}`}
+          className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors duration-200 disabled:opacity-60 ${on ? "bg-havmor" : "bg-choco/15"}`}
         >
           <span
             aria-hidden
-            className={`absolute left-[3px] top-[3px] h-6 w-6 rounded-full bg-cream shadow transition-transform duration-200 ${on ? "translate-x-[22px]" : ""}`}
+            className={`absolute left-[3px] top-[3px] h-6 w-6 rounded-full bg-white shadow transition-transform duration-200 ${on ? "translate-x-[22px]" : ""}`}
           />
         </button>
       )}
