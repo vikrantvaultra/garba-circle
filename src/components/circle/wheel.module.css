@@ -1,5 +1,6 @@
-/* The circle: a porcelain dial in a red Havmor bezel. Twelve dancers sit in
-   twelve slots around the Havmor button.
+/* The circle: an enamel-and-gold dial of twelve garba dancers turning inside
+   a red Havmor bezel, around the Havmor button. The art is in
+   public/brand/wheel/ (built by scripts/brand-assets.mjs).
    Phase lives in data attributes written by the animation loop, so React
    re-renders never clobber it:
      data-phase = idle | charging | spinning | landed (unset until the first change)
@@ -18,7 +19,7 @@
   margin: 0 auto;
   border-radius: 50%;
   box-shadow:
-    0 30px 50px -22px rgba(120, 0, 22, 0.5),
+    0 30px 50px -22px rgba(120, 0, 22, 0.55),
     0 10px 18px -10px rgba(59, 29, 21, 0.3);
   /* The circle is most of a phone's width: a swipe that starts on it must
      still scroll the page. Only the button takes the hold, below. */
@@ -35,7 +36,7 @@
   z-index: -2;
   border-radius: 50%;
   border: 1px solid rgba(211, 0, 43, 0.14);
-  box-shadow: 0 0 0 14px rgba(211, 0, 43, 0.035), 0 0 0 15px rgba(211, 0, 43, 0.08);
+  box-shadow: 0 0 0 14px rgba(211, 0, 43, 0.035), 0 0 0 15px rgba(212, 175, 106, 0.18);
   pointer-events: none;
 }
 /* A warm glow that swells as a spin charges. */
@@ -45,9 +46,9 @@
   inset: -9%;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 211, 107, 0.45), rgba(211, 0, 43, 0.12) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 211, 107, 0.5), rgba(211, 0, 43, 0.12) 50%, transparent 70%);
   transform: scale(calc(0.92 + var(--charge) * 0.2));
-  opacity: calc(0.35 + var(--charge) * 0.65);
+  opacity: calc(0.3 + var(--charge) * 0.7);
   will-change: transform, opacity;
   pointer-events: none;
 }
@@ -73,21 +74,62 @@
   display: block;
   overflow: visible;
 }
-.chargeArc {
-  transition: stroke-dashoffset 0.08s linear;
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
+
+/* ---- The dial ----
+   The bezel's hole is 77.6% of its radius; the dial is drawn a touch larger
+   (79.6%) so its gold edge tucks under the bezel's inner rim. That leaves
+   (100 - 79.6) / 2 = 10.2% all round. */
 .ring {
+  position: absolute;
+  inset: 10.2%;
+  border-radius: 50%;
   will-change: transform;
 }
 
+/* ---- The spotlight on a landing ----
+   Over the dial, under the bezel. Everything but the 30° slot at 12 o'clock
+   dims, and a warm light falls on the dancer in it (her middle sits 17% down
+   the dial). Static art; only its opacity changes. */
+.spot {
+  position: absolute;
+  inset: 10.2%;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 17%, rgba(255, 224, 150, 0.55), rgba(255, 211, 107, 0.2) 12%, transparent 20%),
+    conic-gradient(from -15deg, transparent 0deg 30deg, rgba(40, 12, 8, 0.5) 34deg 356deg, transparent 360deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  will-change: opacity;
+}
+.ring[data-win="true"] ~ .spot {
+  opacity: 1;
+}
+
+.chargeArc {
+  transition: stroke-dashoffset 0.08s linear;
+  filter: drop-shadow(0 0 4px rgba(255, 211, 107, 0.9));
+  opacity: 0.9;
+}
+
 /* ---- The sheen on the bezel ----
-   A soft band of light masked to the bezel. It only ever rotates, so the
-   compositor plays it: slowly at rest, quickly while the wheel turns. */
+   A soft band of light masked to the bezel (radius 78% to 99%). It only ever
+   rotates, so the compositor plays it: slowly at rest, quickly while the
+   wheel turns. `closest-side` makes 100% the edge of the wheel. */
 .sheen {
   border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent 0deg 290deg, rgba(255, 255, 255, 0.5) 330deg, transparent 360deg);
-  -webkit-mask: radial-gradient(circle, transparent 86.5%, #000 87%, #000 99.5%, transparent 100%);
-  mask: radial-gradient(circle, transparent 86.5%, #000 87%, #000 99.5%, transparent 100%);
+  background: conic-gradient(from 0deg, transparent 0deg 290deg, rgba(255, 255, 255, 0.42) 330deg, transparent 360deg);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 78%, #000 79%, #000 98%, transparent 99%);
+  mask: radial-gradient(circle closest-side, transparent 78%, #000 79%, #000 98%, transparent 99%);
+  mix-blend-mode: soft-light;
   will-change: transform;
   animation: sweep 7s linear infinite;
 }
@@ -105,120 +147,48 @@
   opacity: 0.4;
 }
 
-/* ---- Dancers ----
-   A token 48/320 of the circle, centred on the ring at radius 106/320, i.e.
-   106/48 = 220.8333% of its own height out from the middle. */
-.dancer {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 15%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%) rotate(var(--a)) translateY(-220.8333%);
-  transition: opacity 0.5s;
-}
-.tok {
-  position: absolute;
-  inset: 0;
-  color: var(--color-havmor);
-  transition: transform 0.45s cubic-bezier(0.3, 1.5, 0.5, 1);
-}
-.tok > svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.tokBg {
-  fill: #fff;
-  stroke: rgba(211, 0, 43, 0.22);
-  stroke-width: 1;
-  transition: fill 0.3s;
-}
-.fig {
-  fill: currentColor;
-  animation: bob 0.9s ease-in-out infinite alternate;
-}
-.hem {
-  stroke: #fff;
-  stroke-opacity: 0.6;
-}
-.dancer:nth-child(odd) .fig {
-  animation-delay: -0.45s;
-}
-.wheel[data-phase="charging"] .fig,
-.wheel[data-phase="spinning"] .fig {
-  animation-duration: 0.28s;
-}
-@keyframes bob {
-  to { transform: translateY(-3.5%); }
-}
-.halo {
-  opacity: 0;
-  transform: scale(1.4);
-  transition: opacity 0.5s;
-}
-.ring[data-win="true"] .dancer:not([data-win="true"]) {
-  opacity: 0.3;
-}
-/* The one it lands on turns Havmor red. */
-.dancer[data-win="true"] .tok {
-  color: #fff;
-  transform: scale(1.22);
-}
-.dancer[data-win="true"] .tokBg {
-  fill: var(--color-havmor);
-  stroke: #fff;
-  stroke-width: 2;
-}
-.dancer[data-win="true"] .hem {
-  stroke: #ffd36b;
-}
-.dancer[data-win="true"] .halo {
-  opacity: 1;
-}
-
-/* The pointer: a slim red marker with a gold jewel, kicked back by every
-   dancer that passes under it. */
+/* The pointer: an enamel teardrop with a gold jewel, its tip reaching over
+   the bezel to the dial. Kicked back by every dancer that passes under it. */
 .pointer {
   position: absolute;
   z-index: 2;
-  top: -13px;
+  top: -4%;
   left: 50%;
-  width: 28px;
-  height: 30px;
+  height: 14.5%;
+  width: auto;
   transform: translateX(-50%);
-  transform-origin: 50% 30%;
-  filter: drop-shadow(0 3px 3px rgba(120, 0, 22, 0.35));
+  transform-origin: 50% 28%;
+  filter: drop-shadow(0 4px 4px rgba(80, 0, 16, 0.35));
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* ---- The Havmor button ---- */
+/* ---- The Havmor button ----
+   Red enamel dome in a gold and ivory setting, with the wordmark and SPIN on
+   it. The art carries its own rims; the glow and shadow are CSS. */
 .garbo {
   position: absolute;
   z-index: 3;
   left: 50%;
   top: 50%;
-  width: 38%;
+  width: 33%;
   aspect-ratio: 1;
   border-radius: 50%;
   border: 0;
+  padding: 0;
   cursor: pointer;
   color: #fff;
   transform: translate(-50%, -50%) scale(calc(1 - var(--charge) * 0.05));
-  background: radial-gradient(circle at 50% 30%, #e3143c 0%, var(--color-havmor) 55%, #b0001f 100%);
+  background: url("/brand/wheel/button.webp") center / 100% 100% no-repeat;
   box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 5px rgba(211, 0, 43, 0.18),
-    0 0 0 calc(5px + var(--charge) * 12px) rgba(255, 211, 107, calc(var(--charge) * 0.5)),
-    0 14px 26px -8px rgba(120, 0, 22, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -8px 16px rgba(90, 0, 18, 0.28);
+    0 0 0 calc(var(--charge) * 12px) rgba(255, 211, 107, calc(var(--charge) * 0.45)),
+    0 14px 24px -8px rgba(90, 0, 18, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font: 800 12px var(--font-body);
+  font: 800 11px var(--font-body);
   letter-spacing: 0.24em;
   text-indent: 0.24em;
   text-transform: uppercase;
@@ -227,13 +197,13 @@
      the browser cancels the hold (pointercancel) instead of spinning. */
   touch-action: pan-y;
 }
-/* A ring that ripples out while the wheel is ready and waiting for a tap. */
+/* A gold ring that ripples out while the wheel is ready and waiting for a tap. */
 .garbo::after {
   content: "";
   position: absolute;
-  inset: -4px;
+  inset: 0;
   border-radius: 50%;
-  border: 2px solid var(--color-havmor);
+  border: 2px solid #d4af6a;
   opacity: 0;
   pointer-events: none;
 }
@@ -241,8 +211,8 @@
   animation: ping 2.2s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
 }
 @keyframes ping {
-  0% { transform: scale(1); opacity: 0.6; }
-  75%, 100% { transform: scale(1.35); opacity: 0; }
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(1.45); opacity: 0; }
 }
 .wheel[data-full="true"] .garbo {
   animation: shake 0.08s linear infinite;
@@ -255,8 +225,8 @@
 }
 .lamp {
   display: block;
-  width: 64%;
-  margin-top: 2%;
+  width: 58%;
+  margin-top: 4%;
 }
 .product {
   display: block;
@@ -265,7 +235,7 @@
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  filter: drop-shadow(0 2px 2px rgba(70, 0, 14, 0.35));
+  filter: drop-shadow(0 1px 1px rgba(70, 0, 14, 0.45));
 }
 .wheel[data-phase="charging"] .product {
   transform: translateY(calc(var(--charge) * -6%)) scale(calc(1 + var(--charge) * 0.1));
@@ -279,16 +249,17 @@
 /* "SPIN", under the wordmark, set small and wide. */
 .garbo > span:last-child {
   position: relative;
-  margin-top: 8%;
-  padding: 3px 10px 3px;
+  margin-top: 7%;
+  padding: 2px 9px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-  font-size: 11px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 224, 150, 0.6);
+  color: #fff3d6;
+  font-size: 10px;
 }
 .garbo:focus-visible {
-  outline: 3px solid var(--color-havmor);
-  outline-offset: 12px;
+  outline: 2px solid #d4af6a;
+  outline-offset: 6px;
 }
 .wheel[data-empty="true"] .product {
   opacity: 0.7;
@@ -298,7 +269,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fig,
   .product,
   .sheen,
   .wheel::before,

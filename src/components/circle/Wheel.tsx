@@ -7,7 +7,6 @@ import {
   useImperativeHandle,
   useLayoutEffect,
   useRef,
-  type CSSProperties,
   type Ref,
 } from "react";
 import { TICK, buzz, sound } from "@/lib/client/sound";
@@ -15,8 +14,8 @@ import styles from "./wheel.module.css";
 
 const DANCERS = 12;
 const SLOT_DEG = 360 / DANCERS;
-/** The charge meter runs round the bezel, under the ticks. */
-const RADIUS = 149;
+/** The charge meter runs round the middle of the bezel. */
+const RADIUS = 142;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 /** How long a hold takes to reach full power. */
 const CHARGE_MS = 1100;
@@ -33,7 +32,6 @@ const SPIN_MIN_MS = 4500;
 const SPIN_POWER_MS = 1500;
 const SPIN_REDUCED_MS = 1000;
 
-const round = (n: number) => Math.round(n * 100) / 100;
 const easeOut = (p: number) => 1 - Math.pow(1 - p, 4);
 const slotOf = (angle: number) => Math.floor((angle + SLOT_DEG / 2) / SLOT_DEG);
 
@@ -42,39 +40,6 @@ const KICK: Keyframe[] = [
   { transform: "translateX(-50%) rotate(-16deg)" },
   { transform: "translateX(-50%) rotate(0)" },
 ];
-
-/**
- * The face is a porcelain dial: twelve slots, one per dancer, split by red
- * hairlines, inside a red bezel with watch-style ticks. Colour is kept for
- * the moments that matter: the charge, and the dancer it lands on.
- */
-const FACE_R = 138;
-const HUB_R = 66;
-
-/** Rounded so server and client agree. */
-const at = (deg: number, r: number) => {
-  const a = (deg * Math.PI) / 180;
-  return `${round(160 + r * Math.sin(a))} ${round(160 - r * Math.cos(a))}`;
-};
-
-// Slot i is centred on dancer i, who sits at i * 30 degrees from the top.
-const WEDGES = Array.from({ length: DANCERS }, (_, i) => {
-  const from = i * SLOT_DEG - SLOT_DEG / 2;
-  const to = from + SLOT_DEG;
-  return `M160 160L${at(from, FACE_R)}A${FACE_R} ${FACE_R} 0 0 1 ${at(to, FACE_R)}Z`;
-});
-const SEPARATORS = Array.from(
-  { length: DANCERS },
-  (_, i) => `M${at(i * SLOT_DEG + SLOT_DEG / 2, HUB_R + 6)}L${at(i * SLOT_DEG + SLOT_DEG / 2, FACE_R)}`,
-).join("");
-// A fine ring of dots between the hub and the dancers.
-const DOTS = Array.from({ length: 48 }, (_, i) => at(i * 7.5, 77).split(" "));
-// The bezel: a minute tick every 6 degrees, a longer one at every dancer.
-const MINOR_TICKS = Array.from({ length: 60 }, (_, i) => i)
-  .filter((i) => i % 5 !== 0)
-  .map((i) => `M${at(i * 6, 146)}L${at(i * 6, 152)}`)
-  .join("");
-const MAJOR_TICKS = Array.from({ length: DANCERS }, (_, i) => `M${at(i * SLOT_DEG, 143)}L${at(i * SLOT_DEG, 155)}`).join("");
 
 export type WheelPhase = "idle" | "charging" | "spinning" | "landed";
 
@@ -133,8 +98,7 @@ export function Wheel(props: Props) {
   const wheelRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const arcRef = useRef<SVGCircleElement>(null);
-  const pointerRef = useRef<SVGSVGElement>(null);
-  const dancerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const pointerRef = useRef<HTMLImageElement>(null);
   const kickRef = useRef<Animation | null>(null);
   const driftRef = useRef<Animation | null>(null);
   const loop = useRef({ raf: 0, running: false });
@@ -161,7 +125,6 @@ export function Wheel(props: Props) {
 
   const clearWin = () => {
     if (ringRef.current) delete ringRef.current.dataset.win;
-    dancerRefs.current.forEach((d) => d && delete d.dataset.win);
   };
 
   const paintRing = () => {
@@ -273,8 +236,6 @@ export function Wheel(props: Props) {
       s.idle = false;
       setPhase("landed");
       if (ringRef.current) ringRef.current.dataset.win = "true";
-      const dancer = dancerRefs.current[s.winIndex];
-      if (dancer) dancer.dataset.win = "true";
       sound.dhol();
       latest.current.onPhase("landed", 0);
     } else {
@@ -405,24 +366,21 @@ export function Wheel(props: Props) {
       data-blocked={blocked}
       onContextMenu={(e) => e.preventDefault()}
     >
-      {/* The bezel: red, with its ticks and the charge meter. */}
+      {/* The dial: twelve garba dancers in red enamel on ivory, one per slot,
+          the first at 12 o'clock. The only layer that turns. */}
+      <div ref={ringRef} className={styles.ring} aria-hidden>
+        <img className={styles.art} src="/brand/wheel/dial.webp" alt="" draggable={false} />
+      </div>
+
+      {/* On a landing, the dial dims except the slot under the pointer, and a
+          warm light falls on the dancer there. */}
+      <div className={styles.spot} aria-hidden />
+
+      {/* The bezel stays put; the charge meter fills it and a band of light
+          sweeps round it. */}
+      <img className={`${styles.layer} ${styles.art}`} src="/brand/wheel/bezel.webp" alt="" draggable={false} aria-hidden />
       <div className={styles.layer} aria-hidden>
         <svg viewBox="0 0 320 320">
-          <defs>
-            <radialGradient id="gc-rim" cx="160" cy="160" r="160" gradientUnits="userSpaceOnUse">
-              <stop offset=".86" stopColor="#B8001F" />
-              <stop offset=".9" stopColor="#D3002B" />
-              <stop offset=".97" stopColor="#C20027" />
-              <stop offset="1" stopColor="#8E001B" />
-            </radialGradient>
-            <radialGradient id="gc-face" cx="160" cy="130" r={FACE_R + 20} gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#FFFFFF" />
-              <stop offset=".7" stopColor="#FFFBF4" />
-              <stop offset="1" stopColor="#F6E9D6" />
-            </radialGradient>
-          </defs>
-          <circle cx="160" cy="160" r="160" fill="url(#gc-rim)" />
-          <circle cx="160" cy="160" r="159.2" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth=".8" />
           <circle
             ref={arcRef}
             className={styles.chargeArc}
@@ -431,92 +389,17 @@ export function Wheel(props: Props) {
             r={RADIUS}
             fill="none"
             stroke="#FFD36B"
-            strokeWidth="5"
+            strokeWidth="6"
             strokeLinecap="round"
             transform="rotate(-90 160 160)"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={CIRCUMFERENCE}
           />
-          <path d={MINOR_TICKS} stroke="#fff" strokeOpacity=".4" strokeWidth="1" strokeLinecap="round" />
-          <path d={MAJOR_TICKS} stroke="#fff" strokeOpacity=".9" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="160" cy="160" r={FACE_R + 1.5} fill="none" stroke="#FFD36B" strokeOpacity=".8" strokeWidth="1.2" />
-          <circle cx="160" cy="160" r={FACE_R} fill="url(#gc-face)" />
         </svg>
       </div>
-
-      {/* A band of light that sweeps round the bezel: slowly at rest, fast
-          while the wheel turns. It only ever rotates, on its own layer. */}
       <div className={`${styles.layer} ${styles.sheen}`} aria-hidden />
 
-      {/* Each dancer is its own element with its own small SVG, so the bob,
-          the halo and the dimming all run on the compositor. Animating
-          groups inside one big SVG would repaint the whole ring every frame. */}
-      <div ref={ringRef} className={`${styles.layer} ${styles.ring}`} aria-hidden>
-        <svg viewBox="0 0 320 320">
-          <defs>
-            <radialGradient id="gc-halo">
-              <stop offset=".5" stopColor="#FF5061" stopOpacity=".55" />
-              <stop offset="1" stopColor="#FF5061" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          {WEDGES.map((d, i) => (
-            <path key={d} d={d} fill={i % 2 ? "#D3002B" : "#FFFFFF"} fillOpacity={i % 2 ? 0.045 : 0} />
-          ))}
-          <path d={SEPARATORS} stroke="#D3002B" strokeOpacity=".16" strokeWidth="1" />
-          <circle cx="160" cy="160" r={HUB_R + 6} fill="none" stroke="#D3002B" strokeOpacity=".14" strokeWidth="1" />
-          <g fill="#D3002B" fillOpacity=".28">
-            {DOTS.map(([x, y]) => (
-              <circle key={`${x}${y}`} cx={x} cy={y} r=".9" />
-            ))}
-          </g>
-        </svg>
-        {Array.from({ length: DANCERS }, (_, i) => (
-          <div
-            key={i}
-            ref={(node) => {
-              dancerRefs.current[i] = node;
-            }}
-            className={styles.dancer}
-            style={{ "--a": `${i * SLOT_DEG}deg` } as CSSProperties}
-          >
-            <div className={styles.tok}>
-              <svg className={styles.halo} viewBox="-24 -24 48 48">
-                <circle r="24" fill="url(#gc-halo)" />
-              </svg>
-              <svg className={styles.token} viewBox="-24 -24 48 48">
-                <circle cy="1.2" r="19" fill="#3B1D15" fillOpacity=".1" />
-                <circle className={styles.tokBg} r="19" />
-              </svg>
-              {/* A garba pictogram in one colour: arms up, dandiya in hand,
-                  chaniya flaring out. */}
-              <svg className={styles.fig} viewBox="-24 -24 48 48">
-                <circle cy="-11.6" r="3.2" />
-                <path d="M-2.3 -7.2H2.3L1.9 -2.2L9.6 10Q0 13.2 -9.6 10L-1.9 -2.2Z" />
-                <path d="M2.1 -6.4L6.6 -11.2M-2.1 -6.4L-7 -3.4M5.6 -14.4L8.3 -9.4M-10.2 -5.2L-5.4 -2.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                <path className={styles.hem} d="M-8.2 8.1Q0 10.9 8.2 8.1" strokeWidth=".8" strokeDasharray="1 1.6" fill="none" />
-              </svg>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Soft light on the dial. It stays put while the wheel turns under it. */}
-      <div className={styles.layer} aria-hidden>
-        <svg viewBox="0 0 320 320">
-          <defs>
-            <radialGradient id="gc-edge">
-              <stop offset=".84" stopColor="#3B1D15" stopOpacity="0" />
-              <stop offset="1" stopColor="#3B1D15" stopOpacity=".12" />
-            </radialGradient>
-          </defs>
-          <circle cx="160" cy="160" r={FACE_R} fill="url(#gc-edge)" />
-        </svg>
-      </div>
-
-      <svg ref={pointerRef} className={styles.pointer} viewBox="0 0 28 30" aria-hidden>
-        <path d="M5 2.5H23Q26.6 2.5 24.8 5.6L15.7 21.6Q14 24.6 12.3 21.6L3.2 5.6Q1.4 2.5 5 2.5Z" fill="#D3002B" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" />
-        <circle cx="14" cy="8.6" r="2.2" fill="#FFD36B" />
-      </svg>
+      <img ref={pointerRef} className={styles.pointer} src="/brand/wheel/pointer.webp" alt="" draggable={false} aria-hidden />
 
       <button
         type="button"
