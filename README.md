@@ -36,7 +36,7 @@ Google Maps directions and the source links.
   OSM, so some pins sit on the area or a landmark, and the map says so.
 
 ### The circle
-Every dancer gets **5 free spins**. Tap the garbo in the middle to spin, or
+Every dancer gets **5 free spins**. Tap the Havmor button in the middle to spin, or
 hold it to charge a bigger spin (bigger only in how long it turns — power
 never changes who you land on).
 

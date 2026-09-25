@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
+
 import {
   useEffect,
   useImperativeHandle,
@@ -13,9 +15,8 @@ import styles from "./wheel.module.css";
 
 const DANCERS = 12;
 const SLOT_DEG = 360 / DANCERS;
-/** Flavour colours for the outfits: strawberry, pista, mango, blueberry. */
-const COLORS = ["#FF5061", "#4E9A3A", "#FFB81C", "#5B4FCF"];
-const RADIUS = 155;
+/** The charge meter runs round the bezel, under the ticks. */
+const RADIUS = 149;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 /** How long a hold takes to reach full power. */
 const CHARGE_MS = 1100;
@@ -42,18 +43,38 @@ const KICK: Keyframe[] = [
   { transform: "translateX(-50%) rotate(0)" },
 ];
 
-// Sprinkles scattered round the rim, each at its own tilt. Rounded so server
-// and client agree.
-const SPRINKLE_COLORS = ["#FF5061", "#4E9A3A", "#FFB81C", "#5B4FCF"];
-const SPRINKLES = Array.from({ length: 16 }, (_, i) => {
-  const a = ((i * 22.5 + 11.25) * Math.PI) / 180;
-  const x = round(160 + 140 * Math.sin(a));
-  const y = round(160 - 140 * Math.cos(a));
-  const tilt = (i * 67) % 180;
-  const dx = round(3.2 * Math.cos((tilt * Math.PI) / 180));
-  const dy = round(3.2 * Math.sin((tilt * Math.PI) / 180));
-  return { d: `M${round(x - dx)} ${round(y - dy)}L${round(x + dx)} ${round(y + dy)}`, c: SPRINKLE_COLORS[i % 4] };
+/**
+ * The face is a porcelain dial: twelve slots, one per dancer, split by red
+ * hairlines, inside a red bezel with watch-style ticks. Colour is kept for
+ * the moments that matter: the charge, and the dancer it lands on.
+ */
+const FACE_R = 138;
+const HUB_R = 66;
+
+/** Rounded so server and client agree. */
+const at = (deg: number, r: number) => {
+  const a = (deg * Math.PI) / 180;
+  return `${round(160 + r * Math.sin(a))} ${round(160 - r * Math.cos(a))}`;
+};
+
+// Slot i is centred on dancer i, who sits at i * 30 degrees from the top.
+const WEDGES = Array.from({ length: DANCERS }, (_, i) => {
+  const from = i * SLOT_DEG - SLOT_DEG / 2;
+  const to = from + SLOT_DEG;
+  return `M160 160L${at(from, FACE_R)}A${FACE_R} ${FACE_R} 0 0 1 ${at(to, FACE_R)}Z`;
 });
+const SEPARATORS = Array.from(
+  { length: DANCERS },
+  (_, i) => `M${at(i * SLOT_DEG + SLOT_DEG / 2, HUB_R + 6)}L${at(i * SLOT_DEG + SLOT_DEG / 2, FACE_R)}`,
+).join("");
+// A fine ring of dots between the hub and the dancers.
+const DOTS = Array.from({ length: 48 }, (_, i) => at(i * 7.5, 77).split(" "));
+// The bezel: a minute tick every 6 degrees, a longer one at every dancer.
+const MINOR_TICKS = Array.from({ length: 60 }, (_, i) => i)
+  .filter((i) => i % 5 !== 0)
+  .map((i) => `M${at(i * 6, 146)}L${at(i * 6, 152)}`)
+  .join("");
+const MAJOR_TICKS = Array.from({ length: DANCERS }, (_, i) => `M${at(i * SLOT_DEG, 143)}L${at(i * SLOT_DEG, 155)}`).join("");
 
 export type WheelPhase = "idle" | "charging" | "spinning" | "landed";
 
@@ -66,7 +87,7 @@ export type WheelHandle = {
 
 type Props = {
   ref?: Ref<WheelHandle>;
-  /** No spins left: the garbo asks for more instead of spinning. */
+  /** No spins left: the button asks for more instead of spinning. */
   empty: boolean;
   /** Something must be chosen first: a tap asks for it instead of spinning. */
   blocked: boolean;
@@ -384,9 +405,24 @@ export function Wheel(props: Props) {
       data-blocked={blocked}
       onContextMenu={(e) => e.preventDefault()}
     >
+      {/* The bezel: red, with its ticks and the charge meter. */}
       <div className={styles.layer} aria-hidden>
         <svg viewBox="0 0 320 320">
-          <circle cx="160" cy="160" r="155" fill="none" stroke="#D3002B" strokeOpacity=".7" strokeWidth="3.4" strokeLinecap="round" strokeDasharray="0.1 9.6" />
+          <defs>
+            <radialGradient id="gc-rim" cx="160" cy="160" r="160" gradientUnits="userSpaceOnUse">
+              <stop offset=".86" stopColor="#B8001F" />
+              <stop offset=".9" stopColor="#D3002B" />
+              <stop offset=".97" stopColor="#C20027" />
+              <stop offset="1" stopColor="#8E001B" />
+            </radialGradient>
+            <radialGradient id="gc-face" cx="160" cy="130" r={FACE_R + 20} gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#FFFFFF" />
+              <stop offset=".7" stopColor="#FFFBF4" />
+              <stop offset="1" stopColor="#F6E9D6" />
+            </radialGradient>
+          </defs>
+          <circle cx="160" cy="160" r="160" fill="url(#gc-rim)" />
+          <circle cx="160" cy="160" r="159.2" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth=".8" />
           <circle
             ref={arcRef}
             className={styles.chargeArc}
@@ -394,22 +430,23 @@ export function Wheel(props: Props) {
             cy="160"
             r={RADIUS}
             fill="none"
-            stroke="#D3002B"
+            stroke="#FFD36B"
             strokeWidth="5"
             strokeLinecap="round"
             transform="rotate(-90 160 160)"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={CIRCUMFERENCE}
           />
-          <circle cx="160" cy="160" r="146" fill="none" stroke="#59332A" strokeOpacity=".1" />
-          <circle cx="160" cy="160" r="92" fill="none" stroke="#D3002B" strokeOpacity=".18" strokeDasharray="2 5" />
-          <g strokeWidth="2.6" strokeLinecap="round">
-            {SPRINKLES.map((s) => (
-              <path key={s.d} d={s.d} stroke={s.c} opacity=".75" />
-            ))}
-          </g>
+          <path d={MINOR_TICKS} stroke="#fff" strokeOpacity=".4" strokeWidth="1" strokeLinecap="round" />
+          <path d={MAJOR_TICKS} stroke="#fff" strokeOpacity=".9" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="160" cy="160" r={FACE_R + 1.5} fill="none" stroke="#FFD36B" strokeOpacity=".8" strokeWidth="1.2" />
+          <circle cx="160" cy="160" r={FACE_R} fill="url(#gc-face)" />
         </svg>
       </div>
+
+      {/* A band of light that sweeps round the bezel: slowly at rest, fast
+          while the wheel turns. It only ever rotates, on its own layer. */}
+      <div className={`${styles.layer} ${styles.sheen}`} aria-hidden />
 
       {/* Each dancer is its own element with its own small SVG, so the bob,
           the halo and the dimming all run on the compositor. Animating
@@ -418,11 +455,20 @@ export function Wheel(props: Props) {
         <svg viewBox="0 0 320 320">
           <defs>
             <radialGradient id="gc-halo">
-              <stop offset="0" stopColor="#FF5061" stopOpacity=".8" />
+              <stop offset=".5" stopColor="#FF5061" stopOpacity=".55" />
               <stop offset="1" stopColor="#FF5061" stopOpacity="0" />
             </radialGradient>
           </defs>
-          <circle cx="160" cy="160" r="122" fill="none" stroke="#F2B65A" strokeOpacity=".22" strokeWidth="20" />
+          {WEDGES.map((d, i) => (
+            <path key={d} d={d} fill={i % 2 ? "#D3002B" : "#FFFFFF"} fillOpacity={i % 2 ? 0.045 : 0} />
+          ))}
+          <path d={SEPARATORS} stroke="#D3002B" strokeOpacity=".16" strokeWidth="1" />
+          <circle cx="160" cy="160" r={HUB_R + 6} fill="none" stroke="#D3002B" strokeOpacity=".14" strokeWidth="1" />
+          <g fill="#D3002B" fillOpacity=".28">
+            {DOTS.map(([x, y]) => (
+              <circle key={`${x}${y}`} cx={x} cy={y} r=".9" />
+            ))}
+          </g>
         </svg>
         {Array.from({ length: DANCERS }, (_, i) => (
           <div
@@ -433,24 +479,43 @@ export function Wheel(props: Props) {
             className={styles.dancer}
             style={{ "--a": `${i * SLOT_DEG}deg` } as CSSProperties}
           >
-            <svg className={styles.halo} viewBox="-28 -28 56 56">
-              <circle r="28" fill="url(#gc-halo)" />
-            </svg>
-            <svg className={styles.fig} viewBox="-28 -28 56 56">
-              <path d="M-9 -17 L-15 -25 M9 -17 L15 -25" stroke="#C7822B" strokeWidth="2.2" strokeLinecap="round" />
-              <path d="M-3 -8 L-9 -17 M3 -8 L9 -17" stroke="#E6B48A" strokeWidth="2.4" strokeLinecap="round" />
-              <path d="M-3.6 -9 L3.6 -9 L11.5 11 Q0 15.5 -11.5 11 Z" fill={COLORS[i % COLORS.length]} />
-              <path d="M-11.5 11 Q0 15.5 11.5 11" fill="none" stroke="#FFFFFF" strokeWidth="1.4" strokeDasharray="1 2.2" strokeLinecap="round" />
-              <circle cy="-14.5" r="4.6" fill="#E6B48A" />
-              <path d="M-4.6 -15.5 A4.6 4.6 0 0 1 4.6 -15.5" fill="#3B1D15" />
-            </svg>
+            <div className={styles.tok}>
+              <svg className={styles.halo} viewBox="-24 -24 48 48">
+                <circle r="24" fill="url(#gc-halo)" />
+              </svg>
+              <svg className={styles.token} viewBox="-24 -24 48 48">
+                <circle cy="1.2" r="19" fill="#3B1D15" fillOpacity=".1" />
+                <circle className={styles.tokBg} r="19" />
+              </svg>
+              {/* A garba pictogram in one colour: arms up, dandiya in hand,
+                  chaniya flaring out. */}
+              <svg className={styles.fig} viewBox="-24 -24 48 48">
+                <circle cy="-11.6" r="3.2" />
+                <path d="M-2.3 -7.2H2.3L1.9 -2.2L9.6 10Q0 13.2 -9.6 10L-1.9 -2.2Z" />
+                <path d="M2.1 -6.4L6.6 -11.2M-2.1 -6.4L-7 -3.4M5.6 -14.4L8.3 -9.4M-10.2 -5.2L-5.4 -2.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                <path className={styles.hem} d="M-8.2 8.1Q0 10.9 8.2 8.1" strokeWidth=".8" strokeDasharray="1 1.6" fill="none" />
+              </svg>
+            </div>
           </div>
         ))}
       </div>
 
-      <svg ref={pointerRef} className={styles.pointer} viewBox="0 0 20 26" aria-hidden>
-        <path d="M10 26 C3 17 1 12 1 9 a9 9 0 0 1 18 0 c0 3 -2 8 -9 17Z" fill="#D3002B" />
-        <circle cx="10" cy="9" r="3.5" fill="#FFFFFF" />
+      {/* Soft light on the dial. It stays put while the wheel turns under it. */}
+      <div className={styles.layer} aria-hidden>
+        <svg viewBox="0 0 320 320">
+          <defs>
+            <radialGradient id="gc-edge">
+              <stop offset=".84" stopColor="#3B1D15" stopOpacity="0" />
+              <stop offset="1" stopColor="#3B1D15" stopOpacity=".12" />
+            </radialGradient>
+          </defs>
+          <circle cx="160" cy="160" r={FACE_R} fill="url(#gc-edge)" />
+        </svg>
+      </div>
+
+      <svg ref={pointerRef} className={styles.pointer} viewBox="0 0 28 30" aria-hidden>
+        <path d="M5 2.5H23Q26.6 2.5 24.8 5.6L15.7 21.6Q14 24.6 12.3 21.6L3.2 5.6Q1.4 2.5 5 2.5Z" fill="#D3002B" stroke="#fff" strokeWidth="2.2" strokeLinejoin="round" />
+        <circle cx="14" cy="8.6" r="2.2" fill="#FFD36B" />
       </svg>
 
       <button
@@ -496,44 +561,10 @@ export function Wheel(props: Props) {
           if (e.detail === 0) startSpin(0.3);
         }}
       >
-        {/* The cone in three stacked layers, so the wobbling cherry and the
-            pulsing sprinkles animate without repainting the cone. */}
+        {/* The Havmor wordmark, like the lid of a tub. It lifts as a spin
+            charges and pulses while the wheel turns: transforms only. */}
         <span className={styles.lamp} aria-hidden>
-          <svg viewBox="0 0 100 104">
-            <path d="M31 52h38L50 103z" fill="#F2B65A" />
-            <path
-              d="M36 58l23 14M41 52l24 14.5M46 86l11-7M36 66l22-13.5M43 77l17-10.5"
-              stroke="#C7822B"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              transform="translate(50 42) scale(1.28)"
-              d="M-16 0A16 16 0 0 1 16 0C16 3.5 14.5 5 12.5 5 10.5 5 10.5 8.5 8 8.5 5.5 8.5 5.5 5 3 5 0.5 5 0.5 10-2.5 10-5.5 10-5.5 5-8 5-10.5 5-10.5 7-12.5 7-15 7-16 4.5-16 0Z"
-              fill="#FFF6E9"
-            />
-            <ellipse cx="41" cy="31" rx="6" ry="3.2" fill="#fff" transform="rotate(-25 41 31)" />
-          </svg>
-          <svg className={styles.holes} viewBox="0 0 100 104">
-            <g>
-              <circle cx="38" cy="40" r="1.9" />
-              <circle cx="47" cy="34" r="1.9" />
-              <circle cx="57" cy="31" r="1.9" />
-              <circle cx="62" cy="40" r="1.9" />
-              <circle cx="52" cy="44" r="1.9" />
-              <circle cx="43" cy="47" r="1.9" />
-              <circle cx="33" cy="48" r="1.9" />
-              <circle cx="66" cy="48" r="1.9" />
-              <circle cx="56" cy="51" r="1.9" />
-              <circle cx="46" cy="55" r="1.9" />
-            </g>
-          </svg>
-          <svg className={styles.flame} viewBox="0 0 100 104">
-            <path d="M50 20c1-8 6-12 12-13" fill="none" stroke="#4E9A3A" strokeWidth="2.4" strokeLinecap="round" />
-            <circle cx="50" cy="21" r="7" fill="#A3001F" />
-            <circle cx="50" cy="20.2" r="6.2" fill="#E0103A" />
-            <circle cx="47.6" cy="17.8" r="1.9" fill="#fff" opacity=".75" />
-          </svg>
+          <img className={styles.product} src="/brand/havmor-wordmark.png" alt="" draggable={false} />
         </span>
         <span>{label}</span>
       </button>

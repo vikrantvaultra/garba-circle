@@ -170,7 +170,7 @@ export function SpinScreen({
     return () => clearTimeout(timer);
   }, [attention]);
 
-  /** A tap on the cone before both are chosen points at whatever is missing. */
+  /** A tap on Spin before both are chosen points at whatever is missing. */
   const askForFilters = () => {
     const missing = city ? "gender" : "city";
     setAttention(missing);
@@ -320,7 +320,7 @@ export function SpinScreen({
   } else if (phase.phase === "spinning") {
     hint = phase.power > 0.8 ? "Full power spin!" : "Finding your partner in the circle…";
   } else if (outOfSpins) {
-    hint = "You're out of spins. Tap the cone for more.";
+    hint = "You're out of spins. Tap the middle of the circle for more.";
   } else if (!ready) {
     hint = (
       <>

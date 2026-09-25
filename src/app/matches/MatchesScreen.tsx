@@ -6,7 +6,7 @@ import { Avatar } from "@/components/Avatar";
 import { BottomNav } from "@/components/BottomNav";
 import { NotifyPrompt } from "@/components/NotifyPrompt";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { Scoop } from "@/components/brand/Scoop";
+import { ProductShot } from "@/components/brand/ProductShot";
 import { NIGHT_FLAVOURS } from "@/lib/havmor";
 import { api } from "@/lib/client/api";
 import { onMessage } from "@/lib/client/inbox";
@@ -70,7 +70,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
 
       {conversations.length === 0 ? (
         <div className="panel p-7 text-center">
-          <Scoop flavour={NIGHT_FLAVOURS[0]} scoops={2} size={72} className="mx-auto" />
+          <ProductShot flavour={NIGHT_FLAVOURS[5]} size={84} className="mx-auto drop-shadow-[0_8px_10px_rgba(59,29,21,0.22)]" />
           <p className="headline mt-2 text-[18px]">
             No chats yet
           </p>

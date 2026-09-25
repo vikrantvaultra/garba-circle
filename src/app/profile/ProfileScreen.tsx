@@ -9,7 +9,7 @@ import { NotifySetting } from "@/components/NotifyPrompt";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { Scoop } from "@/components/brand/Scoop";
+import { ProductShot } from "@/components/brand/ProductShot";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { HAVMOR_HOME, HAVMOR_SINCE, HAVMOR_STORE_LOCATOR, levelFlavour } from "@/lib/havmor";
 import { api } from "@/lib/client/api";
@@ -111,10 +111,10 @@ export function ProfileScreen({
         {mine && (
           <div className="mt-4 flex items-center gap-3 rounded-2xl bg-cream p-3">
             <span
-              className="grid h-14 w-14 shrink-0 place-items-center rounded-xl"
-              style={{ background: mine.flavour.deep }}
+              className="grid h-16 w-[72px] shrink-0 place-items-center rounded-xl p-1.5"
+              style={{ background: mine.flavour.tint }}
             >
-              <Scoop flavour={mine.flavour} size={46} />
+              <ProductShot flavour={mine.flavour} size={50} className="drop-shadow-[0_5px_6px_rgba(59,29,21,0.22)]" />
             </span>
             <span className="min-w-0">
               <span className="eyebrow block text-havmor">Your flavour</span>

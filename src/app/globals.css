@@ -34,17 +34,11 @@
 
   --radius-card: 24px;
 
-  --animate-wobble: wobble 2.6s ease-in-out infinite;
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) both;
   --animate-sheet: sheet 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
   --animate-pulse-ring: pulse-ring 2s ease-out infinite;
 }
 
-@keyframes wobble {
-  0%, 100% { transform: rotate(0); }
-  40%      { transform: rotate(-6deg); }
-  70%      { transform: rotate(4deg); }
-}
 @keyframes rise {
   0%   { transform: translateY(16px); opacity: 0; }
   100% { transform: translateY(0);    opacity: 1; }

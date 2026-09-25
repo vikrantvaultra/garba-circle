@@ -4,32 +4,46 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { FREE_SPINS } from "@/lib/constants";
 import { HAVMOR_SINCE, NIGHT_FLAVOURS } from "@/lib/havmor";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { Scoop } from "@/components/brand/Scoop";
+import { ProductShot } from "@/components/brand/ProductShot";
 
 const FEATURES = [
   {
-    icon: "\u{1F3B0}",
-    tint: "bg-strawberry/15",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8.5" />
+        <circle cx="12" cy="12" r="2.5" />
+        <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
+      </>
+    ),
     title: "Spin, don’t swipe",
     body: `Spin the circle and it stops on a real dancer. Your first ${FREE_SPINS} spins are on us.`,
   },
   {
-    icon: "\u{1F6E1}️",
-    tint: "bg-pista/15",
+    icon: (
+      <>
+        <path d="M12 3.5 5 6v5.5c0 4.3 3 7.6 7 9 4-1.4 7-4.7 7-9V6z" />
+        <path d="m9 12 2.2 2.2L15.5 10" />
+      </>
+    ),
     title: "Numbers stay inside",
     body: "Phone numbers are blocked in every form — typed, spelled out, in Hindi, Marathi or Gujarati, even split across messages.",
   },
   {
-    icon: "\u{1F338}",
-    tint: "bg-mango/20",
+    icon: (
+      <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
+    ),
     title: "Respect is the rule",
     body: "Abuse in any language is filtered before it ever reaches the other person. Report and block are always one tap away.",
   },
   {
-    icon: "\u{1F366}",
-    tint: "bg-blueberry/12",
-    title: "Talk it out, scoop it up",
-    body: "Send a dandiya and the chat opens straight away. Free, with no timer. Every jodi comes with a Havmor flavour to share.",
+    icon: (
+      <>
+        <path d="M4.5 6.5h15v10h-9l-4 3.5v-3.5h-2z" />
+        <path d="M8.5 11h7M8.5 13.5h4" />
+      </>
+    ),
+    title: "Talk it out, share a treat",
+    body: "Send a dandiya and the chat opens straight away. Free, with no timer. Every jodi comes with a Havmor treat to share.",
   },
 ];
 
@@ -49,26 +63,33 @@ export default async function LandingPage() {
             Circle
           </>
         }
-        sub="Nau raat, ek circle, and more scoops of sweetness. Spin it and find someone to dance the whole night with."
+        sub={
+          <span className="block max-w-[60%]">
+            Nau raat, ek circle, and more scoops of sweetness. Spin it and find someone to
+            dance the whole night with.
+          </span>
+        }
       >
-        <div className="animate-rise absolute -bottom-9 right-0 [animation-delay:150ms]">
-          <div className="animate-wobble origin-bottom">
-            <Scoop flavour={NIGHT_FLAVOURS[0]} scoops={3} size={150} className="drop-shadow-[0_12px_14px_rgba(59,29,21,0.35)]" />
-          </div>
+        {/* Havmor's own packs, standing on the drip. */}
+        <div className="animate-rise pointer-events-none absolute -bottom-16 -right-1 flex items-end [animation-delay:150ms]">
+          <ProductShot
+            flavour={NIGHT_FLAVOURS[4]}
+            size={132}
+            priority
+            className="relative z-0 -mr-8 mb-4 -rotate-12 drop-shadow-[0_10px_12px_rgba(59,29,21,0.35)]"
+          />
+          <ProductShot
+            flavour={NIGHT_FLAVOURS[8]}
+            size={96}
+            priority
+            className="relative z-10 drop-shadow-[0_12px_14px_rgba(59,29,21,0.4)]"
+          />
         </div>
       </BrandHeader>
 
       <div className="flex flex-1 flex-col justify-center pb-8">
-        <p className="animate-rise flex items-center gap-2 text-[13px] font-extrabold text-choco-2">
-          <span className="inline-flex -space-x-1.5" aria-hidden>
-            {NIGHT_FLAVOURS.slice(0, 5).map((f) => (
-              <i
-                key={f.key}
-                className="h-4 w-4 rounded-full border-2 border-vanilla"
-                style={{ background: f.color }}
-              />
-            ))}
-          </span>
+        <p className="animate-rise mt-4 flex items-center gap-2.5 text-[13px] font-extrabold text-choco-2">
+          <span className="h-px w-6 bg-havmor/40" aria-hidden />
           From Ahmedabad, scooping celebrations since {HAVMOR_SINCE}
         </p>
 
@@ -79,8 +100,19 @@ export default async function LandingPage() {
               className="panel animate-rise flex gap-3.5 p-4"
               style={{ animationDelay: `${120 + i * 70}ms` }}
             >
-              <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-[21px] ${feature.tint}`}>
-                {feature.icon}
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-havmor-soft text-havmor">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-[21px] w-[21px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  {feature.icon}
+                </svg>
               </div>
               <div className="min-w-0">
                 <h2 className="headline text-[16.5px] leading-tight">{feature.title}</h2>

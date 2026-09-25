@@ -248,7 +248,10 @@ export function ChatScreen({
         <div className="app-shell py-3">
           {blockedNotice && (
             <div className="animate-rise mb-2.5 flex gap-2.5 rounded-2xl border border-havmor/35 bg-havmor-soft px-3.5 py-2.5">
-              <span className="text-[16px] leading-none">{"⚠️"}</span>
+              <svg viewBox="0 0 24 24" className="mt-0.5 h-[17px] w-[17px] shrink-0 text-havmor" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M12 4 2.8 19.5h18.4z" />
+                <path d="M12 10v4.2M12 17h.01" />
+              </svg>
               <p className="text-[13.5px] font-semibold leading-snug text-choco">
                 {blockedNotice}
               </p>

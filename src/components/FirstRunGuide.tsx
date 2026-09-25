@@ -34,7 +34,7 @@ const STEPS = [
       </>
     ),
     title: "Choose, then spin",
-    body: "Pick a city and who you’d like to meet, then tap the cone in the middle. It stops on a real dancer. Your first five spins are free.",
+    body: "Pick a city and who you’d like to meet, then tap Spin in the middle. It stops on a real dancer. Your first five spins are free.",
   },
   {
     icon: <path d="M6 5l12 14M18 5L6 19" />,

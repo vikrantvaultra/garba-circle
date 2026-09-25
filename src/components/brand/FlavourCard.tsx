@@ -1,5 +1,5 @@
 import { HAVMOR_STORE_LOCATOR, type Flavour } from "@/lib/havmor";
-import { Scoop } from "./Scoop";
+import { ProductShot } from "./ProductShot";
 import styles from "./brand.module.css";
 
 /** Tonight's Havmor flavour, with where to read about it and where to get one. */
@@ -14,8 +14,8 @@ export function FlavourCard({
 }) {
   return (
     <section className={`${styles.flavour} ${className}`} aria-label={label}>
-      <div className={styles.flavourArt} style={{ background: flavour.deep }}>
-        <Scoop flavour={flavour} size={78} />
+      <div className={styles.flavourArt} style={{ background: flavour.tint }}>
+        <ProductShot flavour={flavour} size={82} />
       </div>
       <div className={styles.flavourBody}>
         <p className="eyebrow text-havmor">{label}</p>

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { useToast } from "@/components/Toast";
-import { Scoop } from "@/components/brand/Scoop";
+import { ProductShot } from "@/components/brand/ProductShot";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { levelFlavour } from "@/lib/havmor";
 import { api, ApiFailure } from "@/lib/client/api";
@@ -331,13 +331,13 @@ function Field({
   );
 }
 
-/** Each level's Havmor flavour, as a small cone beside it. */
+/** Each level's Havmor flavour, its pack beside it. */
 function LevelScoop({ level }: { level: string }) {
   const scoop = levelFlavour(level);
   if (!scoop) return null;
   return (
-    <span className="flex w-[64px] shrink-0 flex-col items-center gap-0.5 text-center">
-      <Scoop flavour={scoop.flavour} size={34} />
+    <span className="flex w-[68px] shrink-0 flex-col items-center gap-1 text-center">
+      <ProductShot flavour={scoop.flavour} size={34} className="drop-shadow-[0_4px_5px_rgba(59,29,21,0.2)]" />
       <span className="text-[10.5px] font-bold leading-tight text-cocoa">{scoop.flavour.name}</span>
     </span>
   );

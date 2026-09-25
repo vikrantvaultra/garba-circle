@@ -31,6 +31,9 @@
 
 .inner {
   position: relative;
+  /* Above the drip edge, so anything that hangs over it (the landing page's
+     packs) stands in front of the melt rather than behind it. */
+  z-index: 1;
   isolation: isolate;
 }
 .watermark {
@@ -111,20 +114,20 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 96px;
+  width: 112px;
   flex-shrink: 0;
-  padding: 14px 0 10px;
+  padding: 12px 10px;
 }
-/* A soft light on the flavour's colour, so dark chocolates still read as a scoop. */
+/* A pool of light for the pack to stand in. */
 .flavourArt::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.35), transparent 65%);
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.85), transparent 70%);
 }
-.flavourArt svg {
+.flavourArt img {
   position: relative;
-  filter: drop-shadow(0 6px 8px rgba(59, 29, 21, 0.25));
+  filter: drop-shadow(0 8px 10px rgba(59, 29, 21, 0.22));
 }
 .flavourBody {
   min-width: 0;
