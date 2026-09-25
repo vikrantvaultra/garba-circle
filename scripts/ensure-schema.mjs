@@ -22,7 +22,9 @@ import postgres from "postgres";
 const force = process.argv.includes("--force");
 if (process.env.VERCEL_ENV !== "preview" && !force) process.exit(0);
 
-const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+// Exactly the database the app reads (src/lib/db). In Preview the other
+// DATABASE_URL_* variables can belong to a different database entirely.
+const url = process.env.DATABASE_URL;
 if (!url) {
   console.log("[ensure-schema] no DATABASE_URL, skipping");
   process.exit(0);
