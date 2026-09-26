@@ -27,41 +27,115 @@
   color: var(--color-choco-2);
 }
 
-/* ---- Chips floating over the map, top left ---- */
-.overlay {
+/* ---- What's on the map: a card of layer switches, top left ---- */
+.panel {
   position: absolute;
   z-index: 2;
   top: 12px;
   left: 12px;
-  right: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  pointer-events: none;
+  display: grid;
+  gap: 4px;
+  width: max-content;
+  max-width: calc(100% - 72px);
+  padding: 8px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 6px 20px -4px rgba(59, 29, 21, 0.28), 0 0 0 1px rgba(59, 29, 21, 0.05);
 }
-.chip {
-  display: inline-flex;
+.scope {
+  margin: 0;
+  padding: 1px 6px 3px;
+  font: 800 10.5px/1.3 var(--font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cocoa);
+}
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 4px 10px 4px 5px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--color-choco);
+  font: 600 13.5px/1.2 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.toggle:hover {
+  background: var(--color-cream);
+}
+.toggle:focus-visible {
+  outline: 2px solid var(--color-havmor);
+  outline-offset: 1px;
+}
+.toggle b {
+  font-weight: 900;
+}
+.toggleText {
+  flex: 1;
+  white-space: nowrap;
+}
+/* The swatch is the mark the map draws, image and all. */
+.swatch {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px -2px rgba(59, 29, 21, 0.45);
+  transition: filter 0.15s ease;
+}
+.swatch img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.check {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  padding: 2px;
+  border-radius: 5px;
+  color: #fff;
+  background: var(--color-havmor);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.toggle[aria-pressed="false"] {
+  color: var(--color-cocoa);
+}
+.toggle[aria-pressed="false"] .swatch {
+  filter: grayscale(1) opacity(0.45);
+}
+.toggle[aria-pressed="false"] .check {
+  color: transparent;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(89, 51, 42, 0.3);
+}
+
+/* ---- Garba kinds, along the bottom ---- */
+.legend {
+  position: absolute;
+  z-index: 2;
+  left: 12px;
+  bottom: 12px;
+  right: 56px;
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 4px 10px;
-  max-width: 100%;
+  gap: 4px 12px;
+  width: max-content;
+  max-width: calc(100% - 68px);
   margin: 0;
-  padding: 6px 10px;
-  border-radius: 14px;
-  background: #fff;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.94);
   color: var(--color-choco);
   font: 700 12px/1.35 var(--font-body);
-  box-shadow: 0 3px 10px rgba(59, 29, 21, 0.18);
-}
-.chip svg {
-  width: 13px;
-  height: 13px;
-  flex-shrink: 0;
-  color: var(--color-havmor);
-}
-.chip b {
-  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(59, 29, 21, 0.16);
+  pointer-events: none;
 }
 .legendItem {
   display: inline-flex;
@@ -70,25 +144,32 @@
   white-space: nowrap;
 }
 .legendItem i {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  box-shadow: 0 0 0 1.5px #fff;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 2.5px rgba(59, 29, 21, 0.12);
 }
-.legendItem .clusterDot {
-  display: grid;
-  place-items: center;
-  width: 16px;
-  height: 16px;
-  font: 700 9px var(--font-body);
-  font-style: normal;
-  color: #fff;
-  background: var(--color-havmor);
-  box-shadow: 0 0 0 1.5px #fffcf0;
+.legendHint {
+  font-weight: 600;
+  color: var(--color-cocoa);
 }
 @media (max-width: 480px) {
-  /* On a phone, keep the map visible: only the count stays. */
-  .chip:not(:last-child) {
+  /* A phone keeps the map for the map: the card tightens, the key goes. */
+  .panel {
+    top: 10px;
+    left: 10px;
+    padding: 6px;
+    gap: 2px;
+    border-radius: 16px;
+  }
+  .scope {
+    display: none;
+  }
+  .toggle {
+    min-height: 36px;
+    font-size: 13px;
+  }
+  .legend {
     display: none;
   }
 }
@@ -144,10 +225,26 @@
   line-height: 1.45;
   color: var(--color-choco-2);
 }
-.popLink {
-  display: inline-block;
-  margin-top: 8px;
+.popNote {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-cocoa);
+}
+.popActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 10px;
+  padding-top: 9px;
+  border-top: 1px dashed rgba(89, 51, 42, 0.18);
+}
+.popLink,
+.popCall {
   font-size: 13px;
   font-weight: 800;
   color: var(--color-havmor) !important;
+}
+.popCall {
+  color: var(--color-choco-2) !important;
 }
