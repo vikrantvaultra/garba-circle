@@ -18,7 +18,8 @@
     "db:psql": "./scripts/local-db.sh psql",
     "test:e2e": "tsx scripts/e2e.ts",
     "postinstall": "node scripts/copy-maplibre-worker.mjs",
-    "garba:import": "tsx scripts/garba-import.ts"
+    "garba:import": "tsx scripts/garba-import.ts",
+    "stores:import": "tsx scripts/havmor-stores-import.ts"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

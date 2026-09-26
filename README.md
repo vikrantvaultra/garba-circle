@@ -35,6 +35,31 @@ Google Maps directions and the source links.
 - **Pins** were geocoded with OpenStreetMap Nominatim. Many venues aren't in
   OSM, so some pins sit on the area or a landmark, and the map says so.
 
+### Havmor stores on the same map
+Every Havmor outlet from [havmor.com/store-locator](https://www.havmor.com/store-locator)
+(415 parlours, restaurants and eateries across India) shares the garba map.
+
+- **One map, two layers.** Garbas and stores sit in one clustered source, so
+  an area gets a single split badge (red half: dandiya + garbas, cream half:
+  cone + stores) rather than two bubbles on top of each other. Single places
+  are pins whose head is the same mark as the layer card; a garba pin carries
+  a dot in its kind's colour. The card top left switches either layer off and
+  counts what's in view ("in and around Vadodara" for a city).
+- **Popups:** a store shows its type, address, a directions link and tap-to-call.
+  Each garba card also names the nearest Havmor store within 8 km.
+- **Data:** `src/lib/stores/stores.json`, validated against
+  `src/lib/stores/schema.ts` on the server. The map imports the same file into
+  its own lazily loaded chunk, so stores never ride in the page payload.
+- **Updating:** `npm run stores:import` (or `-- saved.html`) re-reads the
+  page, keeps each store once (the page lists them twice), and never drops a
+  store. Havmor's own pins are often wrong: 17 are empty or garbled and 40
+  point at another town (usually another store's pin). Those are re-placed in
+  `PIN_FIXES` / `PIN_CORRECTIONS` with Nominatim on the address locality, and
+  the popup says the pin marks the area. The import fails on a store with no
+  pin, and warns when Havmor changes a pin we corrected.
+- **Marks:** `public/brand/map/garba.webp` and `store.webp` draw the layer
+  card, the pins and the cluster badges.
+
 ### The circle
 Every dancer gets **5 free spins**. Tap the Havmor button in the middle to spin, or
 hold it to charge a bigger spin (bigger only in how long it turns — power
