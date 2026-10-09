@@ -194,14 +194,30 @@ vercel env pull .env.local
 Use the **pooled** connection string when the provider offers one — the client
 sets `prepare: false`, which is what transaction-mode poolers require.
 
-### Signing in locally
+### Signing in
 
-With no SMS provider configured, the OTP is printed to the server log and shown
-on the login screen. That path is refused in production, so a missing key can
-never become a free login.
+Dancers sign in with Google (OAuth code flow with PKCE, no SDK:
+`src/lib/auth/google.ts`). Create an OAuth client in Google Cloud Console
+(APIs & Services → Credentials → OAuth client ID → Web application) and add
+these as Authorized redirect URIs:
 
-To go live, set `SMS_PROVIDER=msg91` (cheapest in India) or `twilio` plus the
-matching keys in `.env.example`. Indian SMS also needs a DLT-approved template.
+- `http://localhost:3000/api/auth/google/callback`
+- `https://<your-domain>/api/auth/google/callback`
+
+Then set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+
+Dancers can also register with a username and password instead
+(`/api/auth/register`, `/api/auth/login`). Passwords are hashed with scrypt
+(`src/lib/auth/password.ts`), and login attempts are rate limited per account
+and per IP. These accounts have no email or phone, so a forgotten password
+can't be reset.
+
+Without Google keys (e.g. locally), register with a username and password.
+The e2e script signs in through `/api/auth/dev-login`, which has no button in
+the app and is refused in production, so it can never become a free login.
+
+Google blocks sign-in inside Instagram and Facebook's in-app browsers; the
+login screen detects those and offers to reopen the page in Chrome.
 
 ### Payments
 
@@ -335,7 +351,7 @@ src/
   app/
     page.tsx                 landing
     garba/                   the garba map (home)
-    login/                   phone + OTP
+    login/                   Continue with Google
     setup/                   3-step profile wizard
     spin/                    the circle
     matches/                 invites and matches
@@ -365,8 +381,8 @@ Before the first deploy, set these on the Vercel project:
 | Variable | Needed for |
 |---|---|
 | `DATABASE_URL` | everything |
-| `AUTH_SECRET` | sessions and OTP hashing |
-| `SMS_PROVIDER` + provider keys | real OTP delivery (production refuses the console transport) |
+| `AUTH_SECRET` | signing session cookies |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | sign-in (see *Signing in*) |
 | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | real payments (production refuses the simulated gateway) |
 | `BLOB_READ_WRITE_TOKEN` | optional — avatars as files instead of data URLs |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | message notifications. Generate a pair with `npx web-push generate-vapid-keys`. Without them the app never offers notifications (the in-app banner still works) |
@@ -377,14 +393,14 @@ database.
 
 ### Demo shortcuts
 
-A deployment with no SMS provider and no Razorpay keys cannot be signed into or
+A deployment with no Google client and no Razorpay keys cannot be signed into or
 bought from, which makes it impossible to show anyone. Two env vars relax that,
 and both are dangerous:
 
 | Variable | What it does |
 |---|---|
-| `ALLOW_DEV_OTP=true` | Returns the sign-in code in the API response instead of sending an SMS. **Anyone can then sign in as any phone number.** |
-| `ALLOW_DEV_PAYMENTS=true` | Approves purchases without charging. |
+| `ALLOW_DEV_LOGIN=true` | Enables `/api/auth/dev-login` (sign in as any email, used by the e2e script). **Anyone can then sign in as anyone.** |
+| `ALLOW_DEV_PAYMENTS=true` | Approves purchases without charging. Ignored once Razorpay keys are set. |
 
 They are on automatically in local development and do nothing in production
 unless explicitly set. When either is live on a deployment, every page carries
@@ -393,11 +409,10 @@ a red DEMO banner so it cannot be mistaken for a launch.
 Before real users touch the site:
 
 ```bash
-vercel env rm ALLOW_DEV_OTP production
+vercel env rm ALLOW_DEV_LOGIN production
 vercel env rm ALLOW_DEV_PAYMENTS production
-vercel env add SMS_PROVIDER production        # msg91
-vercel env add MSG91_AUTH_KEY production
-vercel env add MSG91_TEMPLATE_ID production
+vercel env add GOOGLE_CLIENT_ID production
+vercel env add GOOGLE_CLIENT_SECRET production
 vercel env add RAZORPAY_KEY_ID production
 vercel env add RAZORPAY_KEY_SECRET production
 vercel --prod

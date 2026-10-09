@@ -1,7 +1,6 @@
 import { guard, json } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth/session";
 import { quotaFor } from "@/lib/search/engine";
-import { maskIndianMobile } from "@/lib/phone-number";
 import { isChatBanned } from "@/lib/moderation/record";
 
 export async function GET() {
@@ -13,7 +12,8 @@ export async function GET() {
       signedIn: true,
       user: {
         id: user.id,
-        phoneMasked: maskIndianMobile(user.phone),
+        email: user.email,
+        username: user.username,
         name: user.name,
         gender: user.gender,
         age: user.age,

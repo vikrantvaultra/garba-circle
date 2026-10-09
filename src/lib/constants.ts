@@ -89,11 +89,6 @@ export const STRIKES_FOR_CHAT_BAN = 3;
 export const CHAT_BAN_HOURS = 24;
 export const STRIKES_FOR_SUSPENSION = 6;
 
-/** OTP behaviour. */
-export const OTP_LENGTH = 6;
-export const OTP_TTL_SECONDS = 5 * 60;
-export const OTP_MAX_ATTEMPTS = 5;
-export const OTP_RESEND_COOLDOWN_SECONDS = 45;
 
 export const DANCE_STYLES = [
   "Garba",

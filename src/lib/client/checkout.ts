@@ -11,7 +11,7 @@ type OrderResponse = {
   currency: string;
   keyId: string;
   pack: Pack;
-  prefill: { contact: string; name: string };
+  prefill: { email: string; name: string };
 };
 
 type ConfirmResponse = {
@@ -170,7 +170,7 @@ export async function purchasePack(input: {
         description: order.pack.label,
         order_id: order.orderId,
         prefill: {
-          contact: order.prefill.contact,
+          email: order.prefill.email,
           name: order.prefill.name,
         },
         notes: { paymentId },

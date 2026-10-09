@@ -139,7 +139,7 @@ export function SetupWizard({
                 About you
               </h1>
               <p className="mt-1.5 text-[15px] leading-snug text-choco-2">
-                This is what the circle sees. Your mobile number never is.
+                This is what the circle sees. Your email and username never are.
               </p>
             </div>
 

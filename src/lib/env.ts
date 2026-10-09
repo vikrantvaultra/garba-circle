@@ -1,8 +1,10 @@
+import { razorpayConfigured } from "@/lib/payments/razorpay";
+
 /**
  * Deployment-mode checks.
  *
  * Two of this app's conveniences would be dangerous if they ever reached real
- * users: the OTP that prints itself on screen, and the payment gateway that
+ * users: signing in as any email without Google, and the payment gateway that
  * approves everything. Both are fine locally and catastrophic in production,
  * so each one needs an explicit opt-in env var rather than defaulting on.
  */
@@ -15,24 +17,27 @@ export function isProduction(): boolean {
 }
 
 /**
- * Show the OTP instead of sending an SMS.
+ * Sign in as any email, skipping Google. Used by the e2e script; the app has
+ * no button for it.
  *
- * Anyone who can read the response can sign in as any number, so in production
- * this requires ALLOW_DEV_OTP=true and should only ever be set on a demo
- * deployment with no real users.
+ * Anyone could then sign in as anyone, so in production this requires
+ * ALLOW_DEV_LOGIN=true and should only ever be set on a demo deployment with
+ * no real users.
  */
-export function devOtpAllowed(): boolean {
-  const provider = process.env.SMS_PROVIDER ?? "console";
-  if (provider !== "console") return false;
-  return !isProduction() || process.env.ALLOW_DEV_OTP === "true";
+export function devLoginAllowed(): boolean {
+  return !isProduction() || process.env.ALLOW_DEV_LOGIN === "true";
 }
 
-/** Approve purchases without charging. Same warning as above. */
+/**
+ * Approve purchases without charging. Same warning as above. Never once
+ * Razorpay is configured: real keys mean real payments.
+ */
 export function devPaymentsAllowed(): boolean {
+  if (razorpayConfigured()) return false;
   return !isProduction() || process.env.ALLOW_DEV_PAYMENTS === "true";
 }
 
 /** True when either shortcut is live on a deployed environment. */
 export function isDemoDeployment(): boolean {
-  return isProduction() && (devOtpAllowed() || devPaymentsAllowed());
+  return isProduction() && (devLoginAllowed() || devPaymentsAllowed());
 }

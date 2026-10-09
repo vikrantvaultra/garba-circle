@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { rupees, type Pack } from "@/lib/constants";
 import { CheckoutCancelled, purchasePack } from "@/lib/client/checkout";
+import { chromeIntent, useInAppBrowser } from "@/lib/client/in-app";
 import { Sheet } from "./Sheet";
 import { useToast } from "./Toast";
 
@@ -20,26 +21,6 @@ function unitLabel(pack: Pack): string {
   const per = unitPrice(pack) / 100;
   return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a spin`;
 }
-
-/**
- * Instagram, Facebook and similar apps open links in their own web view,
- * which often can't hand off to a UPI app. Android can be sent to Chrome;
- * iOS has no such link, so it gets instructions.
- */
-const IN_APP = /FBAN|FBAV|FB_IAB|Instagram|LinkedInApp|Snapchat|Line\/|; wv\)/i;
-
-function inAppBrowser(): "android" | "ios" | "" {
-  const ua = navigator.userAgent;
-  if (!IN_APP.test(ua)) return "";
-  return /Android/i.test(ua) ? "android" : "ios";
-}
-
-function chromeIntent(): string {
-  const { host, pathname, search } = window.location;
-  return `intent://${host}${pathname}${search}#Intent;scheme=https;package=com.android.chrome;end`;
-}
-
-const noSubscribe = () => () => {};
 
 export function PackSheet({
   open,
@@ -67,7 +48,7 @@ export function PackSheet({
   const [chosen, setChosen] = useState(() => packs[0]?.key);
   const payRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
-  const inApp = useSyncExternalStore(noSubscribe, inAppBrowser, () => "" as const);
+  const inApp = useInAppBrowser();
 
   const selected = packs.find((p) => p.key === chosen) ?? packs[0];
 

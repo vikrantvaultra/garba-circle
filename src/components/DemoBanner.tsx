@@ -1,4 +1,4 @@
-import { devOtpAllowed, devPaymentsAllowed, isDemoDeployment } from "@/lib/env";
+import { devLoginAllowed, devPaymentsAllowed, isDemoDeployment } from "@/lib/env";
 
 /**
  * A deployed environment running with the sign-in or payment shortcuts on is a
@@ -8,7 +8,7 @@ export function DemoBanner() {
   if (!isDemoDeployment()) return null;
 
   const parts: string[] = [];
-  if (devOtpAllowed()) parts.push("codes are shown on screen");
+  if (devLoginAllowed()) parts.push("anyone can sign in as anyone");
   if (devPaymentsAllowed()) parts.push("payments are simulated");
 
   return (

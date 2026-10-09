@@ -9,7 +9,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 config({ path: ".env" });
 
-import { inArray } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import { db } from "../src/lib/db";
 import { users } from "../src/lib/db/schema";
 
@@ -47,10 +47,12 @@ async function main() {
     const female = i % 2 === 0;
     const [city, state] = pick(CITIES, i * 5 + 1);
     const styleCount = 1 + (i % 3);
+    const email = `dancer${i}@seed.garba.local`;
     return {
-      // Stored canonically as 91 + a 10-digit mobile, same as a real sign-in.
-      // 70000 1xxxx is a reserved test range, never a live subscriber.
-      phone: `9170000${String(10000 + i).slice(-5)}`,
+      // The same id the dev sign-in gives this email, so the e2e script can
+      // sign in as a sample dancer.
+      googleSub: `dev:${email}`,
+      email,
       name: `${female ? pick(FIRST_F, i) : pick(FIRST_M, i)} ${pick(LAST, i * 3)}`,
       gender: female ? "female" : i % 7 === 3 ? "other" : "male",
       age: 19 + (i % 14),
@@ -63,14 +65,23 @@ async function main() {
     };
   });
 
-  const phones = rows.map((r) => r.phone);
-  const existing = await db
-    .select({ phone: users.phone })
-    .from(users)
-    .where(inArray(users.phone, phones));
-  const known = new Set(existing.map((e) => e.phone));
+  // Sample dancers seeded before Google sign-in were keyed by a test phone
+  // number; give them their email identity instead of adding them twice.
+  for (let i = 0; i < count; i++) {
+    await db
+      .update(users)
+      .set({ googleSub: rows[i].googleSub, email: rows[i].email })
+      .where(and(eq(users.phone, `9170000${String(10000 + i).slice(-5)}`), isNull(users.googleSub)));
+  }
 
-  const fresh = rows.filter((r) => !known.has(r.phone));
+  const subs = rows.map((r) => r.googleSub);
+  const existing = await db
+    .select({ googleSub: users.googleSub })
+    .from(users)
+    .where(inArray(users.googleSub, subs));
+  const known = new Set(existing.map((e) => e.googleSub));
+
+  const fresh = rows.filter((r) => !known.has(r.googleSub));
   if (fresh.length === 0) {
     console.log(`All ${count} sample dancers already exist. Nothing to do.`);
     return;

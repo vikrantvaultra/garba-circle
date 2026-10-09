@@ -25,13 +25,14 @@ import {
 
 export function ProfileScreen({
   profile,
-  phoneMasked,
+  signedInAs,
   quota,
   packs,
   strikes,
 }: {
   profile: PublicProfile;
-  phoneMasked: string;
+  /** Their Google email or @username; only they see it. */
+  signedInAs: string | null;
   quota: {
     freeRemaining: number;
     paidRemaining: number;
@@ -90,7 +91,7 @@ export function ProfileScreen({
             <p className="truncate text-[14px] font-semibold text-choco-2">
               {[profile.city, profile.state].filter(Boolean).join(", ")}
             </p>
-            <p className="mt-0.5 text-[12.5px] text-cocoa">{phoneMasked}</p>
+            {signedInAs && <p className="mt-0.5 truncate text-[12.5px] text-cocoa">{signedInAs}</p>}
           </div>
         </div>
 
@@ -201,8 +202,8 @@ export function ProfileScreen({
           body="Phone numbers in any form — typed, spelled out, in Devanagari or Gujarati numerals, roman numerals, or split across messages. Plus abusive language in Hindi, Marathi, Gujarati and English."
         />
         <Item
-          title="Your number is private"
-          body="It is used only to sign you in. It is never shown to another dancer, and never shared."
+          title="Your sign-in is private"
+          body="Your Google email or username is used only to sign you in. Neither is ever shown to another dancer, or shared."
         />
         <Item
           title="Made with Havmor"
