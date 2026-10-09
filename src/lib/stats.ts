@@ -2,9 +2,8 @@ import { and, eq, gt, isNotNull, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { matches, users } from "@/lib/db/schema";
 
+/** Pairings only: how many dancers there are is never counted or sent. */
 export type CircleStats = {
-  dancers: number;
-  dancersInCity: number;
   city: string | null;
   jodisToday: number;
   /**
@@ -18,23 +17,6 @@ export type CircleStats = {
 export async function circleStats(input: {
   city: string | null;
 }): Promise<CircleStats> {
-  const [totals] = await db
-    .select({ n: sql<number>`count(*)::int` })
-    .from(users)
-    .where(eq(users.profileComplete, true));
-
-  const [inCity] = input.city
-    ? await db
-        .select({ n: sql<number>`count(*)::int` })
-        .from(users)
-        .where(
-          and(
-            eq(users.profileComplete, true),
-            sql`lower(${users.city}) = lower(${input.city})`,
-          ),
-        )
-    : [{ n: 0 }];
-
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const [today] = await db
     .select({ n: sql<number>`count(*)::int` })
@@ -50,8 +32,6 @@ export async function circleStats(input: {
     .limit(6);
 
   return {
-    dancers: totals?.n ?? 0,
-    dancersInCity: inCity?.n ?? 0,
     city: input.city,
     jodisToday: today?.n ?? 0,
     recent: recentRows.map((row) => ({
