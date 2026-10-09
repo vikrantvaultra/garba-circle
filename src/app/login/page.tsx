@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BrandHeader } from "@/components/brand/BrandHeader";
+import { googleConfigured } from "@/lib/auth/google";
 import { getCurrentUser } from "@/lib/auth/session";
 import { landingFor, safeNext } from "@/lib/auth/sign-in";
 import { GoogleButton, PasswordForm } from "./SignIn";
@@ -24,14 +25,22 @@ export default async function LoginPage({
   const user = await getCurrentUser();
   if (user && !user.suspendedAt) redirect(landingFor(user, next));
 
-  const message = error ? (ERRORS[error] ?? ERRORS.failed) : null;
+  // Until the Google client is set up, the button would only lead back here
+  // with an error, so it isn't offered at all.
+  const google = googleConfigured();
+  const message =
+    error && !(error === "unavailable" && !google) ? (ERRORS[error] ?? ERRORS.failed) : null;
   const href = `/api/auth/google${next ? `?next=${encodeURIComponent(next)}` : ""}`;
 
   return (
     <main className="app-shell flex min-h-dvh flex-col pb-safe">
       <BrandHeader
         title="Aavo, join the circle"
-        sub="Sign in with Google, or with a username and password."
+        sub={
+          google
+            ? "Sign in with Google, or with a username and password."
+            : "Sign in with your username and password, or create an account."
+        }
         aside={
           <Link href="/" className="rounded-full bg-white/15 px-3 py-1.5 text-[13px] font-extrabold text-white">
             {"←"} Back
@@ -50,19 +59,23 @@ export default async function LoginPage({
             </p>
           )}
 
-          <GoogleButton href={href} />
+          {google && (
+            <>
+              <GoogleButton href={href} />
 
-          <p className="text-center text-[12.5px] leading-relaxed text-cocoa">
-            From Google we only use your name and email, and never show either.
-          </p>
+              <p className="text-center text-[12.5px] leading-relaxed text-cocoa">
+                From Google we only use your name and email, and never show either.
+              </p>
 
-          <div className="flex items-center gap-3 py-1 text-[12px] font-extrabold uppercase tracking-wider text-cocoa">
-            <span className="h-px flex-1 bg-choco/15" />
-            or
-            <span className="h-px flex-1 bg-choco/15" />
-          </div>
+              <div className="flex items-center gap-3 py-1 text-[12px] font-extrabold uppercase tracking-wider text-cocoa">
+                <span className="h-px flex-1 bg-choco/15" />
+                or
+                <span className="h-px flex-1 bg-choco/15" />
+              </div>
+            </>
+          )}
 
-          <PasswordForm next={next} />
+          <PasswordForm next={next} google={google} />
         </div>
       </div>
     </main>

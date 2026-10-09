@@ -64,8 +64,13 @@ const USERNAME_PATTERN = /^[a-z0-9_.]{3,20}$/;
  * Username and password, for anyone who'd rather not use Google. There is no
  * email or phone behind these accounts, so a forgotten password can't be
  * reset; the form says so when they register.
+ *
+ * Submitting reads the fields themselves, not React state: browsers autofill
+ * saved passwords without firing change events (Chrome holds the value back
+ * until the page is touched), so state alone would see an empty form while
+ * the fields look full.
  */
-export function PasswordForm({ next }: { next: string | null }) {
+export function PasswordForm({ next, google }: { next: string | null; google: boolean }) {
   const router = useRouter();
   const toast = useToast();
   const [mode, setMode] = useState<Mode>("signin");
@@ -102,15 +107,40 @@ export function PasswordForm({ next }: { next: string | null }) {
   }, [clean, registering, usernameOk]);
 
   const mismatch = registering && confirm.length > 0 && confirm !== password;
-  const ready =
-    usernameOk && password.length >= 8 && !taken && (!registering || confirm === password);
 
-  const submit = async () => {
+  /** Why the form can't be sent as filled in, or null. */
+  const problem = (name: string, pass: string, again: string): string | null => {
+    if (!name || !pass) return "Enter your username and password.";
+    if (!registering) return null;
+    if (!USERNAME_PATTERN.test(name)) return "Usernames are 3–20 letters, numbers, dots or underscores.";
+    if (pass.length < 8) return "Use at least 8 characters for your password.";
+    if (again !== pass) return "Passwords don’t match.";
+    if (taken) return "That username is taken. Try another.";
+    return null;
+  };
+
+  const submit = async (form: HTMLFormElement) => {
+    const data = new FormData(form);
+    const raw = String(data.get("username") ?? "").replace(/\s/g, "");
+    const pass = String(data.get("password") ?? "");
+    const again = String(data.get("confirm") ?? "");
+    // Catch state up with whatever the browser filled in.
+    setUsername(raw);
+    setPassword(pass);
+    if (registering) setConfirm(again);
+
+    const name = raw.toLowerCase();
+    const why = problem(name, pass, again);
+    if (why) {
+      toast.show(why, "error");
+      return;
+    }
+
     setBusy(true);
     try {
       const res = await api.post<{ profileComplete: boolean }>(
         registering ? "/api/auth/register" : "/api/auth/login",
-        { username: clean, password },
+        { username: name, password: pass },
       );
       router.replace(res.profileComplete ? (next ?? "/garba") : "/setup");
     } catch (error) {
@@ -142,7 +172,7 @@ export function PasswordForm({ next }: { next: string | null }) {
       className="panel space-y-3 rounded-3xl p-4"
       onSubmit={(e) => {
         e.preventDefault();
-        if (ready && !busy) submit();
+        if (!busy) void submit(e.currentTarget);
       }}
     >
       <div role="tablist" className="flex gap-1 rounded-full bg-wafer/60 p-1">
@@ -222,7 +252,7 @@ export function PasswordForm({ next }: { next: string | null }) {
 
       <button
         type="submit"
-        disabled={!ready || busy}
+        disabled={busy}
         className="btn-primary active:btn-primary-active disabled:opacity-45"
       >
         {busy ? "One moment…" : registering ? "Create account" : "Sign in"}
@@ -231,7 +261,7 @@ export function PasswordForm({ next }: { next: string | null }) {
       {registering && (
         <p className="text-center text-[12px] leading-snug text-cocoa">
           Keep your password safe: without an email we can&rsquo;t reset it.
-          Signing in with Google avoids that.
+          {google && " Signing in with Google avoids that."}
         </p>
       )}
     </form>
