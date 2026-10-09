@@ -23,6 +23,7 @@ import { FirstRunGuide } from "@/components/FirstRunGuide";
 import { BrandHeader } from "@/components/brand/BrandHeader";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
+import { PURCHASED_EVENT } from "@/lib/client/checkout";
 import { buzz, sound } from "@/lib/client/sound";
 import * as spinPrefs from "@/lib/client/spin-prefs";
 import { compatibility, type Landing } from "@/lib/compat";
@@ -213,6 +214,18 @@ export function SpinScreen({
       /* the next spin surfaces any problem */
     }
   };
+
+  // A payment that finished after checkout closed (see PaymentWatcher).
+  useEffect(() => {
+    const onPurchased = () => {
+      api
+        .get<{ quota: Quota }>("/api/me")
+        .then((res) => setQuota(res.quota))
+        .catch(() => {});
+    };
+    window.addEventListener(PURCHASED_EVENT, onPurchased);
+    return () => window.removeEventListener(PURCHASED_EVENT, onPurchased);
+  }, []);
 
   const onSpin = async (): Promise<boolean> => {
     const before = quota;

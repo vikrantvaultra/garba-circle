@@ -3,6 +3,7 @@ import { Hind_Vadodara, Nunito } from "next/font/google";
 import { Ambience } from "@/components/Ambience";
 import { DemoBanner } from "@/components/DemoBanner";
 import { MessageNotifier } from "@/components/MessageNotifier";
+import { PaymentWatcher } from "@/components/PaymentWatcher";
 import { ToastProvider } from "@/components/Toast";
 import { APP_NAME, APP_TAGLINE, FULL_NAME } from "@/lib/constants";
 import "./globals.css";
@@ -56,6 +57,7 @@ export default function RootLayout({
           <DemoBanner />
           <div className="relative z-10">{children}</div>
           <MessageNotifier />
+          <PaymentWatcher />
         </ToastProvider>
       </body>
     </html>
