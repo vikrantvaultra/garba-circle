@@ -7,6 +7,7 @@
  */
 
 const BASE = process.env.BASE ?? "http://127.0.0.1:3001";
+const TEST_EMAIL = "e2e-dancer-a@test.garba.local";
 
 let passed = 0;
 const failures: string[] = [];
@@ -52,35 +53,30 @@ class Session {
     return { status: res.status, data };
   }
 
-  async signIn(localNumber: string): Promise<boolean> {
-    const otp = await this.call("/api/auth/request-otp", {
+  /** The dev sign-in: Google can't be driven from a script. */
+  async signIn(email: string): Promise<boolean> {
+    const res = await this.call("/api/auth/dev-login", {
       method: "POST",
-      body: { phone: localNumber },
+      body: { email },
     });
-    const code = otp.data.devCode as string | undefined;
-    if (!code) {
-      console.log("    request-otp:", otp.status, JSON.stringify(otp.data).slice(0, 160));
-      return false;
+    if (res.status !== 200) {
+      console.log("    dev-login:", res.status, JSON.stringify(res.data).slice(0, 160));
     }
-    const verify = await this.call("/api/auth/verify-otp", {
-      method: "POST",
-      body: { phone: localNumber, code },
-    });
-    return verify.status === 200;
+    return res.status === 200;
   }
 }
 
 async function main() {
   // Re-runnable: drop the test account so strikes, spins and matches from
   // a previous run cannot change the outcome. Foreign keys cascade the rest.
-  await resetTestAccount("919820011111");
+  await resetTestAccount(TEST_EMAIL);
 
   console.log(`\nGarba Circle end-to-end  —  ${BASE}\n`);
 
   // -- sign in ------------------------------------------------------------
   console.log("Auth");
   const a = new Session();
-  check("dancer A signs in with an OTP", await a.signIn("9820011111"));
+  check("dancer A signs in", await a.signIn(TEST_EMAIL));
 
   const me = await a.call("/api/me");
   check("new account starts unfinished", me.data.signedIn === true &&
@@ -90,11 +86,25 @@ async function main() {
     (me.data.quota as Record<string, unknown>)?.freeRemaining === 5,
   );
 
-  const badOtp = await a.call("/api/auth/verify-otp", {
+  const badEmail = await new Session().call("/api/auth/dev-login", {
     method: "POST",
-    body: { phone: "9820011112", code: "000000" },
+    body: { email: "not-an-email" },
   });
-  check("a wrong code is rejected", badOtp.status === 400);
+  check("a malformed email is rejected", badEmail.status === 400);
+
+  const google = await fetch(`${BASE}/api/auth/google`, { redirect: "manual" });
+  const location = google.headers.get("location") ?? "";
+  check(
+    "Continue with Google redirects to Google, or to /login when unconfigured",
+    google.status >= 300 && google.status < 400 &&
+      (location.startsWith("https://accounts.google.com/") || location.includes("/login?error=unavailable")),
+  );
+
+  const forged = await fetch(`${BASE}/api/auth/google/callback?code=x&state=forged`, { redirect: "manual" });
+  check(
+    "a callback without our sign-in cookie is refused",
+    (forged.headers.get("location") ?? "").includes("/login?error=expired"),
+  );
 
   // -- profile ------------------------------------------------------------
   console.log("\nProfile");
@@ -342,8 +352,8 @@ async function main() {
   );
 
   const b = new Session();
-  const partnerPhone = await lookupPhone(partner.id);
-  check("B signs in", await b.signIn(partnerPhone));
+  const partnerEmail = await lookupEmail(partner.id);
+  check("B signs in", await b.signIn(partnerEmail));
 
   const inbox = await b.call("/api/matches");
   const conversations =
@@ -561,31 +571,25 @@ async function main() {
   }
 }
 
-async function resetTestAccount(storedPhone: string): Promise<void> {
+async function resetTestAccount(email: string): Promise<void> {
   const { db } = await import("../src/lib/db");
-  const { users, otpCodes } = await import("../src/lib/db/schema");
+  const { users } = await import("../src/lib/db/schema");
   const { eq } = await import("drizzle-orm");
-  await db.delete(users).where(eq(users.phone, storedPhone));
-  // otp_codes is keyed by phone, not by user, so it outlives the account and
-  // would otherwise trip the resend cooldown on the next run. The seeded
-  // dancers need the same treatment: the test signs in as whichever one the
-  // reel landed on, and back-to-back runs would hit that cooldown.
-  const { sql } = await import("drizzle-orm");
-  await db.delete(otpCodes).where(eq(otpCodes.phone, storedPhone));
-  await db.delete(otpCodes).where(sql`phone like '9170000%'`);
+  await db.delete(users).where(eq(users.googleSub, `dev:${email}`));
 }
 
-/** The seeded dancers' phone numbers are only in the database. */
-async function lookupPhone(userId: string): Promise<string> {
+/** The seeded dancers' emails are only in the database. */
+async function lookupEmail(userId: string): Promise<string> {
   const { db } = await import("../src/lib/db");
   const { users } = await import("../src/lib/db/schema");
   const { eq } = await import("drizzle-orm");
   const [row] = await db
-    .select({ phone: users.phone })
+    .select({ email: users.email })
     .from(users)
     .where(eq(users.id, userId))
     .limit(1);
-  return row.phone.replace(/^91/, "");
+  if (!row?.email) throw new Error(`Seeded dancer ${userId} has no email; run npm run db:seed`);
+  return row.email;
 }
 
 main()

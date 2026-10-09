@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       currency: order.currency,
       keyId: order.keyId,
       pack: order.pack,
-      prefill: { contact: user.phone, name: user.name ?? "" },
+      prefill: { email: user.email ?? "", name: user.name ?? "" },
     });
   });
 }

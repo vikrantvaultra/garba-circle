@@ -14,8 +14,22 @@ export const users = pgTable(
   "users",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    /** Stored E.164 without the plus: "919876543210". */
-    phone: varchar("phone", { length: 20 }).notNull(),
+    /** Google's stable account id (the ID token's "sub"). How dancers sign in. */
+    googleSub: text("google_sub"),
+    /** From Google, verified. Never shown to other dancers. */
+    email: text("email"),
+    /**
+     * For dancers who register with a username and password instead of
+     * Google. Stored lowercase; only used to sign in, never shown to others.
+     */
+    username: varchar("username", { length: 20 }),
+    /** scrypt, see lib/auth/password.ts. Null for Google-only accounts. */
+    passwordHash: text("password_hash"),
+    /**
+     * Phone sign-in was retired for Google sign-in. Kept for accounts made
+     * before then: "919876543210", E.164 without the plus.
+     */
+    phone: varchar("phone", { length: 20 }),
     name: varchar("name", { length: 60 }),
     gender: varchar("gender", { length: 10 }),
     age: integer("age"),
@@ -44,23 +58,10 @@ export const users = pgTable(
   },
   (t) => [
     uniqueIndex("users_phone_idx").on(t.phone),
+    uniqueIndex("users_google_sub_idx").on(t.googleSub),
+    uniqueIndex("users_username_idx").on(t.username),
     index("users_discovery_idx").on(t.profileComplete, t.gender, t.city),
   ],
-);
-
-export const otpCodes = pgTable(
-  "otp_codes",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    phone: varchar("phone", { length: 20 }).notNull(),
-    /** SHA-256 of the code plus a server pepper — never the code itself. */
-    codeHash: text("code_hash").notNull(),
-    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-    attempts: integer("attempts").notNull().default(0),
-    consumedAt: timestamp("consumed_at", { withTimezone: true }),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  },
-  (t) => [index("otp_phone_idx").on(t.phone, t.createdAt)],
 );
 
 /** One row per reel pull, free or paid. Also our "don't show them again" log. */

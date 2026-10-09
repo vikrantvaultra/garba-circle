@@ -52,7 +52,11 @@ type Row = Record<string, unknown>;
 function toUser(row: Row): User {
   return {
     id: row.id as string,
-    phone: row.phone as string,
+    googleSub: row.google_sub as string | null,
+    email: row.email as string | null,
+    username: row.username as string | null,
+    passwordHash: row.password_hash as string | null,
+    phone: row.phone as string | null,
     name: row.name as string | null,
     gender: row.gender as string | null,
     age: row.age as number | null,

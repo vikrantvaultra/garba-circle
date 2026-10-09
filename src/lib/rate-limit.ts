@@ -1,7 +1,7 @@
 /**
  * Best-effort in-process rate limiting. Fluid Compute reuses instances so this
  * catches the common case of one client hammering an endpoint; the durable
- * limits that actually matter (OTP issuance) are enforced in the database.
+ * limits that actually matter are enforced in the database.
  */
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
