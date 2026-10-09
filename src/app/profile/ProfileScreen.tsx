@@ -63,7 +63,7 @@ export function ProfileScreen({
       // While still signed in: this device stops getting this account's messages.
       await push.forget();
       await api.post("/api/auth/logout");
-      router.replace("/");
+      router.replace("/garba");
       router.refresh();
     } catch {
       toast.show("Could not sign out.", "error");

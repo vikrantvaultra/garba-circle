@@ -42,7 +42,7 @@ export default async function LoginPage({
             : "Sign in with your username and password, or create an account."
         }
         aside={
-          <Link href="/" className="rounded-full bg-white/15 px-3 py-1.5 text-[13px] font-extrabold text-white">
+          <Link href="/garba" className="rounded-full bg-white/15 px-3 py-1.5 text-[13px] font-extrabold text-white">
             {"←"} Back
           </Link>
         }

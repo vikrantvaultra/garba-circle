@@ -17,7 +17,7 @@ import styles from "./notifier.module.css";
 type Latest = NonNullable<InboxSummary["latest"]>;
 
 /** Screens where nobody is signed in, so there is nothing to check. */
-const SIGNED_OUT = new Set(["/", "/login"]);
+const SIGNED_OUT = new Set(["/login"]);
 /** How often to look for new messages while the app is on screen. */
 const POLL_MS = 10_000;
 /** With push on, the service worker says when to look; this is a backstop. */

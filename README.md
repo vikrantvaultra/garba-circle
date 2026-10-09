@@ -13,7 +13,9 @@ Deploys to Vercel.
 ## How it works
 
 ### The garba map (home)
-`/garba` is the home screen, and it is public, so no sign-in is needed. It shows
+`/garba` is the home screen: the site's root redirects to it (`next.config.ts`),
+so a shared link opens straight onto the map. It is public, so no sign-in is
+needed. It shows
 every Navratri garba we know of on a map: pick a city from the searchable
 dropdown, or tap a numbered circle, and the map flies to that city's pins. A
 pin or card shows the dates, timings, entry and passes, artists, organiser,
@@ -333,8 +335,7 @@ DOTENV_CONFIG_PATH=.env.local BASE=http://127.0.0.1:3000 \
 ```
 src/
   app/
-    page.tsx                 landing
-    garba/                   the garba map (home)
+    garba/                   the garba map (home; "/" redirects here)
     login/                   Continue with Google
     setup/                   3-step profile wizard
     spin/                    the circle
