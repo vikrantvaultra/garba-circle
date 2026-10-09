@@ -60,10 +60,11 @@ spin — both read from the spins log.
 (women, men or both — "both" applies no gender filter, so dancers who chose
 "other" are never hidden). The circle will not spin until both are picked,
 and the API refuses a spin without them. Both are free on every spin, free or
-paid; a pack only buys more spins. The city dropdown is searchable and shows
-how many dancers of the chosen gender are really in each city
-(`src/lib/search/cities.ts`), so nobody spins into an empty city blind — and
-if they do, the spin is refused and nothing is charged.
+paid; a pack only buys more spins. The city dropdown is searchable and lists
+the cities people dance in, busiest first (`src/lib/search/cities.ts`). It
+never says how many dancers are anywhere: only city names leave the server.
+A spin into a city with nobody of the chosen gender is refused and nothing is
+charged.
 
 Until the free spins run out the app says nothing about prices: no lock icon
 and no price list on a first-timer's screen.
@@ -405,7 +406,7 @@ vercel --prod
 
 The app is built to be genuinely compelling: a circle that feels good to throw,
 synthesised dhol and chimes, haptics, a petal burst on landing, and a live line above the circle
-showing how many dancers are in the circle and where jodis are forming.
+showing where jodis are forming. It never says how many dancers there are.
 
 Every number in that strip is a real query. There is no invented "247 people
 viewing", no countdown that quietly resets, no urgency that does not exist. The

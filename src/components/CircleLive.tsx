@@ -12,10 +12,10 @@ function ago(minutes: number): string {
 }
 
 /**
- * A live line under the header. Every number here is a real query against
- * the database — no invented "247 people viewing", no countdown that resets.
- * Recent pairings name a city, never a person. If the circle is quiet it says
- * so, because a proof that can be caught lying is worse than no proof.
+ * A live line under the header: recent pairings, by city and never by
+ * person, from real queries against the database. It never says how many
+ * dancers there are. If the circle is quiet it says so, because a proof that
+ * can be caught lying is worse than no proof.
  */
 export function CircleLive({ initial }: { initial: CircleStats }) {
   const [stats, setStats] = useState(initial);
@@ -54,9 +54,6 @@ export function CircleLive({ initial }: { initial: CircleStats }) {
       `${stats.jodisToday} ${stats.jodisToday === 1 ? "pair" : "pairs"} got talking today`,
     );
   }
-  if (stats.city && stats.dancersInCity > 1) {
-    lines.push(`${stats.dancersInCity} of them dance in ${stats.city}`);
-  }
   if (lines.length === 0) {
     lines.push(
       stats.city
@@ -71,16 +68,8 @@ export function CircleLive({ initial }: { initial: CircleStats }) {
       <span aria-hidden className="relative h-2 w-2 shrink-0 rounded-full bg-pista">
         <span className="absolute -inset-1 animate-pulse-ring rounded-full border-[1.5px] border-pista" />
       </span>
-      <p className="m-0 flex flex-wrap gap-x-2">
-        <b className="font-extrabold text-choco">
-          {stats.dancers} {stats.dancers === 1 ? "dancer" : "dancers"} in the circle
-        </b>
-        <span
-          className="transition-opacity duration-300"
-          style={{ opacity: visible ? 1 : 0 }}
-        >
-          {line}
-        </span>
+      <p className="m-0 transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }}>
+        {line}
       </p>
     </div>
   );

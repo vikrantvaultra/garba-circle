@@ -5,8 +5,11 @@ import styles from "./city-picker.module.css";
 
 export type GenderChoice = "female" | "male" | "both";
 
-/** One row in the list: how many of something are there, and how to say it. */
-export type PickerCity = { name: string; count: number; countLabel: string };
+/**
+ * One row in the list. The garba map gives each city a count of garbas; the
+ * spin screen gives names only, already in order.
+ */
+export type PickerCity = { name: string; count?: number; countLabel?: string };
 
 function Highlight({ text, query }: { text: string; query: string }) {
   const at = query ? text.toLowerCase().indexOf(query) : -1;
@@ -22,9 +25,8 @@ function Highlight({ text, query }: { text: string; query: string }) {
 
 /**
  * A searchable, single-select city dropdown (the ARIA 1.2 combobox pattern).
- * Type to filter, arrows to move, Enter to pick, Escape to close. Each city
- * carries a real count — dancers on the spin screen, garbas on the map — so
- * nobody picks an empty city without knowing.
+ * Type to filter, arrows to move, Enter to pick, Escape to close. On the map
+ * each city carries its number of garbas, so nobody picks an empty one.
  */
 export function CityPicker({
   id,
@@ -33,7 +35,7 @@ export function CityPicker({
   myCity,
   attention,
   placeholder = "Search a city",
-  noneText = (q) => `No dancers in ${q} yet. Try a nearby city.`,
+  noneText = (q) => `${q} isn’t on the list yet. Try a nearby city.`,
   onChange,
 }: {
   id: string;
@@ -64,6 +66,8 @@ export function CityPicker({
         if (a.name.toLowerCase() === mine) return -1;
         if (b.name.toLowerCase() === mine) return 1;
       }
+      // Without counts the options are already in order.
+      if (a.count === undefined || b.count === undefined) return 0;
       return b.count - a.count || a.name.localeCompare(b.name);
     });
     if (!q) return sorted;
@@ -264,7 +268,7 @@ export function CityPicker({
                         <span className={styles.tag}>Your city</span>
                       )}
                     </span>
-                    <span className={styles.count}>{option.countLabel}</span>
+                    {option.countLabel && <span className={styles.count}>{option.countLabel}</span>}
                     {selected ? (
                       <svg className={styles.check} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                         <path d="M5 12.5l4.5 4.5L19 7.5" />
