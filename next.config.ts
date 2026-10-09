@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        // The garba map is the front door: a shared link opens straight onto
+        // it, signed in or not. Temporary (307), so browsers don't cache it
+        // forever if the home page changes. Query strings carry across, so
+        // "/?city=surat" lands on Surat's garbas.
+        source: "/",
+        destination: "/garba",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
