@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { fail, guard, json, rateLimit } from "@/lib/api";
+import { countHit, isLimited } from "@/lib/rate-limit";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { authConfigured } from "@/lib/auth/session";
@@ -13,6 +14,17 @@ import {
 import { startSessionFor } from "@/lib/auth/sign-in";
 import { clientIp } from "@/lib/client-ip";
 
+/*
+ * Indian mobile networks put many subscribers behind one public IP, and a
+ * garba venue's Wi-Fi does the same, so per-IP limits have to allow for a
+ * crowd. Only accounts actually created count against the account limit: a
+ * rejected password or a taken username shouldn't use up anyone's quota.
+ */
+const ACCOUNTS_PER_IP = 20;
+const ACCOUNT_WINDOW_MS = 60 * 60 * 1000;
+const ATTEMPTS_PER_IP = 60;
+const ATTEMPT_WINDOW_MS = 15 * 60 * 1000;
+
 const Body = z.object({
   username: z.string().max(40),
   password: z.string().max(200),
@@ -24,9 +36,9 @@ export async function POST(req: Request) {
     if (!authConfigured()) {
       return fail("Sign-in isn’t set up on this deployment yet. Please try later.", 503);
     }
-    // Slows anyone scripting account creation.
-    if (!rateLimit(`register:${clientIp(req)}`, 5, 60 * 60 * 1000)) {
-      return fail("Too many new accounts from here. Try again later.", 429);
+    const ip = clientIp(req);
+    if (!rateLimit(`register-try:${ip}`, ATTEMPTS_PER_IP, ATTEMPT_WINDOW_MS)) {
+      return fail("Too many attempts. Try again in a few minutes.", 429);
     }
 
     const parsed = Body.safeParse(await req.json().catch(() => null));
@@ -39,6 +51,11 @@ export async function POST(req: Request) {
     const problem = passwordProblem(parsed.data.password, username);
     if (problem) return fail(problem);
 
+    // Slows anyone scripting account creation.
+    if (isLimited(`register:${ip}`, ACCOUNTS_PER_IP)) {
+      return fail("Too many new accounts from this network. Try again in a while.", 429);
+    }
+
     const passwordHash = await hashPassword(parsed.data.password);
     const [created] = await db
       .insert(users)
@@ -46,6 +63,7 @@ export async function POST(req: Request) {
       .onConflictDoNothing({ target: users.username })
       .returning();
     if (!created) return fail("That username is taken. Try another.", 409);
+    countHit(`register:${ip}`, ACCOUNT_WINDOW_MS);
 
     const result = await startSessionFor(created);
     if (!result.ok) return fail("This account has been suspended.", 403);
