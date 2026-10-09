@@ -7,6 +7,7 @@ import {
   secondsUntilResendAllowed,
 } from "@/lib/auth/otp";
 import { isDevOtp, sendOtp, SmsNotConfiguredError } from "@/lib/auth/sms";
+import { authConfigured } from "@/lib/auth/session";
 import { OTP_LENGTH } from "@/lib/constants";
 
 const Body = z.object({ phone: z.string().min(6).max(20) });
@@ -19,6 +20,13 @@ export async function POST(req: Request) {
     const phone = normalizeIndianMobile(parsed.data.phone);
     if (!phone) {
       return fail("That doesn’t look like an Indian mobile number.");
+    }
+
+    // Without a session secret nobody can be signed in: say so now, before a
+    // code is issued (or used up) that can never work.
+    if (!authConfigured()) {
+      console.error("[auth] AUTH_SECRET is missing or shorter than 24 characters on this deployment.");
+      return fail("Sign-in isn’t set up on this deployment yet. Please try later.", 503);
     }
 
     if (!rateLimit(`otp:${phone}`, 5, 15 * 60 * 1000)) {

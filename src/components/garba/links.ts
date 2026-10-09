@@ -1,10 +1,8 @@
-import type { GarbaEvent } from "@/lib/garba/schema";
-
-/** Opens Google Maps directions to the venue, in the app on phones. */
-export function directionsUrl(event: Pick<GarbaEvent, "lat" | "lng" | "venue" | "city">): string {
+/** Opens Google Maps directions to a garba or store, in the app on phones. */
+export function directionsUrl(place: { lat: number; lng: number }): string {
   const params = new URLSearchParams({
     api: "1",
-    destination: `${event.lat},${event.lng}`,
+    destination: `${place.lat},${place.lng}`,
   });
   return `https://www.google.com/maps/dir/?${params}`;
 }

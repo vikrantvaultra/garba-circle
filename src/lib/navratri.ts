@@ -26,9 +26,17 @@ export function nightStart(now: Date = new Date()): Date {
   );
 }
 
+/**
+ * Which night of Navratri `now` falls in: 1 to 9 during the festival, 0 the
+ * night before it, negative before that and 10 or more once it is over.
+ */
+export function navratriNight(now: Date = new Date()): number {
+  return Math.round((nightDate(now) - FIRST_NIGHT_UTC) / DAY_MS) + 1;
+}
+
 /** Where we are in the festival: "Night 4 of Navratri." or "Navratri starts in 18 days." */
 export function navratriStatus(now: Date = new Date()): string | null {
-  const night = Math.round((nightDate(now) - FIRST_NIGHT_UTC) / DAY_MS) + 1;
+  const night = navratriNight(now);
   if (night >= 1 && night <= NIGHTS) {
     return night === NIGHTS ? "Last night of Navratri." : `Night ${night} of Navratri.`;
   }

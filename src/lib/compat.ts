@@ -74,6 +74,6 @@ export type Landing = Compat & { profile: PublicProfile };
 
 export const TIER_KICKER: Record<Tier, string> = {
   jodi: "It's a jodi",
-  rare: "Rare jodi",
+  rare: "Double-scoop jodi",
   soulmate: "Dandiya soulmate",
 };

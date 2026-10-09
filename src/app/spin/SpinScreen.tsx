@@ -13,13 +13,14 @@ import {
 import { useRouter } from "next/navigation";
 import { Wheel, type WheelHandle, type WheelPhase } from "@/components/circle/Wheel";
 import { MatchSheet } from "@/components/circle/MatchSheet";
-import { PetalBurst, type PetalBurstHandle } from "@/components/circle/PetalBurst";
+import { SprinkleBurst, type SprinkleBurstHandle } from "@/components/circle/SprinkleBurst";
 import { dancerColor, initials } from "@/components/circle/dancer";
 import { CityPicker, type GenderChoice } from "@/components/circle/CityPicker";
 import { PackSheet } from "@/components/PackSheet";
 import { BottomNav } from "@/components/BottomNav";
 import { CircleLive } from "@/components/CircleLive";
 import { FirstRunGuide } from "@/components/FirstRunGuide";
+import { BrandHeader } from "@/components/brand/BrandHeader";
 import { useToast } from "@/components/Toast";
 import { api, ApiFailure } from "@/lib/client/api";
 import { PURCHASED_EVENT } from "@/lib/client/checkout";
@@ -27,7 +28,7 @@ import { buzz, sound } from "@/lib/client/sound";
 import * as spinPrefs from "@/lib/client/spin-prefs";
 import { compatibility, type Landing } from "@/lib/compat";
 import type { PublicProfile } from "@/lib/api";
-import { FREE_SPINS, UNLIMITED_PASS_ENDS_LABEL, type Pack } from "@/lib/constants";
+import { FREE_SPINS, FULL_NAME, UNLIMITED_PASS_ENDS_LABEL, type Pack } from "@/lib/constants";
 import type { CircleStats } from "@/lib/stats";
 import type { Tonight } from "@/lib/search/tonight";
 import type { CityOption } from "@/lib/search/cities";
@@ -153,7 +154,7 @@ export function SpinScreen({
   const soundOn = useSyncExternalStore(sound.subscribe, () => sound.enabled, () => true);
 
   const wheelRef = useRef<WheelHandle>(null);
-  const burstRef = useRef<PetalBurstHandle>(null);
+  const burstRef = useRef<SprinkleBurstHandle>(null);
   const resultRef = useRef<Landing | null>(null);
   const failureRef = useRef<unknown>(null);
 
@@ -170,7 +171,7 @@ export function SpinScreen({
     return () => clearTimeout(timer);
   }, [attention]);
 
-  /** A tap on the garbo before both are chosen points at whatever is missing. */
+  /** A tap on Spin before both are chosen points at whatever is missing. */
   const askForFilters = () => {
     const missing = city ? "gender" : "city";
     setAttention(missing);
@@ -306,8 +307,8 @@ export function SpinScreen({
 
   const share = async () => {
     const data = {
-      title: "Garba Circle",
-      text: "Find your dandiya partner this Navratri on Garba Circle.",
+      title: FULL_NAME,
+      text: `Find your dandiya partner this Navratri on ${FULL_NAME}.`,
       url: window.location.origin,
     };
     try {
@@ -332,7 +333,7 @@ export function SpinScreen({
   } else if (phase.phase === "spinning") {
     hint = phase.power > 0.8 ? "Full power spin!" : "Finding your partner in the circle…";
   } else if (outOfSpins) {
-    hint = "You're out of spins. Tap the garbo for more.";
+    hint = "You're out of spins. Tap the middle of the circle for more.";
   } else if (!ready) {
     hint = (
       <>
@@ -363,7 +364,7 @@ export function SpinScreen({
   const lit = unlimited ? FREE_SPINS : Math.min(quota.totalRemaining, FREE_SPINS);
   const spinsPill = (
     <>
-      <span className={styles.diyas} aria-hidden>
+      <span className={styles.scoops} aria-hidden>
         {Array.from({ length: FREE_SPINS }, (_, i) => (
           <i key={i} data-used={i >= lit} />
         ))}
@@ -395,53 +396,51 @@ export function SpinScreen({
         }.${streakText ? ` ${streakText}` : ""}`;
 
   return (
-    <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)] pt-[calc(env(safe-area-inset-top,0px)+28px)]">
-      <header className={styles.top}>
-        <div className={styles.brand}>
-          <p className={styles.gu} lang="gu" aria-hidden>
-            ગરબા
-          </p>
-          <h1>Garba Circle</h1>
-          <p className={styles.sub}>{subtitle}</p>
-        </div>
-        <div className={styles.hud}>
-          {/* Prices stay out of sight until the free run is over. */}
-          {onFreeRun || unlimited ? (
-            <div className={styles.spins} data-low={low} role="status">
-              {spinsPill}
-            </div>
-          ) : (
+    <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)]">
+      <BrandHeader
+        title="Garba Circle"
+        sub={subtitle}
+        watermark={{ text: "ગરબા", lang: "gu" }}
+        aside={
+          <>
+            {/* Prices stay out of sight until the free run is over. */}
+            {onFreeRun || unlimited ? (
+              <div className={styles.spins} data-low={low} role="status">
+                {spinsPill}
+              </div>
+            ) : (
+              <button
+                type="button"
+                className={styles.spins}
+                data-low={low}
+                onClick={() => setSheet("packs")}
+                aria-label={`${spinsLabel}. Get more spins`}
+              >
+                {spinsPill}
+              </button>
+            )}
             <button
               type="button"
-              className={styles.spins}
-              data-low={low}
-              onClick={() => setSheet("packs")}
-              aria-label={`${spinsLabel}. Get more spins`}
+              className={styles.iconBtn}
+              aria-pressed={soundOn}
+              aria-label={soundOn ? "Sound on" : "Sound off"}
+              onClick={() => {
+                sound.setEnabled(!soundOn);
+                // Turning sound on is itself a tap, so start audio right away.
+                if (!soundOn) sound.unlock();
+              }}
             >
-              {spinsPill}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+                <path
+                  d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"
+                  style={{ opacity: soundOn ? 1 : 0.2 }}
+                />
+              </svg>
             </button>
-          )}
-          <button
-            type="button"
-            className={styles.iconBtn}
-            aria-pressed={soundOn}
-            aria-label={soundOn ? "Sound on" : "Sound off"}
-            onClick={() => {
-              sound.setEnabled(!soundOn);
-              // Turning sound on is itself a tap, so start audio right away.
-              if (!soundOn) sound.unlock();
-            }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
-              <path
-                d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"
-                style={{ opacity: soundOn ? 1 : 0.2 }}
-              />
-            </svg>
-          </button>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <CircleLive initial={stats} />
 
@@ -562,7 +561,7 @@ export function SpinScreen({
         packs={packsForSale}
         teaser={
           <p className="m-0">
-            <b className="text-[#FF9FCF]">Same choices, more spins.</b> Pick any city
+            <b className="text-havmor">Same choices, more spins.</b> Pick any city
             and who you&rsquo;d like to meet on every spin, free or paid.
           </p>
         }
@@ -571,7 +570,7 @@ export function SpinScreen({
             <span className="w-full">
               Invite your garba group
               <small className="mt-0.5 block text-[12px] font-medium opacity-80">
-                Send them the link to Garba Circle
+                Send them the link to {FULL_NAME}
               </small>
             </span>
           </button>
@@ -586,7 +585,7 @@ export function SpinScreen({
         }}
       />
 
-      <PetalBurst ref={burstRef} />
+      <SprinkleBurst ref={burstRef} />
       <BottomNav badge={pendingInvites} />
       <FirstRunGuide />
     </main>

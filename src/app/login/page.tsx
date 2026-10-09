@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api, ApiFailure } from "@/lib/client/api";
 import { useToast } from "@/components/Toast";
+import { BrandHeader } from "@/components/brand/BrandHeader";
 import { OTP_LENGTH, OTP_RESEND_COOLDOWN_SECONDS } from "@/lib/constants";
 
 type Step = "phone" | "code";
@@ -75,26 +76,23 @@ export default function LoginPage() {
   const phoneValid = /^[6-9]\d{9}$/.test(localDigits);
 
   return (
-    <main className="app-shell flex min-h-dvh flex-col pt-safe pb-safe">
-      <div className="py-5">
-        <Link href="/" className="text-[14px] text-cream/55">
-          {"←"} Back
-        </Link>
-      </div>
+    <main className="app-shell flex min-h-dvh flex-col pb-safe">
+      <BrandHeader
+        eyebrow="Havmor Garba Circle"
+        title={step === "phone" ? "Aavo, join the circle" : "Enter the code"}
+        sub={
+          step === "phone"
+            ? "We’ll send a one-time code to your mobile. Your number is never shown to anyone."
+            : `Sent to +91 ${localDigits.slice(0, 5)} ${localDigits.slice(5)}.`
+        }
+        aside={
+          <Link href="/" className="rounded-full bg-white/15 px-3 py-1.5 text-[13px] font-extrabold text-white">
+            {"←"} Back
+          </Link>
+        }
+      />
 
-      <div className="flex flex-1 flex-col justify-center pb-8">
-        <div className="animate-rise">
-          <span className="animate-flicker inline-block text-[38px]">{"\u{1FA94}"}</span>
-          <h1 className="mt-3 font-display text-[30px] font-extrabold leading-tight">
-            {step === "phone" ? "Aavo, join the circle" : "Enter the code"}
-          </h1>
-          <p className="mt-1.5 text-[15px] leading-snug text-cream/65">
-            {step === "phone"
-              ? "We’ll send a one-time code to your mobile. Your number is never shown to anyone."
-              : `Sent to +91 ${localDigits.slice(0, 5)} ${localDigits.slice(5)}.`}
-          </p>
-        </div>
-
+      <div className="flex flex-1 flex-col pb-8 pt-2">
         {step === "phone" ? (
           <form
             className="mt-7 space-y-4"
@@ -103,11 +101,11 @@ export default function LoginPage() {
               if (phoneValid && !busy) requestCode();
             }}
           >
-            <div className="panel flex items-center gap-2 p-1.5 pl-4">
-              <span className="text-[17px] font-semibold text-cream/70">
+            <div className="panel flex items-center gap-2 rounded-full p-1.5 pl-5">
+              <span className="text-[17px] font-extrabold text-havmor">
                 +91
               </span>
-              <span className="h-6 w-px bg-cream/20" />
+              <span className="h-6 w-px bg-choco/15" />
               <input
                 type="tel"
                 inputMode="numeric"
@@ -117,7 +115,7 @@ export default function LoginPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/[^\d\s]/g, ""))}
                 maxLength={13}
-                className="field flex-1 border-0 bg-transparent tracking-[0.12em] focus:field-focus"
+                className="field flex-1 border-0 bg-transparent font-bold tracking-[0.12em] focus:field-focus"
                 style={{ boxShadow: "none" }}
               />
             </div>
@@ -130,7 +128,7 @@ export default function LoginPage() {
               {busy ? "Sending…" : "Send code"}
             </button>
 
-            <p className="text-center text-[12.5px] leading-relaxed text-cream/45">
+            <p className="text-center text-[12.5px] leading-relaxed text-cocoa">
               Indian mobile numbers only. Standard SMS rates may apply.
             </p>
           </form>
@@ -143,11 +141,11 @@ export default function LoginPage() {
             }}
           >
             {devCode && (
-              <div className="rounded-2xl border border-parrot/40 bg-parrot/10 px-4 py-3 text-center">
-                <p className="text-[12px] uppercase tracking-wider text-parrot/80">
+              <div className="rounded-2xl border border-pista/40 bg-pista/10 px-4 py-3 text-center">
+                <p className="text-[12px] font-bold uppercase tracking-wider text-pista">
                   Test mode — no SMS provider configured
                 </p>
-                <p className="font-display text-[26px] font-bold tracking-[0.3em] text-parrot">
+                <p className="headline text-[26px] tracking-[0.3em] text-pista">
                   {devCode}
                 </p>
               </div>
@@ -174,10 +172,10 @@ export default function LoginPage() {
                 {Array.from({ length: OTP_LENGTH }).map((_, i) => (
                   <div
                     key={i}
-                    className={`grid h-[58px] flex-1 place-items-center rounded-2xl border text-[24px] font-bold transition-colors ${
+                    className={`grid h-[58px] flex-1 place-items-center rounded-2xl border-[1.5px] bg-white text-[24px] font-black transition-colors ${
                       i === code.length
-                        ? "border-marigold bg-marigold/10"
-                        : "border-gold/25 bg-night/50"
+                        ? "border-havmor shadow-[0_0_0_4px_rgba(211,0,43,0.12)]"
+                        : "border-choco/15"
                     }`}
                   >
                     {code[i] ?? ""}
@@ -201,7 +199,7 @@ export default function LoginPage() {
                   setStep("phone");
                   setCode("");
                 }}
-                className="text-cream/55"
+                className="font-bold text-choco-2"
               >
                 Change number
               </button>
@@ -209,7 +207,7 @@ export default function LoginPage() {
                 type="button"
                 disabled={cooldown > 0 || busy}
                 onClick={requestCode}
-                className="font-semibold text-marigold disabled:text-cream/35"
+                className="font-extrabold text-havmor disabled:text-cocoa/60"
               >
                 {cooldown > 0 ? `Resend in ${cooldown}s` : "Resend code"}
               </button>

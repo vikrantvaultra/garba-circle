@@ -48,21 +48,24 @@ export function SafetyNotice() {
   };
 
   return (
-    <div className="animate-rise mb-4 rounded-2xl border border-parrot/35 bg-parrot/8 p-3.5">
+    <div className="animate-rise mb-4 rounded-2xl border border-pista/30 bg-white p-3.5 shadow-[0_8px_20px_-14px_rgba(78,154,58,0.8)]">
       <div className="flex items-start gap-2.5">
-        <span className="text-[17px] leading-none">{"\u{1F6E1}️"}</span>
+        <svg viewBox="0 0 24 24" className="mt-0.5 h-[18px] w-[18px] shrink-0 text-pista" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M12 3.5 5 6v5.5c0 4.3 3 7.6 7 9 4-1.4 7-4.7 7-9V6z" />
+          <path d="m9 12 2.2 2.2L15.5 10" />
+        </svg>
         <div className="min-w-0 flex-1">
-          <p className="text-[14.5px] font-bold text-parrot">
+          <p className="text-[14.5px] font-black text-pista">
             This chat is protected
           </p>
-          <p className="mt-0.5 text-[13px] leading-snug text-cream/70">
+          <p className="mt-0.5 text-[13px] leading-snug text-choco-2">
             Phone numbers, links and abusive language are blocked automatically
             in Hindi, Marathi, Gujarati and English. Meet at the ground, not in
             the DMs.
           </p>
           <button
             onClick={dismiss}
-            className="mt-2 text-[13px] font-semibold text-parrot"
+            className="mt-2 text-[13px] font-extrabold text-pista"
           >
             Got it
           </button>

@@ -78,7 +78,7 @@ export function ChatMenu({
         aria-label="Chat options"
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="-mr-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-cream/60 transition-colors hover:bg-white/5 active:bg-white/10 focus-visible:outline-2 focus-visible:outline-marigold"
+        className="-mr-2 grid h-11 w-11 shrink-0 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/10 active:bg-white/20 focus-visible:outline-2 focus-visible:outline-white"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
           <circle cx="12" cy="5" r="1.8" />
@@ -90,10 +90,10 @@ export function ChatMenu({
       <Sheet open={open} onClose={close} labelledBy="chat-menu-title" initialFocus={firstRef}>
         {reporting ? (
           <>
-            <h2 id="chat-menu-title" className="font-display text-[26px] leading-tight">
+            <h2 id="chat-menu-title" className="headline text-[26px] leading-tight">
               What went wrong?
             </h2>
-            <p className="mt-1 text-[14px] text-muted">
+            <p className="mt-1 text-[14px] text-choco-2">
               They are never told who reported them.
             </p>
             <div className="mt-4 grid gap-2">
@@ -103,7 +103,7 @@ export function ChatMenu({
                   type="button"
                   disabled={busy}
                   onClick={() => report(reason.key)}
-                  className="min-h-[50px] rounded-2xl border border-white/10 bg-deep/50 px-4 text-left text-[15px] font-medium transition-colors active:bg-white/5 disabled:opacity-50"
+                  className="min-h-[50px] rounded-2xl border border-choco/12 bg-white px-4 text-left text-[15px] font-bold transition-colors active:bg-havmor-soft disabled:opacity-50"
                 >
                   {reason.label}
                 </button>
@@ -115,10 +115,10 @@ export function ChatMenu({
           </>
         ) : (
           <>
-            <h2 id="chat-menu-title" className="font-display text-[26px] leading-tight">
+            <h2 id="chat-menu-title" className="headline text-[26px] leading-tight">
               {partner.name ?? "This dancer"}
             </h2>
-            <p className="mt-1 text-[14px] text-muted">
+            <p className="mt-1 text-[14px] text-choco-2">
               Keep yourself safe. Both actions are immediate, and they are never
               told.
             </p>
@@ -127,10 +127,10 @@ export function ChatMenu({
                 ref={firstRef}
                 type="button"
                 onClick={() => setReporting(true)}
-                className="rounded-2xl border border-white/10 bg-deep/50 p-4 text-left transition-colors active:bg-white/5"
+                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-havmor-soft"
               >
-                <span className="text-[16px] font-bold text-marigold">Report</span>
-                <span className="mt-0.5 block text-[13.5px] text-muted">
+                <span className="text-[16px] font-black text-caramel">Report</span>
+                <span className="mt-0.5 block text-[13.5px] text-choco-2">
                   Send this conversation to our safety team
                 </span>
               </button>
@@ -138,10 +138,10 @@ export function ChatMenu({
                 type="button"
                 onClick={block}
                 disabled={busy}
-                className="rounded-2xl border border-white/10 bg-deep/50 p-4 text-left transition-colors active:bg-white/5 disabled:opacity-50"
+                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-havmor-soft disabled:opacity-50"
               >
-                <span className="text-[16px] font-bold text-rani">Block and leave</span>
-                <span className="mt-0.5 block text-[13.5px] text-muted">
+                <span className="text-[16px] font-black text-havmor">Block and leave</span>
+                <span className="mt-0.5 block text-[13.5px] text-choco-2">
                   They can never message or match with you again
                 </span>
               </button>

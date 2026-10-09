@@ -1,9 +1,11 @@
 /**
- * Central product rules for Garba Circle.
+ * Central product rules for Havmor Garba Circle.
  * Every price is in paise so we never do float maths on money.
  */
 
 export const APP_NAME = "Garba Circle";
+/** The name with its maker, for titles, payments and anywhere it stands alone. */
+export const FULL_NAME = "Havmor Garba Circle";
 export const APP_TAGLINE = "Apna Garba partner dhoondo";
 
 /** Free spins every new dancer gets. City and gender are chosen on every spin, free or paid. */

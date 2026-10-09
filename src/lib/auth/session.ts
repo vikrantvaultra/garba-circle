@@ -7,6 +7,16 @@ import { users, type User } from "@/lib/db/schema";
 const COOKIE = "gc_session";
 const MAX_AGE_SECONDS = 60 * 60 * 24 * 60; // 60 days
 
+/**
+ * Whether sessions can be signed on this deployment. Checked before a code is
+ * issued or used, so a missing secret says so instead of burning the code and
+ * leaving the dancer with "that code has expired" on every retry.
+ */
+export function authConfigured(): boolean {
+  const value = process.env.AUTH_SECRET;
+  return Boolean(value && value.length >= 24);
+}
+
 function secret(): Uint8Array {
   const value = process.env.AUTH_SECRET;
   if (!value || value.length < 24) {

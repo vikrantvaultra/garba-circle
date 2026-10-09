@@ -89,7 +89,7 @@ export function PackSheet({
     setBusy(true);
     try {
       await purchasePack({ packKey: selected.key });
-      toast.show(`${selected.label} added. Jai Mataji!`, "success");
+      toast.show(`${selected.label} added. Jai Mataji! Enjoy the extra scoops.`, "success");
       onPurchased(selected);
     } catch (error) {
       if (error instanceof CheckoutCancelled) {
@@ -104,13 +104,13 @@ export function PackSheet({
 
   return (
     <Sheet open={open} onClose={onClose} labelledBy="packs-title" initialFocus={payRef}>
-      <h2 id="packs-title" className="font-display text-[32px] leading-[1.1]">
+      <h2 id="packs-title" className="headline text-[30px] leading-[1.1]">
         {title}
       </h2>
-      <p className="mt-1.5 text-[15px] leading-normal text-muted">{subtitle}</p>
+      <p className="mt-1.5 text-[15px] leading-normal text-choco-2">{subtitle}</p>
 
       {teaser && (
-        <div className="mt-[18px] flex items-center gap-3.5 rounded-2xl border border-rani/35 bg-rani/10 p-3.5 text-[14px] leading-[1.45]">
+        <div className="mt-[18px] flex items-center gap-3.5 rounded-2xl border border-havmor/25 bg-havmor-soft/60 p-3.5 text-[14px] leading-[1.45]">
           {teaser}
         </div>
       )}
@@ -122,8 +122,8 @@ export function PackSheet({
           return (
             <label
               key={pack.key}
-              className={`relative flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] px-4 py-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-cream ${
-                on ? "border-marigold bg-marigold/10" : "border-white/12 bg-deep/50"
+              className={`relative flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] px-4 py-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-havmor ${
+                on ? "border-havmor bg-havmor-soft/50" : "border-choco/12 bg-white"
               }`}
             >
               <input
@@ -137,29 +137,29 @@ export function PackSheet({
               <span
                 aria-hidden
                 className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
-                  on ? "border-marigold" : "border-white/30"
+                  on ? "border-havmor" : "border-choco/25"
                 }`}
               >
-                {on && <span className="h-2.5 w-2.5 rounded-full bg-marigold" />}
+                {on && <span className="h-2.5 w-2.5 rounded-full bg-havmor" />}
               </span>
               <span className="min-w-0 flex-1">
-                <b className="block text-[16px]">{pack.label}</b>
-                <small className="text-[13px] text-muted">
+                <b className="block text-[16px] font-black">{pack.label}</b>
+                <small className="text-[13px] font-semibold text-choco-2">
                   {unitLabel(pack)}
                   {saving > 0 ? `, save ${saving}%` : ""}
                 </small>
               </span>
-              <span className="font-display text-[22px]">{rupees(pack.amountPaise)}</span>
+              <span className="headline text-[22px] text-havmor">{rupees(pack.amountPaise)}</span>
             </label>
           );
         })}
       </div>
 
       {inApp && (
-        <p className="mt-4 rounded-2xl border border-white/12 bg-deep/50 px-4 py-3 text-[13px] leading-normal text-muted">
+        <p className="mt-4 rounded-2xl border border-choco/10 bg-wafer/50 px-4 py-3 text-[13px] font-semibold leading-normal text-choco-2">
           UPI apps often can&rsquo;t open from inside this app.{" "}
           {inApp === "android" ? (
-            <a href={chromeIntent()} className="font-semibold text-marigold underline">
+            <a href={chromeIntent()} className="font-black text-havmor underline">
               Open in Chrome to pay
             </a>
           ) : (
@@ -177,18 +177,18 @@ export function PackSheet({
       >
         {busy ? "Opening payment…" : `Pay ${rupees(selected.amountPaise)}`}
       </button>
-      <p className="mt-2.5 text-center text-[12px] text-muted">
+      <p className="mt-2.5 text-center text-[12px] text-cocoa">
         One-time payment by UPI or card. Nothing renews automatically.
       </p>
 
       {footer && (
-        <div className="mt-[18px] grid gap-2.5 border-t border-white/8 pt-4">{footer}</div>
+        <div className="mt-[18px] grid gap-2.5 border-t border-choco/10 pt-4">{footer}</div>
       )}
 
       <button
         type="button"
         onClick={onClose}
-        className="mx-auto mt-3 block min-h-[44px] px-4 text-[14px] font-semibold text-muted"
+        className="mx-auto mt-3 block min-h-[44px] px-4 text-[14px] font-bold text-cocoa"
       >
         Maybe later
       </button>

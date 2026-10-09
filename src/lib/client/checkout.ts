@@ -166,7 +166,7 @@ export async function purchasePack(input: {
         key: order.keyId,
         amount: order.amountPaise,
         currency: order.currency,
-        name: "Garba Circle",
+        name: "Havmor Garba Circle",
         description: order.pack.label,
         order_id: order.orderId,
         prefill: {
@@ -174,7 +174,7 @@ export async function purchasePack(input: {
           name: order.prefill.name,
         },
         notes: { paymentId },
-        theme: { color: "#ff8a00" },
+        theme: { color: "#d3002b" },
         handler: async (response: Record<string, string>) => {
           try {
             const confirmed = await api.post<ConfirmResponse>("/api/payments/confirm", {

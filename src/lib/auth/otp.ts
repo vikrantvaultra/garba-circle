@@ -58,9 +58,15 @@ export async function issueCode(phone: string): Promise<string> {
 }
 
 export type VerifyResult =
-  | { ok: true }
+  | { ok: true; codeId: string }
   | { ok: false; reason: "expired" | "wrong" | "locked" | "none" };
 
+/**
+ * Checks a code and uses it up in one step, so two requests racing with the
+ * same code can't both sign in. If sign-in then fails for a reason that
+ * isn't the dancer's (the database, the session), hand it back with
+ * `releaseCode` so a retry works instead of reporting the code expired.
+ */
 export async function verifyCode(
   phone: string,
   code: string,
@@ -84,9 +90,17 @@ export async function verifyCode(
     return { ok: false, reason: "wrong" };
   }
 
-  await db
+  const used = await db
     .update(otpCodes)
     .set({ consumedAt: new Date() })
-    .where(eq(otpCodes.id, row.id));
-  return { ok: true };
+    .where(and(eq(otpCodes.id, row.id), isNull(otpCodes.consumedAt)))
+    .returning({ id: otpCodes.id });
+  // Another request used it first.
+  if (used.length === 0) return { ok: false, reason: "none" };
+  return { ok: true, codeId: row.id };
+}
+
+/** Makes a used code valid again, after a sign-in that failed on our side. */
+export async function releaseCode(codeId: string): Promise<void> {
+  await db.update(otpCodes).set({ consumedAt: null }).where(eq(otpCodes.id, codeId));
 }
