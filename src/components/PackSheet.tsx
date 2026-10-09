@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { rupees, type Pack } from "@/lib/constants";
 import { CheckoutCancelled, purchasePack } from "@/lib/client/checkout";
 import { Sheet } from "./Sheet";
@@ -20,6 +20,26 @@ function unitLabel(pack: Pack): string {
   const per = unitPrice(pack) / 100;
   return `₹${per.toFixed(per % 1 === 0 ? 0 : 2)} a spin`;
 }
+
+/**
+ * Instagram, Facebook and similar apps open links in their own web view,
+ * which often can't hand off to a UPI app. Android can be sent to Chrome;
+ * iOS has no such link, so it gets instructions.
+ */
+const IN_APP = /FBAN|FBAV|FB_IAB|Instagram|LinkedInApp|Snapchat|Line\/|; wv\)/i;
+
+function inAppBrowser(): "android" | "ios" | "" {
+  const ua = navigator.userAgent;
+  if (!IN_APP.test(ua)) return "";
+  return /Android/i.test(ua) ? "android" : "ios";
+}
+
+function chromeIntent(): string {
+  const { host, pathname, search } = window.location;
+  return `intent://${host}${pathname}${search}#Intent;scheme=https;package=com.android.chrome;end`;
+}
+
+const noSubscribe = () => () => {};
 
 export function PackSheet({
   open,
@@ -47,6 +67,7 @@ export function PackSheet({
   const [chosen, setChosen] = useState(() => packs[0]?.key);
   const payRef = useRef<HTMLButtonElement>(null);
   const toast = useToast();
+  const inApp = useSyncExternalStore(noSubscribe, inAppBrowser, () => "" as const);
 
   const selected = packs.find((p) => p.key === chosen) ?? packs[0];
 
@@ -133,6 +154,19 @@ export function PackSheet({
           );
         })}
       </div>
+
+      {inApp && (
+        <p className="mt-4 rounded-2xl border border-white/12 bg-deep/50 px-4 py-3 text-[13px] leading-normal text-muted">
+          UPI apps often can&rsquo;t open from inside this app.{" "}
+          {inApp === "android" ? (
+            <a href={chromeIntent()} className="font-semibold text-marigold underline">
+              Open in Chrome to pay
+            </a>
+          ) : (
+            "Tap ⋯ and open this page in Safari to pay."
+          )}
+        </p>
+      )}
 
       <button
         ref={payRef}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/Avatar";
@@ -9,6 +9,7 @@ import { NotifySetting } from "@/components/NotifyPrompt";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { api } from "@/lib/client/api";
+import { PURCHASED_EVENT } from "@/lib/client/checkout";
 import * as push from "@/lib/client/push";
 import type { PublicProfile } from "@/lib/api";
 import {
@@ -45,6 +46,13 @@ export function ProfileScreen({
   // The tile offers the pass while it's on sale, else the smallest pack.
   const offer = pass ?? packs[0];
   const packsForSale = quota.unlimited ? packs.filter((p) => !p.unlimited) : packs;
+
+  // A payment that finished after checkout closed (see PaymentWatcher).
+  useEffect(() => {
+    const onPurchased = () => router.refresh();
+    window.addEventListener(PURCHASED_EVENT, onPurchased);
+    return () => window.removeEventListener(PURCHASED_EVENT, onPurchased);
+  }, [router]);
 
   const logout = async () => {
     try {
