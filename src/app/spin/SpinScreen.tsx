@@ -28,7 +28,7 @@ import { buzz, sound } from "@/lib/client/sound";
 import * as spinPrefs from "@/lib/client/spin-prefs";
 import { compatibility, type Landing } from "@/lib/compat";
 import type { PublicProfile } from "@/lib/api";
-import { FREE_SPINS, FULL_NAME, UNLIMITED_PASS_ENDS_LABEL, type Pack } from "@/lib/constants";
+import { APP_NAME, FREE_SPINS, UNLIMITED_PASS_ENDS_LABEL, type Pack } from "@/lib/constants";
 import type { CircleStats } from "@/lib/stats";
 import type { Tonight } from "@/lib/search/tonight";
 import type { CityOption } from "@/lib/search/cities";
@@ -307,8 +307,8 @@ export function SpinScreen({
 
   const share = async () => {
     const data = {
-      title: FULL_NAME,
-      text: `Find your dandiya partner this Navratri on ${FULL_NAME}.`,
+      title: APP_NAME,
+      text: `Find your dandiya partner this Navratri on ${APP_NAME}.`,
       url: window.location.origin,
     };
     try {
@@ -364,7 +364,7 @@ export function SpinScreen({
   const lit = unlimited ? FREE_SPINS : Math.min(quota.totalRemaining, FREE_SPINS);
   const spinsPill = (
     <>
-      <span className={styles.scoops} aria-hidden>
+      <span className={styles.pips} aria-hidden>
         {Array.from({ length: FREE_SPINS }, (_, i) => (
           <i key={i} data-used={i >= lit} />
         ))}
@@ -561,7 +561,7 @@ export function SpinScreen({
         packs={packsForSale}
         teaser={
           <p className="m-0">
-            <b className="text-havmor">Same choices, more spins.</b> Pick any city
+            <b className="text-brand">Same choices, more spins.</b> Pick any city
             and who you&rsquo;d like to meet on every spin, free or paid.
           </p>
         }
@@ -570,7 +570,7 @@ export function SpinScreen({
             <span className="w-full">
               Invite your garba group
               <small className="mt-0.5 block text-[12px] font-medium opacity-80">
-                Send them the link to {FULL_NAME}
+                Send them the link to {APP_NAME}
               </small>
             </span>
           </button>

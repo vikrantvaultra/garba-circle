@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
-/** Flavour scoops: strawberry, mango, pista, blueberry, caramel. */
+/** Avatar fills from the palette: strawberry, mango, pista, blueberry, caramel. */
 const GRADIENTS = [
-  "from-strawberry to-havmor",
+  "from-strawberry to-brand",
   "from-mango to-caramel",
   "from-pista to-[#2f6b22]",
   "from-blueberry to-[#372c9a]",

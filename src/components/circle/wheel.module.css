@@ -1,5 +1,5 @@
 /* The circle: an enamel-and-gold dial of twelve garba dancers turning inside
-   a red Havmor bezel, around the Havmor button. The art is in
+   a red bezel, around the spin button. The art is in
    public/brand/wheel/ (built by scripts/brand-assets.mjs).
    Phase lives in data attributes written by the animation loop, so React
    re-renders never clobber it:
@@ -164,8 +164,8 @@
   -webkit-user-drag: none;
 }
 
-/* ---- The Havmor button ----
-   Red enamel dome in a gold and ivory setting, with the wordmark and SPIN on
+/* ---- The spin button ----
+   Red enamel dome in a gold and ivory setting, with the dandiya mark and SPIN on
    it. The art carries its own rims; the glow and shadow are CSS. */
 .garbo {
   position: absolute;
@@ -225,13 +225,14 @@
 }
 .lamp {
   display: block;
-  width: 58%;
+  width: 36%;
   margin-top: 4%;
 }
 .product {
   display: block;
   width: 100%;
   height: auto;
+  color: #fff3d6;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -246,7 +247,7 @@
 @keyframes pulse {
   to { transform: scale(1.06); }
 }
-/* "SPIN", under the wordmark, set small and wide. */
+/* "SPIN", under the mark, set small and wide. */
 .garbo > span:last-child {
   position: relative;
   margin-top: 7%;

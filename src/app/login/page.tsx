@@ -30,7 +30,6 @@ export default async function LoginPage({
   return (
     <main className="app-shell flex min-h-dvh flex-col pb-safe">
       <BrandHeader
-        eyebrow="Havmor Garba Circle"
         title="Aavo, join the circle"
         sub="Sign in with Google, or with a username and password."
         aside={
@@ -45,7 +44,7 @@ export default async function LoginPage({
           {message && (
             <p
               role="alert"
-              className="rounded-2xl border border-havmor/25 bg-havmor-soft/60 px-4 py-3 text-[14px] font-semibold leading-snug text-havmor-deep"
+              className="rounded-2xl border border-brand/25 bg-brand-soft/60 px-4 py-3 text-[14px] font-semibold leading-snug text-brand-deep"
             >
               {message}
             </p>

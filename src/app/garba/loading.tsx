@@ -11,7 +11,6 @@ export default function Loading() {
       className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)]"
     >
       <BrandHeader
-        eyebrow="Havmor Garba Circle"
         title={<>Where&rsquo;s the garba?</>}
         sub={<span className="block h-[20px]" />}
         watermark={{ text: "ગરબા", lang: "gu" }}

@@ -62,9 +62,9 @@ export function AvatarPicker({
         className="relative"
         aria-label={value ? "Change your profile photo" : "Choose a profile photo"}
       >
-        <span className="absolute inset-0 -z-10 animate-pulse-ring rounded-full border-2 border-havmor/40" />
+        <span className="absolute inset-0 -z-10 animate-pulse-ring rounded-full border-2 border-brand/40" />
         <Avatar src={value} name={name || "?"} size={132} />
-        <span className="absolute bottom-1 right-1 grid h-10 w-10 place-items-center rounded-full border-[3px] border-vanilla bg-havmor text-white shadow-lg">
+        <span className="absolute bottom-1 right-1 grid h-10 w-10 place-items-center rounded-full border-[3px] border-vanilla bg-brand text-white shadow-lg">
           {busy ? (
             <span className="text-[13px] font-bold">{"…"}</span>
           ) : (

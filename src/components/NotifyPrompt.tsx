@@ -67,9 +67,9 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
 
   if (state === "needs-install") {
     return (
-      <div className={variant === "bar" ? "mb-2.5 rounded-2xl border border-havmor/20 bg-havmor-soft/50 px-3.5 py-3" : "panel mb-3 p-4"}>
+      <div className={variant === "bar" ? "mb-2.5 rounded-2xl border border-brand/20 bg-brand-soft/50 px-3.5 py-3" : "panel mb-3 p-4"}>
         <div className="flex gap-3">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-havmor text-white">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand text-white">
             <Bell className="h-5 w-5" />
           </span>
           <div className="min-w-0 flex-1">
@@ -78,7 +78,7 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
               Tap Share <span aria-hidden>{"⎋"}</span>, then <b className="text-choco">Add to Home Screen</b>. Open
               Garba Circle from there and turn notifications on.
             </p>
-            <button type="button" onClick={snooze} className="mt-2 min-h-[36px] text-[13px] font-extrabold text-havmor">
+            <button type="button" onClick={snooze} className="mt-2 min-h-[36px] text-[13px] font-extrabold text-brand">
               Got it
             </button>
           </div>
@@ -89,8 +89,8 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
 
   if (variant === "bar") {
     return (
-      <div className="animate-rise mb-2.5 flex items-center gap-2.5 rounded-full border border-havmor/20 bg-havmor-soft/50 py-1.5 pl-3.5 pr-1.5">
-        <Bell className="h-5 w-5 shrink-0 text-havmor" />
+      <div className="animate-rise mb-2.5 flex items-center gap-2.5 rounded-full border border-brand/20 bg-brand-soft/50 py-1.5 pl-3.5 pr-1.5">
+        <Bell className="h-5 w-5 shrink-0 text-brand" />
         <p className="min-w-0 flex-1 text-[13.5px] font-semibold leading-snug text-choco">
           Get notified when {who ?? "they"} {who ? "replies" : "reply"}
         </p>
@@ -98,7 +98,7 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
           type="button"
           onClick={turnOn}
           disabled={busy}
-          className="min-h-[36px] shrink-0 rounded-full bg-havmor px-3.5 text-[13.5px] font-extrabold text-white disabled:opacity-60"
+          className="min-h-[36px] shrink-0 rounded-full bg-brand px-3.5 text-[13.5px] font-extrabold text-white disabled:opacity-60"
         >
           Turn on
         </button>
@@ -114,7 +114,7 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
   return (
     <div className="panel animate-rise mb-3 p-4">
       <div className="flex gap-3">
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-havmor text-white">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-white">
           <Bell className="h-[22px] w-[22px]" />
         </span>
         <div className="min-w-0 flex-1">
@@ -127,7 +127,7 @@ export function NotifyPrompt({ variant = "card", name }: { variant?: "card" | "b
               type="button"
               onClick={turnOn}
               disabled={busy}
-              className="min-h-[40px] rounded-full bg-havmor px-4 text-[14px] font-extrabold text-white disabled:opacity-60"
+              className="min-h-[40px] rounded-full bg-brand px-4 text-[14px] font-extrabold text-white disabled:opacity-60"
             >
               {busy ? "Turning on…" : "Turn on notifications"}
             </button>
@@ -186,7 +186,7 @@ export function NotifySetting() {
           aria-label="Message notifications"
           disabled={busy}
           onClick={toggle}
-          className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors duration-200 disabled:opacity-60 ${on ? "bg-havmor" : "bg-choco/15"}`}
+          className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors duration-200 disabled:opacity-60 ${on ? "bg-brand" : "bg-choco/15"}`}
         >
           <span
             aria-hidden

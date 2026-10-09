@@ -17,7 +17,7 @@
 }
 .control:focus-within,
 .wrap[data-open="true"] .control {
-  border-color: var(--color-havmor);
+  border-color: var(--color-brand);
   box-shadow: 0 0 0 4px rgba(211, 0, 43, 0.12);
 }
 .wrap[data-attention="true"] .control {
@@ -25,7 +25,7 @@
 }
 @keyframes attention {
   50% {
-    border-color: var(--color-havmor);
+    border-color: var(--color-brand);
     box-shadow: 0 0 0 5px rgba(211, 0, 43, 0.22);
   }
 }
@@ -34,7 +34,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 
 .input {
@@ -72,7 +72,7 @@
   cursor: pointer;
 }
 .iconBtn:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: -2px;
 }
 .iconBtn svg {
@@ -122,10 +122,10 @@
   text-align: left;
 }
 .option[data-active="true"] {
-  background: var(--color-havmor-soft);
+  background: var(--color-brand-soft);
 }
 .option[aria-selected="true"] .name {
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 .option[data-empty="true"] .name {
   color: var(--color-cocoa);
@@ -155,7 +155,7 @@
   font-size: 11px;
   font-weight: 800;
   color: #fff;
-  background: var(--color-havmor);
+  background: var(--color-brand);
   vertical-align: 2px;
 }
 .count {
@@ -169,7 +169,7 @@
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 
 .none {

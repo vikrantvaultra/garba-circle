@@ -1,54 +1,52 @@
-/* eslint-disable @next/next/no-img-element */
-import styles from "./brand.module.css";
+import { APP_NAME } from "@/lib/constants";
 
-/** The logo's lettering, 203 x 68 in the source file. */
-const RATIO = 68 / 203;
-
-/**
- * The Havmor wordmark. White is the lettering as drawn, for the red header.
- * Any other tone paints the same lettering through a CSS mask, so there is
- * one asset to swap when the hi-res logo arrives.
- */
-export function Wordmark({
-  width = 92,
-  tone = "white",
-  className = "",
-}: {
-  width?: number;
-  tone?: "white" | "red";
-  className?: string;
-}) {
-  const height = Math.round(width * RATIO);
-  if (tone === "white") {
-    return (
-      <img
-        src="/brand/havmor-wordmark.png"
-        alt="Havmor Ice Cream"
-        width={width}
-        height={height}
-        className={`block shrink-0 ${className}`}
-      />
-    );
-  }
+/** Two crossed dandiya sticks and a spark, the same mark as the garba map pin. */
+export function DandiyaMark({ size = 20, className = "" }: { size?: number; className?: string }) {
   return (
-    <span
-      role="img"
-      aria-label="Havmor Ice Cream"
-      className={`${styles.maskedMark} ${className}`}
-      style={{ width, height }}
-    />
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      className={`block shrink-0 ${className}`}
+      aria-hidden
+    >
+      <path d="M5.5 20.5 18.5 7.5M5.5 7.5l13 13" strokeWidth="2.3" />
+      <path d="M5.5 20.5l1.9-1.9M18.5 20.5l-1.9-1.9" strokeWidth="3.6" />
+      <path
+        d="M12 1.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"
+        fill="currentColor"
+        stroke="none"
+      />
+    </svg>
   );
 }
 
-/** The drip logo itself: red, with the lettering knocked out. */
-export function DripLogo({ width = 140, className = "" }: { width?: number; className?: string }) {
+/**
+ * The app's name as its logo: the dandiya mark and "Garba Circle" in the
+ * display face. White on the red header; red anywhere else.
+ */
+export function Wordmark({
+  size = 16,
+  tone = "white",
+  className = "",
+}: {
+  /** Font size of the name, in px. */
+  size?: number;
+  tone?: "white" | "red";
+  className?: string;
+}) {
   return (
-    <img
-      src="/brand/havmor-logo.png"
-      alt="Havmor Ice Cream"
-      width={width}
-      height={Math.round((width * 176) / 331)}
-      className={`block shrink-0 ${className}`}
-    />
+    <span
+      className={`inline-flex shrink-0 items-center gap-[0.35em] font-display font-black leading-none tracking-[-0.02em] ${
+        tone === "white" ? "text-white" : "text-brand"
+      } ${className}`}
+      style={{ fontSize: size }}
+    >
+      <DandiyaMark size={Math.round(size * 1.3)} />
+      {APP_NAME}
+    </span>
   );
 }

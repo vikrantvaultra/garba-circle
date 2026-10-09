@@ -7,8 +7,6 @@ import { Sheet } from "@/components/Sheet";
 import { SKILL_LEVELS } from "@/lib/constants";
 import { TIER_KICKER, type Landing } from "@/lib/compat";
 import { sound } from "@/lib/client/sound";
-import { jodiScoop } from "@/lib/havmor";
-import { ProductShot } from "@/components/brand/ProductShot";
 import { dancerColor, initials } from "./dancer";
 import styles from "./match.module.css";
 
@@ -64,7 +62,6 @@ export function MatchSheet({
   }, [open, landing]);
 
   const p = landing?.profile;
-  const scoop = landing ? jodiScoop(landing.profile.id, landing.tier) : null;
   const first = p?.name?.trim().split(/\s+/)[0] ?? "them";
   const level = SKILL_LEVELS.find((l) => l.key === p?.skillLevel);
   const meta = [
@@ -130,19 +127,6 @@ export function MatchSheet({
                 {s}
               </span>
             ))}
-          </div>
-        )}
-
-        {landing && scoop && (
-          <div className={styles.scoop}>
-            <span className={styles.scoopArt} style={{ background: scoop.flavour.tint }}>
-              <ProductShot flavour={scoop.flavour} size={52} />
-            </span>
-            <span className="min-w-0">
-              <span className="eyebrow block text-havmor">Your jodi treat</span>
-              <b className={styles.scoopName}>{scoop.flavour.name}</b>
-              <small className={styles.scoopLine}>{scoop.line}</small>
-            </span>
           </div>
         )}
 

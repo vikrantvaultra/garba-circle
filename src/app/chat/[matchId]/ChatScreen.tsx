@@ -125,7 +125,7 @@ export function ChatScreen({
 
   return (
     <div className="flex h-dvh flex-col">
-      <header className="sticky top-0 z-20 bg-havmor pt-safe text-white shadow-[0_8px_20px_-12px_rgba(163,0,31,0.8)]">
+      <header className="sticky top-0 z-20 bg-brand pt-safe text-white shadow-[0_8px_20px_-12px_rgba(163,0,31,0.8)]">
         <div className="app-shell flex items-center gap-3 py-2.5">
           <Link href="/matches" aria-label="Back" className="-ml-1 p-1.5">
             <svg viewBox="0 0 24 24" className="h-6 w-6 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -146,7 +146,7 @@ export function ChatScreen({
           {/* Back to the circle for someone new; this chat stays in Chat. */}
           <Link
             href="/spin"
-            className="flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full bg-white px-3 text-[13.5px] font-extrabold text-havmor transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="flex min-h-[40px] shrink-0 items-center gap-1.5 rounded-full bg-white px-3 text-[13.5px] font-extrabold text-brand transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
               <circle cx="12" cy="12" r="8.5" />
@@ -166,7 +166,7 @@ export function ChatScreen({
 
         {messages.length === 0 && loaded && (
           <div className="panel mx-auto mt-2 max-w-[340px] p-5 text-center">
-            <Wordmark tone="red" width={72} className="mx-auto" />
+            <Wordmark tone="red" size={14} className="mx-auto" />
             {initiatedByMe ? (
               <>
                 <p className="headline mt-3 text-[17px]">
@@ -181,7 +181,7 @@ export function ChatScreen({
                   {[
                     "Kem cho! Kaha garba kar rahe ho?",
                     "Aaj raat ka plan kya hai?",
-                    "Round ke baad ek scoop?",
+                    "Round ke baad chai?",
                   ].map((suggestion) => (
                     <button
                       key={suggestion}
@@ -222,7 +222,7 @@ export function ChatScreen({
               <div
                 className={`max-w-[78%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2.5 text-[15px] leading-snug ${
                   message.mine
-                    ? "rounded-br-md bg-havmor font-semibold text-white shadow-[0_6px_14px_-8px_rgba(211,0,43,0.8)]"
+                    ? "rounded-br-md bg-brand font-semibold text-white shadow-[0_6px_14px_-8px_rgba(211,0,43,0.8)]"
                     : "rounded-bl-md border border-choco/10 bg-white font-semibold text-choco shadow-[0_6px_14px_-10px_rgba(89,51,42,0.5)]"
                 }`}
               >
@@ -247,8 +247,8 @@ export function ChatScreen({
       <div className="border-t border-choco/10 bg-white pb-safe">
         <div className="app-shell py-3">
           {blockedNotice && (
-            <div className="animate-rise mb-2.5 flex gap-2.5 rounded-2xl border border-havmor/35 bg-havmor-soft px-3.5 py-2.5">
-              <svg viewBox="0 0 24 24" className="mt-0.5 h-[17px] w-[17px] shrink-0 text-havmor" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <div className="animate-rise mb-2.5 flex gap-2.5 rounded-2xl border border-brand/35 bg-brand-soft px-3.5 py-2.5">
+              <svg viewBox="0 0 24 24" className="mt-0.5 h-[17px] w-[17px] shrink-0 text-brand" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M12 4 2.8 19.5h18.4z" />
                 <path d="M12 10v4.2M12 17h.01" />
               </svg>
@@ -264,7 +264,7 @@ export function ChatScreen({
           )}
 
           {chatBanned ? (
-            <p className="rounded-2xl border border-havmor/35 bg-havmor-soft px-4 py-3 text-center text-[14px] font-semibold text-choco">
+            <p className="rounded-2xl border border-brand/35 bg-brand-soft px-4 py-3 text-center text-[14px] font-semibold text-choco">
               Chat is paused on your account after repeated rule breaks.
             </p>
           ) : (
@@ -287,7 +287,7 @@ export function ChatScreen({
                 type="submit"
                 disabled={!draft.trim() || sending}
                 aria-label="Send"
-                className="grid h-[50px] w-[50px] shrink-0 place-items-center rounded-full bg-havmor text-white shadow-[0_8px_18px_-8px_rgba(211,0,43,0.9)] transition-transform active:scale-95 disabled:opacity-40"
+                className="grid h-[50px] w-[50px] shrink-0 place-items-center rounded-full bg-brand text-white shadow-[0_8px_18px_-8px_rgba(211,0,43,0.9)] transition-transform active:scale-95 disabled:opacity-40"
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M4 12l16-8-6 8 6 8z" />

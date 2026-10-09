@@ -68,7 +68,7 @@ export function BottomNav({ badge: rendered = 0 }: { badge?: number }) {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className="rounded-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-havmor"
+            className="rounded-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand"
           >
             <NavItem active={active} label={item.label}>
               <span className="relative">
@@ -117,7 +117,7 @@ function NavItem({
   return (
     <span
       className={`flex flex-col items-center gap-0.5 rounded-full pb-[7px] pt-[8px] text-[12px] font-extrabold transition-colors duration-150 ${
-        on ? "bg-havmor text-white" : "text-cocoa"
+        on ? "bg-brand text-white" : "text-cocoa"
       }`}
     >
       {children}

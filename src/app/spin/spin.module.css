@@ -24,12 +24,12 @@ button.spins {
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
-/* One scoop per free spin; eaten ones go hollow. */
-.scoops {
+/* One dot per free spin; used ones go hollow. */
+.pips {
   display: flex;
   gap: 3px;
 }
-.scoops i {
+.pips i {
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -37,14 +37,14 @@ button.spins {
   box-shadow: inset 0 -2px 0 rgba(211, 0, 43, 0.25);
   transition: background 0.4s, box-shadow 0.4s;
 }
-.scoops i:nth-child(2) { background: #ffd0d6; }
-.scoops i:nth-child(3) { background: #ffe6a8; }
-.scoops i:nth-child(4) { background: #d8efc9; }
-.scoops i[data-used="true"] {
+.pips i:nth-child(2) { background: #ffd0d6; }
+.pips i:nth-child(3) { background: #ffe6a8; }
+.pips i:nth-child(4) { background: #d8efc9; }
+.pips i[data-used="true"] {
   background: transparent;
   box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.45);
 }
-.spins[data-low="true"] .scoops i:not([data-used="true"]) {
+.spins[data-low="true"] .pips i:not([data-used="true"]) {
   animation: lowpulse 1s ease-in-out infinite alternate;
 }
 @keyframes lowpulse {
@@ -85,7 +85,7 @@ button.spins {
   min-height: 1.5em;
 }
 .hint strong {
-  color: var(--color-havmor);
+  color: var(--color-brand);
   font-weight: 800;
 }
 
@@ -140,7 +140,7 @@ button.spins {
   object-fit: cover;
 }
 .stack button:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
   position: relative;
   z-index: 1;
@@ -184,7 +184,7 @@ button.spins {
 }
 @keyframes attention {
   50% {
-    border-color: var(--color-havmor);
+    border-color: var(--color-brand);
     box-shadow: 0 0 0 5px rgba(211, 0, 43, 0.22);
   }
 }
@@ -215,11 +215,11 @@ button.spins {
   transition: background 0.25s, color 0.25s;
 }
 .seg input:checked + span {
-  background: var(--color-havmor);
+  background: var(--color-brand);
   color: #fff;
   box-shadow: 0 6px 14px -6px rgba(211, 0, 43, 0.7);
 }
 .seg input:focus-visible + span {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }

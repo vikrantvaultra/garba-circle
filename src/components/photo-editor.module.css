@@ -10,7 +10,7 @@
   border-radius: 999px;
   font-size: 14px;
   font-weight: 800;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 .reset:disabled {
   opacity: 0.4;
@@ -36,7 +36,7 @@
   cursor: grabbing;
 }
 .stage:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-havmor);
+  box-shadow: 0 0 0 3px var(--color-brand);
 }
 .canvas {
   position: absolute;
@@ -107,12 +107,12 @@
   transition: background 0.2s, color 0.2s;
 }
 .tabs button[aria-selected="true"] {
-  background: var(--color-havmor);
+  background: var(--color-brand);
   color: #fff;
   box-shadow: 0 6px 14px -6px rgba(211, 0, 43, 0.7);
 }
 .tabs button:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -151,12 +151,12 @@
 .slider input::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 6px;
-  background: linear-gradient(90deg, var(--color-havmor) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
+  background: linear-gradient(90deg, var(--color-brand) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
 }
 .slider input::-moz-range-track {
   height: 6px;
   border-radius: 6px;
-  background: linear-gradient(90deg, var(--color-havmor) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
+  background: linear-gradient(90deg, var(--color-brand) var(--fill), rgba(89, 51, 42, 0.14) var(--fill));
 }
 .slider input::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -165,7 +165,7 @@
   margin-top: -8px;
   border-radius: 50%;
   background: #fff;
-  border: 2px solid var(--color-havmor);
+  border: 2px solid var(--color-brand);
   box-shadow: 0 2px 6px rgba(89, 51, 42, 0.3);
 }
 .slider input::-moz-range-thumb {
@@ -173,11 +173,11 @@
   height: 18px;
   border-radius: 50%;
   background: #fff;
-  border: 2px solid var(--color-havmor);
+  border: 2px solid var(--color-brand);
   box-shadow: 0 2px 6px rgba(89, 51, 42, 0.3);
 }
 .slider input:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
   border-radius: 6px;
 }
@@ -206,17 +206,17 @@
 .tool svg {
   width: 22px;
   height: 22px;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 .tool:active {
-  background: var(--color-havmor-soft);
+  background: var(--color-brand-soft);
 }
 .tool[aria-pressed="true"] {
-  border-color: var(--color-havmor);
-  background: var(--color-havmor-soft);
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
 }
 .tool:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -259,13 +259,13 @@
   display: block;
 }
 .filter[aria-checked="true"] {
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 .filter[aria-checked="true"] .thumb {
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px var(--color-havmor);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px var(--color-brand);
 }
 .filter:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 3px;
   border-radius: 12px;
 }

@@ -166,7 +166,7 @@ export async function purchasePack(input: {
         key: order.keyId,
         amount: order.amountPaise,
         currency: order.currency,
-        name: "Havmor Garba Circle",
+        name: "Garba Circle",
         description: order.pack.label,
         order_id: order.orderId,
         prefill: {

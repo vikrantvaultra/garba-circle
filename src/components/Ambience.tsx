@@ -1,5 +1,5 @@
 /**
- * The backdrop: Havmor's vanilla cream, warmed with a blush of strawberry,
+ * The backdrop: vanilla cream, warmed with a blush of strawberry,
  * and over it a faint field of candy dots that fades out towards the edges.
  * Pure CSS, so the server and client render identical markup.
  *

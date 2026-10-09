@@ -5,13 +5,10 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { BottomNav } from "@/components/BottomNav";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { FlavourCard } from "@/components/brand/FlavourCard";
 import { CityPicker } from "@/components/circle/CityPicker";
 import { directionsUrl, hostOf } from "@/components/garba/links";
 import { KIND_LABEL, type GarbaCity, type GarbaEvent, type GarbaKind } from "@/lib/garba/schema";
-import type { NearbyStore } from "@/lib/stores/schema";
-import { FULL_NAME } from "@/lib/constants";
-import type { Flavour } from "@/lib/havmor";
+import { APP_NAME } from "@/lib/constants";
 import styles from "./garba.module.css";
 
 // MapLibre needs `window` and WebGL; the map renders only in the browser.
@@ -69,37 +66,6 @@ const ICONS: Record<string, ReactNode> = {
   ),
 };
 
-/** "350 m" up close, "2.4 km" farther out. */
-function distance(km: number): string {
-  return km < 1 ? `${Math.max(50, Math.round((km * 1000) / 50) * 50)} m` : `${km.toFixed(1)} km`;
-}
-
-/** The nearest Havmor store to a garba: a scoop on the way in or out. */
-function NearestStore({ store }: { store: NearbyStore }) {
-  return (
-    <div className={styles.scoop}>
-      {/* eslint-disable-next-line @next/next/no-img-element -- the map's own 9 KB store mark */}
-      <img src="/brand/map/store.webp" alt="" width={36} height={36} className={styles.scoopIcon} draggable={false} />
-      <span className="min-w-0 flex-1">
-        <small>Nearest Havmor store · {distance(store.km)}</small>
-        <b>{store.name}</b>
-        {store.address && <span className={styles.scoopAddress}>{store.address}</span>}
-      </span>
-      <a
-        className={styles.scoopLink}
-        href={directionsUrl(store)}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Directions to ${store.name}`}
-      >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-          <path d="M5 12h13M13 6l6 6-6 6" />
-        </svg>
-      </a>
-    </div>
-  );
-}
-
 function Fact({ icon, label, children }: { icon: string; label: string; children: ReactNode }) {
   return (
     <div className={styles.fact}>
@@ -114,12 +80,10 @@ function Fact({ icon, label, children }: { icon: string; label: string; children
 
 function EventCard({
   event,
-  nearby,
   selected,
   onSelect,
 }: {
   event: GarbaEvent;
-  nearby: NearbyStore | undefined;
   selected: boolean;
   onSelect: () => void;
 }) {
@@ -154,8 +118,6 @@ function EventCard({
 
       {event.highlights && <p className={styles.highlights}>{event.highlights}</p>}
 
-      {nearby && <NearestStore store={nearby} />}
-
       <div className={styles.actions}>
         <a className={styles.directions} href={directionsUrl(event)} target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -176,8 +138,7 @@ function EventCard({
 
 /**
  * The home screen: pick a city, see every garba we know of there on a map,
- * with dates, timings, entry and where the information came from, and every
- * Havmor store in India on the same map.
+ * with dates, timings, entry and where the information came from.
  */
 export function GarbaScreen({
   events,
@@ -187,9 +148,6 @@ export function GarbaScreen({
   status,
   checkedOn,
   signedIn,
-  tonight,
-  nearby,
-  storeCount,
 }: {
   events: GarbaEvent[];
   cities: GarbaCity[];
@@ -198,11 +156,6 @@ export function GarbaScreen({
   status: string | null;
   checkedOn: string | null;
   signedIn: boolean;
-  /** Tonight's Havmor flavour, picked on the server so it can't flip on hydration. */
-  tonight: { flavour: Flavour; label: string };
-  /** Each garba's nearest Havmor store, by event id, where one is close. */
-  nearby: Record<string, NearbyStore>;
-  storeCount: number;
 }) {
   const [city, setCity] = useState<string | null>(initialCity);
   const [kind, setKind] = useState<GarbaKind | "all">("all");
@@ -268,9 +221,8 @@ export function GarbaScreen({
   return (
     <main className="app-shell min-h-dvh pb-[calc(env(safe-area-inset-bottom,0px)+120px)]">
       <BrandHeader
-        eyebrow="Havmor Garba Circle"
         title={<>Where&rsquo;s the garba?</>}
-        sub={`${status ? `${status} ` : ""}Pick a city to see every garba, and the Havmor stores near them.`}
+        sub={`${status ? `${status} ` : ""}Pick a city to see every garba near you.`}
         watermark={{ text: "ગરબા", lang: "gu" }}
       />
 
@@ -328,15 +280,13 @@ export function GarbaScreen({
           selectedId={selectedId}
           total={city ? inCity.length : events.length}
           onSelect={selectFromMap}
-          onClearSelection={() => setSelectedId(null)}
         />
       </div>
 
       {!city ? (
         <div className={styles.empty}>
           <b>
-            {cities.reduce((n, c) => n + c.count, 0)} garbas in {cities.length} cities, and{" "}
-            {storeCount} Havmor stores across India.
+            {cities.reduce((n, c) => n + c.count, 0)} garbas in {cities.length} cities.
           </b>{" "}
           Pick a city above, or tap a badge on the map to zoom in.
           <div className={styles.cityGrid}>
@@ -365,7 +315,6 @@ export function GarbaScreen({
               <EventCard
                 key={event.id}
                 event={event}
-                nearby={nearby[event.id]}
                 selected={event.id === selectedId}
                 onSelect={() => selectFromList(event.id)}
               />
@@ -374,12 +323,10 @@ export function GarbaScreen({
         </section>
       )}
 
-      <FlavourCard flavour={tonight.flavour} label={tonight.label} className="mt-6" />
-
       {!signedIn && (
-        <div className={`${styles.empty} mt-4`}>
-          <b>Going to a garba?</b> Find someone to dance with on {FULL_NAME}.{" "}
-          <Link href="/login" className="font-extrabold text-havmor underline underline-offset-4">
+        <div className={`${styles.empty} mt-6`}>
+          <b>Going to a garba?</b> Find someone to dance with on {APP_NAME}.{" "}
+          <Link href="/login" className="font-extrabold text-brand underline underline-offset-4">
             Sign in
           </Link>
         </div>

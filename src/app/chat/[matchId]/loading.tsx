@@ -6,7 +6,7 @@ import { Drip } from "@/components/brand/BrandHeader";
 export default function Loading() {
   return (
     <div aria-busy="true" className="flex h-dvh flex-col">
-      <header className="relative z-10 bg-havmor pt-safe text-white">
+      <header className="relative z-10 bg-brand pt-safe text-white">
         <div className="app-shell flex items-center gap-3 py-2.5">
           <Link href="/matches" aria-label="Back" className="-ml-1 p-1.5">
             <svg viewBox="0 0 24 24" className="h-6 w-6 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
