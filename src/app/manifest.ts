@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { APP_NAME, FULL_NAME } from "@/lib/constants";
+import { APP_NAME } from "@/lib/constants";
 
 /**
  * Makes the app installable. On iPhone this is also what makes message
@@ -8,9 +8,9 @@ import { APP_NAME, FULL_NAME } from "@/lib/constants";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: FULL_NAME,
+    name: APP_NAME,
     short_name: APP_NAME,
-    description: "Havmor Garba Circle: find your garba partner this Navratri, and chat safely.",
+    description: "Garba Circle: find your garba partner this Navratri, and chat safely.",
     start_url: "/garba",
     scope: "/",
     display: "standalone",

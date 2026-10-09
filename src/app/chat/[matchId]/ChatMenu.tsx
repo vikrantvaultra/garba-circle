@@ -103,7 +103,7 @@ export function ChatMenu({
                   type="button"
                   disabled={busy}
                   onClick={() => report(reason.key)}
-                  className="min-h-[50px] rounded-2xl border border-choco/12 bg-white px-4 text-left text-[15px] font-bold transition-colors active:bg-havmor-soft disabled:opacity-50"
+                  className="min-h-[50px] rounded-2xl border border-choco/12 bg-white px-4 text-left text-[15px] font-bold transition-colors active:bg-brand-soft disabled:opacity-50"
                 >
                   {reason.label}
                 </button>
@@ -127,7 +127,7 @@ export function ChatMenu({
                 ref={firstRef}
                 type="button"
                 onClick={() => setReporting(true)}
-                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-havmor-soft"
+                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-brand-soft"
               >
                 <span className="text-[16px] font-black text-caramel">Report</span>
                 <span className="mt-0.5 block text-[13.5px] text-choco-2">
@@ -138,9 +138,9 @@ export function ChatMenu({
                 type="button"
                 onClick={block}
                 disabled={busy}
-                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-havmor-soft disabled:opacity-50"
+                className="rounded-2xl border border-choco/12 bg-white p-4 text-left transition-colors active:bg-brand-soft disabled:opacity-50"
               >
-                <span className="text-[16px] font-black text-havmor">Block and leave</span>
+                <span className="text-[16px] font-black text-brand">Block and leave</span>
                 <span className="mt-0.5 block text-[13.5px] text-choco-2">
                   They can never message or match with you again
                 </span>

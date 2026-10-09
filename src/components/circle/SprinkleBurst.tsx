@@ -30,7 +30,7 @@ const PALETTES: Record<Tier, string[]> = {
 };
 
 /**
- * A shower of ice-cream sprinkles and the odd candy dot, drawn on one
+ * A shower of sprinkles and the odd candy dot, drawn on one
  * full-screen canvas that only animates while something is falling.
  */
 export function SprinkleBurst({ ref }: { ref?: Ref<SprinkleBurstHandle> }) {

@@ -36,15 +36,15 @@
   cursor: pointer;
 }
 .filters button[aria-pressed="true"] {
-  background: var(--color-havmor);
-  border-color: var(--color-havmor);
+  background: var(--color-brand);
+  border-color: var(--color-brand);
   color: #fff;
 }
 .filters button[aria-pressed="true"] .dot {
   box-shadow: 0 0 0 2px #fff;
 }
 .filters button:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -106,7 +106,7 @@
   scroll-margin: 90px 0 120px;
 }
 .card[data-selected="true"] {
-  border-color: var(--color-havmor);
+  border-color: var(--color-brand);
   box-shadow: 0 0 0 4px rgba(211, 0, 43, 0.12);
 }
 .cardMain {
@@ -121,7 +121,7 @@
   font: inherit;
 }
 .cardMain:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 6px;
   border-radius: 12px;
 }
@@ -185,7 +185,7 @@
   width: 17px;
   height: 17px;
   margin-top: 1px;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }
 .fact dt {
   position: absolute;
@@ -204,66 +204,6 @@
   line-height: 1.5;
   color: var(--color-choco-2);
 }
-/* The nearest Havmor store, tucked under a garba's details. */
-.scoop {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-top: 12px;
-  padding: 10px 10px 10px 11px;
-  border-radius: 16px;
-  background: var(--color-cream);
-  border: 1px solid rgba(211, 0, 43, 0.14);
-}
-.scoop small {
-  display: block;
-  font-size: 11.5px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--color-havmor);
-}
-.scoop b {
-  display: block;
-  font-size: 14.5px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-.scoopAddress {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-size: 12.5px;
-  color: var(--color-choco-2);
-}
-.scoopIcon {
-  display: block;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  box-shadow: 0 2px 6px -2px rgba(59, 29, 21, 0.4);
-}
-.scoopLink {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--color-havmor);
-  box-shadow: 0 3px 10px -4px rgba(89, 51, 42, 0.45);
-}
-.scoopLink svg {
-  width: 18px;
-  height: 18px;
-}
-.scoopLink:focus-visible {
-  outline: 2px solid var(--color-havmor);
-  outline-offset: 2px;
-}
-
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -280,7 +220,7 @@
   min-height: 40px;
   padding: 0 16px;
   border-radius: 999px;
-  background: var(--color-havmor);
+  background: var(--color-brand);
   color: #fff;
   font-weight: 800;
   font-size: 14px;
@@ -296,7 +236,7 @@
 }
 .directions:focus-visible,
 .source:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -335,13 +275,13 @@
   transition: transform 0.14s ease, border-color 0.14s ease;
 }
 .partner:hover {
-  border-color: var(--color-havmor);
+  border-color: var(--color-brand);
 }
 .partner:active {
   transform: scale(0.985);
 }
 .partner:focus-visible {
-  outline: 2px solid var(--color-havmor);
+  outline: 2px solid var(--color-brand);
   outline-offset: 3px;
 }
 .partner b {
@@ -361,7 +301,7 @@
   height: 42px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--color-havmor);
+  background: var(--color-brand);
   color: #fff;
 }
 .partnerIcon svg {
@@ -372,5 +312,5 @@
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  color: var(--color-havmor);
+  color: var(--color-brand);
 }

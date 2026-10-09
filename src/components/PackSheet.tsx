@@ -70,7 +70,7 @@ export function PackSheet({
     setBusy(true);
     try {
       await purchasePack({ packKey: selected.key });
-      toast.show(`${selected.label} added. Jai Mataji! Enjoy the extra scoops.`, "success");
+      toast.show(`${selected.label} added. Jai Mataji!`, "success");
       onPurchased(selected);
     } catch (error) {
       if (error instanceof CheckoutCancelled) {
@@ -91,7 +91,7 @@ export function PackSheet({
       <p className="mt-1.5 text-[15px] leading-normal text-choco-2">{subtitle}</p>
 
       {teaser && (
-        <div className="mt-[18px] flex items-center gap-3.5 rounded-2xl border border-havmor/25 bg-havmor-soft/60 p-3.5 text-[14px] leading-[1.45]">
+        <div className="mt-[18px] flex items-center gap-3.5 rounded-2xl border border-brand/25 bg-brand-soft/60 p-3.5 text-[14px] leading-[1.45]">
           {teaser}
         </div>
       )}
@@ -103,8 +103,8 @@ export function PackSheet({
           return (
             <label
               key={pack.key}
-              className={`relative flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] px-4 py-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-havmor ${
-                on ? "border-havmor bg-havmor-soft/50" : "border-choco/12 bg-white"
+              className={`relative flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] px-4 py-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-brand ${
+                on ? "border-brand bg-brand-soft/50" : "border-choco/12 bg-white"
               }`}
             >
               <input
@@ -118,10 +118,10 @@ export function PackSheet({
               <span
                 aria-hidden
                 className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
-                  on ? "border-havmor" : "border-choco/25"
+                  on ? "border-brand" : "border-choco/25"
                 }`}
               >
-                {on && <span className="h-2.5 w-2.5 rounded-full bg-havmor" />}
+                {on && <span className="h-2.5 w-2.5 rounded-full bg-brand" />}
               </span>
               <span className="min-w-0 flex-1">
                 <b className="block text-[16px] font-black">{pack.label}</b>
@@ -130,7 +130,7 @@ export function PackSheet({
                   {saving > 0 ? `, save ${saving}%` : ""}
                 </small>
               </span>
-              <span className="headline text-[22px] text-havmor">{rupees(pack.amountPaise)}</span>
+              <span className="headline text-[22px] text-brand">{rupees(pack.amountPaise)}</span>
             </label>
           );
         })}
@@ -140,7 +140,7 @@ export function PackSheet({
         <p className="mt-4 rounded-2xl border border-choco/10 bg-wafer/50 px-4 py-3 text-[13px] font-semibold leading-normal text-choco-2">
           UPI apps often can&rsquo;t open from inside this app.{" "}
           {inApp === "android" ? (
-            <a href={chromeIntent()} className="font-black text-havmor underline">
+            <a href={chromeIntent()} className="font-black text-brand underline">
               Open in Chrome to pay
             </a>
           ) : (

@@ -5,10 +5,10 @@ import { DemoBanner } from "@/components/DemoBanner";
 import { MessageNotifier } from "@/components/MessageNotifier";
 import { PaymentWatcher } from "@/components/PaymentWatcher";
 import { ToastProvider } from "@/components/Toast";
-import { APP_NAME, APP_TAGLINE, FULL_NAME } from "@/lib/constants";
+import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 import "./globals.css";
 
-// Nunito is Havmor's own typeface: Black for headlines, the lighter weights
+// Nunito: Black for headlines, the lighter weights
 // for everything else. Hind Vadodara sits behind it for Gujarati (ગરબા), which
 // Nunito doesn't carry; Hindi and Marathi names fall through to the system.
 const nunito = Nunito({
@@ -26,14 +26,14 @@ const hind = Hind_Vadodara({
 });
 
 export const metadata: Metadata = {
-  title: `${FULL_NAME} — ${APP_TAGLINE}`,
+  title: `${APP_NAME} — ${APP_TAGLINE}`,
   description:
-    "Havmor Garba Circle: spin the circle, find your garba partner for Navratri, and chat safely.",
-  applicationName: FULL_NAME,
+    "Garba Circle: spin the circle, find your garba partner for Navratri, and chat safely.",
+  applicationName: APP_NAME,
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "black-translucent" },
   openGraph: {
-    title: `${FULL_NAME} — ${APP_TAGLINE}`,
-    description: "Nau raat, ek circle, and more scoops of sweetness. Find your garba partner this Navratri.",
+    title: `${APP_NAME} — ${APP_TAGLINE}`,
+    description: "Nau raat, ek circle. Find your garba partner this Navratri.",
     type: "website",
   },
 };

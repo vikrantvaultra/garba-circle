@@ -13,7 +13,7 @@
   place-items: center;
   overflow: hidden;
   border: 3px solid #fff;
-  box-shadow: 0 0 0 3px var(--color-havmor), 0 12px 24px -8px rgba(211, 0, 43, 0.5);
+  box-shadow: 0 0 0 3px var(--color-brand), 0 12px 24px -8px rgba(211, 0, 43, 0.5);
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 30px;
@@ -27,7 +27,7 @@
 }
 .kicker {
   margin: 0;
-  color: var(--color-havmor);
+  color: var(--color-brand);
   font-weight: 900;
   font-size: 13px;
   letter-spacing: 0.12em;
@@ -61,7 +61,7 @@
   font-size: 40px;
   line-height: 1;
   min-width: 3.2ch;
-  color: var(--color-havmor);
+  color: var(--color-brand);
   font-variant-numeric: tabular-nums;
 }
 .bar {
@@ -75,7 +75,7 @@
   height: 100%;
   width: 0;
   border-radius: 10px;
-  background: linear-gradient(90deg, var(--color-strawberry), var(--color-havmor));
+  background: linear-gradient(90deg, var(--color-strawberry), var(--color-brand));
 }
 .reason {
   display: block;
@@ -105,48 +105,9 @@
   border: 1.5px solid rgba(89, 51, 42, 0.14);
 }
 .styles span[data-shared="true"] {
-  border-color: var(--color-havmor);
-  background: var(--color-havmor-soft);
-  color: var(--color-havmor-deep);
-}
-
-/* The Havmor flavour this jodi should share. */
-.scoop {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 18px;
-  padding: 10px 14px 10px 10px;
-  border-radius: 20px;
-  background: #fff;
-  border: 1px solid rgba(89, 51, 42, 0.1);
-}
-.scoopArt {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 64px;
-  flex-shrink: 0;
-  border-radius: 16px;
-  padding: 6px;
-}
-.scoopArt img {
-  filter: drop-shadow(0 5px 6px rgba(59, 29, 21, 0.22));
-}
-.scoopName {
-  display: block;
-  margin-top: 1px;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 17px;
-  line-height: 1.15;
-}
-.scoopLine {
-  display: block;
-  margin-top: 2px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--color-choco-2);
+  border-color: var(--color-brand);
+  background: var(--color-brand-soft);
+  color: var(--color-brand-deep);
 }
 
 .actions {

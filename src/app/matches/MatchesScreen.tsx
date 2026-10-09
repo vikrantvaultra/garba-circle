@@ -6,8 +6,6 @@ import { Avatar } from "@/components/Avatar";
 import { BottomNav } from "@/components/BottomNav";
 import { NotifyPrompt } from "@/components/NotifyPrompt";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { ProductShot } from "@/components/brand/ProductShot";
-import { NIGHT_FLAVOURS } from "@/lib/havmor";
 import { api } from "@/lib/client/api";
 import { onMessage } from "@/lib/client/inbox";
 import type { Conversation, MatchesPayload } from "@/lib/matches/list";
@@ -70,7 +68,15 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
 
       {conversations.length === 0 ? (
         <div className="panel p-7 text-center">
-          <ProductShot flavour={NIGHT_FLAVOURS[5]} size={84} className="mx-auto drop-shadow-[0_8px_10px_rgba(59,29,21,0.22)]" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/map/garba.webp"
+            alt=""
+            width={72}
+            height={72}
+            draggable={false}
+            className="mx-auto block drop-shadow-[0_8px_10px_rgba(59,29,21,0.22)]"
+          />
           <p className="headline mt-2 text-[18px]">
             No chats yet
           </p>
@@ -92,7 +98,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
                 key={conversation.matchId}
                 href={`/chat/${conversation.matchId}`}
                 className={`panel flex items-center gap-3 p-3.5 transition-transform active:scale-[0.99] ${
-                  unread ? "border-havmor/40" : ""
+                  unread ? "border-brand/40" : ""
                 }`}
               >
                 <div className="relative shrink-0">
@@ -102,7 +108,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
                     size={54}
                   />
                   {unread && (
-                    <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-havmor" />
+                    <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-brand" />
                   )}
                 </div>
 
@@ -112,7 +118,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
                       {conversation.partner.name ?? "A dancer"}
                     </p>
                     {isNew && (
-                      <span className="shrink-0 rounded-full bg-havmor px-1.5 py-0.5 text-[9.5px] font-black tracking-wider text-white">
+                      <span className="shrink-0 rounded-full bg-brand px-1.5 py-0.5 text-[9.5px] font-black tracking-wider text-white">
                         NEW
                       </span>
                     )}
@@ -131,7 +137,7 @@ export function MatchesScreen({ initial }: { initial: MatchesPayload }) {
                     )}
                   </p>
                   {conversation.unread > 0 && (
-                    <span className="mt-1 inline-grid h-[19px] min-w-[19px] place-items-center rounded-full bg-havmor px-1.5 text-[11px] font-black text-white">
+                    <span className="mt-1 inline-grid h-[19px] min-w-[19px] place-items-center rounded-full bg-brand px-1.5 text-[11px] font-black text-white">
                       {conversation.unread > 9 ? "9+" : conversation.unread}
                     </span>
                   )}

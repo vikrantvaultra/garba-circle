@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AvatarPicker } from "@/components/AvatarPicker";
 import { useToast } from "@/components/Toast";
-import { ProductShot } from "@/components/brand/ProductShot";
 import { Wordmark } from "@/components/brand/Wordmark";
-import { levelFlavour } from "@/lib/havmor";
 import { api, ApiFailure } from "@/lib/client/api";
 import {
   DANCE_STYLES,
@@ -95,19 +93,19 @@ export function SetupWizard({
   return (
     <main className="app-shell flex min-h-dvh flex-col pt-safe pb-safe">
       <header className="py-5">
-        <Wordmark tone="red" width={76} className="mb-4" />
+        <Wordmark tone="red" size={15} className="mb-4" />
         <div className="flex gap-1.5">
           {STEPS.map((label, i) => (
             <div key={label} className="flex-1">
               <div
                 className={`h-1.5 rounded-full transition-colors ${
-                  i <= step ? "bg-havmor" : "bg-choco/10"
+                  i <= step ? "bg-brand" : "bg-choco/10"
                 }`}
               />
             </div>
           ))}
         </div>
-        <p className="eyebrow mt-2.5 text-havmor">
+        <p className="eyebrow mt-2.5 text-brand">
           Step {step + 1} of 3 {"\u00b7"} {STEPS[step]}
         </p>
       </header>
@@ -238,14 +236,14 @@ export function SetupWizard({
                     onClick={() => set("skillLevel", level.key)}
                     className={`panel flex w-full items-center gap-3 p-3.5 text-left transition-colors ${
                       draft.skillLevel === level.key
-                        ? "border-havmor bg-havmor-soft/50"
+                        ? "border-brand bg-brand-soft/50"
                         : ""
                     }`}
                   >
                     <span
                       className={`grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 ${
                         draft.skillLevel === level.key
-                          ? "border-havmor bg-havmor"
+                          ? "border-brand bg-brand"
                           : "border-choco/25"
                       }`}
                     >
@@ -261,7 +259,6 @@ export function SetupWizard({
                         {level.hint}
                       </span>
                     </span>
-                    <LevelScoop level={level.key} />
                   </button>
                 ))}
               </div>
@@ -328,17 +325,5 @@ function Field({
       </span>
       {children}
     </label>
-  );
-}
-
-/** Each level's Havmor flavour, its pack beside it. */
-function LevelScoop({ level }: { level: string }) {
-  const scoop = levelFlavour(level);
-  if (!scoop) return null;
-  return (
-    <span className="flex w-[68px] shrink-0 flex-col items-center gap-1 text-center">
-      <ProductShot flavour={scoop.flavour} size={34} className="drop-shadow-[0_4px_5px_rgba(59,29,21,0.2)]" />
-      <span className="text-[10.5px] font-bold leading-tight text-cocoa">{scoop.flavour.name}</span>
-    </span>
   );
 }

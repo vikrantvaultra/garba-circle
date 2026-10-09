@@ -2,9 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { FREE_SPINS } from "@/lib/constants";
-import { HAVMOR_SINCE, NIGHT_FLAVOURS } from "@/lib/havmor";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { ProductShot } from "@/components/brand/ProductShot";
 
 const FEATURES = [
   {
@@ -42,8 +40,8 @@ const FEATURES = [
         <path d="M8.5 11h7M8.5 13.5h4" />
       </>
     ),
-    title: "Talk it out, share a treat",
-    body: "Send a dandiya and the chat opens straight away. Free, with no timer. Every jodi comes with a Havmor treat to share.",
+    title: "Talk it out",
+    body: "Send a dandiya and the chat opens straight away. Free, with no timer.",
   },
 ];
 
@@ -55,7 +53,7 @@ export default async function LandingPage() {
     <main className="app-shell flex min-h-dvh flex-col pb-safe">
       <BrandHeader
         size="hero"
-        eyebrow={`Havmor presents · Navratri ${new Date().getFullYear()}`}
+        eyebrow={`Navratri ${new Date().getFullYear()}`}
         title={
           <>
             Garba
@@ -65,32 +63,30 @@ export default async function LandingPage() {
         }
         sub={
           <span className="block max-w-[60%]">
-            Nau raat, ek circle, and more scoops of sweetness. Spin it and find someone to
-            dance the whole night with.
+            Nau raat, ek circle. Spin it and find someone to dance the whole night
+            with.
           </span>
         }
       >
-        {/* Havmor's own packs, standing on the drip. */}
-        <div className="animate-rise pointer-events-none absolute -bottom-16 -right-1 flex items-end [animation-delay:150ms]">
-          <ProductShot
-            flavour={NIGHT_FLAVOURS[4]}
-            size={132}
-            priority
-            className="relative z-0 -mr-8 mb-4 -rotate-12 drop-shadow-[0_10px_12px_rgba(59,29,21,0.35)]"
-          />
-          <ProductShot
-            flavour={NIGHT_FLAVOURS[8]}
-            size={96}
-            priority
-            className="relative z-10 drop-shadow-[0_12px_14px_rgba(59,29,21,0.4)]"
+        {/* The circle's dancers, the same dial the spin wheel uses, resting on the drip. */}
+        <div className="animate-rise pointer-events-none absolute -bottom-16 -right-6 [animation-delay:150ms]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/brand/wheel/dial.webp"
+            alt=""
+            width={170}
+            height={170}
+            fetchPriority="high"
+            draggable={false}
+            className="block -rotate-12 rounded-full drop-shadow-[0_12px_14px_rgba(59,29,21,0.4)]"
           />
         </div>
       </BrandHeader>
 
       <div className="flex flex-1 flex-col justify-center pb-8">
         <p className="animate-rise mt-4 flex items-center gap-2.5 text-[13px] font-extrabold text-choco-2">
-          <span className="h-px w-6 bg-havmor/40" aria-hidden />
-          From Ahmedabad, scooping celebrations since {HAVMOR_SINCE}
+          <span className="h-px w-6 bg-brand/40" aria-hidden />
+          Nine nights, one circle. Made for Navratri.
         </p>
 
         <div className="mt-5 space-y-3">
@@ -100,7 +96,7 @@ export default async function LandingPage() {
               className="panel animate-rise flex gap-3.5 p-4"
               style={{ animationDelay: `${120 + i * 70}ms` }}
             >
-              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-havmor-soft text-havmor">
+              <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-soft text-brand">
                 <svg
                   viewBox="0 0 24 24"
                   className="h-[21px] w-[21px]"

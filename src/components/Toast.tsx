@@ -25,7 +25,7 @@ const TONES: Record<Tone, string> = {
   info: "bg-cocoa/50",
   success: "bg-pista",
   warn: "bg-mango",
-  error: "bg-havmor",
+  error: "bg-brand",
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {

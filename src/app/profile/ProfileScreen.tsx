@@ -9,14 +9,13 @@ import { NotifySetting } from "@/components/NotifyPrompt";
 import { PackSheet } from "@/components/PackSheet";
 import { useToast } from "@/components/Toast";
 import { BrandHeader } from "@/components/brand/BrandHeader";
-import { ProductShot } from "@/components/brand/ProductShot";
 import { Wordmark } from "@/components/brand/Wordmark";
-import { HAVMOR_HOME, HAVMOR_SINCE, HAVMOR_STORE_LOCATOR, levelFlavour } from "@/lib/havmor";
 import { api } from "@/lib/client/api";
 import { PURCHASED_EVENT } from "@/lib/client/checkout";
 import * as push from "@/lib/client/push";
 import type { PublicProfile } from "@/lib/api";
 import {
+  APP_NAME,
   SKILL_LEVELS,
   UNLIMITED_PASS_ENDS_LABEL,
   type Pack,
@@ -47,7 +46,6 @@ export function ProfileScreen({
   const toast = useToast();
   const [showPacks, setShowPacks] = useState(false);
   const level = SKILL_LEVELS.find((l) => l.key === profile.skillLevel);
-  const mine = levelFlavour(profile.skillLevel);
   const pass = packs.find((p) => p.unlimited);
   // The tile offers the pass while it's on sale, else the smallest pack.
   const offer = pass ?? packs[0];
@@ -102,7 +100,7 @@ export function ProfileScreen({
         )}
 
         {profile.bio && (
-          <p className="mt-3 border-l-[3px] border-havmor/40 pl-3 text-[14.5px] leading-relaxed text-choco-2">
+          <p className="mt-3 border-l-[3px] border-brand/40 pl-3 text-[14.5px] leading-relaxed text-choco-2">
             {profile.bio}
           </p>
         )}
@@ -117,22 +115,6 @@ export function ProfileScreen({
           </div>
         )}
 
-        {mine && (
-          <div className="mt-4 flex items-center gap-3 rounded-2xl bg-cream p-3">
-            <span
-              className="grid h-16 w-[72px] shrink-0 place-items-center rounded-xl p-1.5"
-              style={{ background: mine.flavour.tint }}
-            >
-              <ProductShot flavour={mine.flavour} size={50} className="drop-shadow-[0_5px_6px_rgba(59,29,21,0.22)]" />
-            </span>
-            <span className="min-w-0">
-              <span className="eyebrow block text-havmor">Your flavour</span>
-              <b className="headline block text-[16px] leading-tight">{mine.flavour.name}</b>
-              <small className="block text-[12.5px] leading-snug text-choco-2">{mine.line}</small>
-            </span>
-          </div>
-        )}
-
         <Link href="/setup" className="btn-ghost mt-5">
           Edit profile
         </Link>
@@ -140,7 +122,7 @@ export function ProfileScreen({
 
       <section className="mt-4 grid grid-cols-2 gap-3">
         <div className="panel p-4 text-center">
-          <p className="headline text-[30px] leading-none text-havmor">
+          <p className="headline text-[30px] leading-none text-brand">
             {quota.unlimited ? "∞" : quota.totalRemaining}
           </p>
           <p className="mt-1 text-[12.5px] font-semibold text-choco-2">
@@ -177,8 +159,8 @@ export function ProfileScreen({
       </section>
 
       {strikes > 0 && (
-        <section className="mt-4 rounded-2xl border border-havmor/35 bg-havmor-soft p-4">
-          <p className="text-[15px] font-black text-havmor">
+        <section className="mt-4 rounded-2xl border border-brand/35 bg-brand-soft p-4">
+          <p className="text-[15px] font-black text-brand">
             {strikes} rule warning{strikes === 1 ? "" : "s"} on your account
           </p>
           <p className="mt-1 text-[13.5px] leading-snug text-choco-2">
@@ -206,10 +188,6 @@ export function ProfileScreen({
           body="Your Google email or username is used only to sign you in. Neither is ever shown to another dancer, or shared."
         />
         <Item
-          title="Made with Havmor"
-          body={`Havmor has been adding more scoops of sweetness to celebrations since ${HAVMOR_SINCE}, from Ahmedabad. Every jodi here comes with a flavour to share between rounds.`}
-        />
-        <Item
           title="Pricing"
           body={`${packs.map((p) => (p.unlimited ? `Unlimited spins till ${UNLIMITED_PASS_ENDS_LABEL} ${rupees(p.amountPaise)}` : `${p.grant} spins ${rupees(p.amountPaise)}`)).join(" · ")}. Chat is free. One-time payments, no subscription.`}
         />
@@ -220,19 +198,11 @@ export function ProfileScreen({
       </button>
 
       <footer className="mt-7 flex flex-col items-center gap-2 text-center text-[12px] font-semibold leading-relaxed text-cocoa">
-        <Wordmark tone="red" width={84} />
+        <Wordmark tone="red" size={16} />
         <p>
-          Havmor Garba Circle {"·"} Made for Navratri
+          {APP_NAME} {"·"} Made for Navratri
           <br />
           Dance safe, dance a lot.
-        </p>
-        <p className="flex gap-4 font-extrabold text-havmor">
-          <a href={HAVMOR_HOME} target="_blank" rel="noopener noreferrer">
-            havmor.com {"↗"}
-          </a>
-          <a href={HAVMOR_STORE_LOCATOR} target="_blank" rel="noopener noreferrer">
-            Find a parlour {"↗"}
-          </a>
         </p>
       </footer>
 

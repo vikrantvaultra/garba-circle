@@ -39,7 +39,7 @@ const STEPS = [
   {
     icon: <path d="M6 5l12 14M18 5L6 19" />,
     title: "Send a dandiya",
-    body: "Like who you see? Send a dandiya — no waiting for them to accept. Every jodi comes with a Havmor scoop to share.",
+    body: "Like who you see? Send a dandiya — no waiting for them to accept.",
   },
   {
     icon: (
@@ -78,12 +78,12 @@ export function FirstRunGuide() {
         className="absolute inset-0 bg-choco/60"
         onClick={dismiss}
       />
-      <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t-[5px] border-havmor bg-vanilla px-5 pt-3 pb-safe">
+      <div className="animate-sheet relative w-full max-w-[460px] rounded-t-[30px] border-t-[5px] border-brand bg-vanilla px-5 pt-3 pb-safe">
         <div className="mx-auto mb-5 h-1.5 w-11 rounded-full bg-choco/15" />
 
         <div className="flex items-center justify-between gap-3">
-          <p className="eyebrow text-havmor">How it works</p>
-          <Wordmark tone="red" width={70} />
+          <p className="eyebrow text-brand">How it works</p>
+          <Wordmark tone="red" size={14} />
         </div>
         <h2 className="headline mt-1 text-[28px] leading-tight">
           Three taali, that&rsquo;s it
@@ -93,7 +93,7 @@ export function FirstRunGuide() {
           {STEPS.map((step, i) => (
             <div key={step.title} className="flex gap-3.5">
               <div className="relative flex flex-col items-center">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-havmor text-white shadow-[0_6px_14px_-6px_rgba(211,0,43,0.7)]">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand text-white shadow-[0_6px_14px_-6px_rgba(211,0,43,0.7)]">
                   <svg
                     viewBox="0 0 24 24"
                     className="h-[21px] w-[21px]"
@@ -107,12 +107,12 @@ export function FirstRunGuide() {
                   </svg>
                 </span>
                 {i < STEPS.length - 1 && (
-                  <span className="mt-1 h-4 w-0.5 rounded-full bg-havmor/25" />
+                  <span className="mt-1 h-4 w-0.5 rounded-full bg-brand/25" />
                 )}
               </div>
               <div className="min-w-0 flex-1 pt-1">
                 <h3 className="headline text-[16px] leading-tight">
-                  <span className="mr-1.5 text-havmor">{i + 1}.</span>
+                  <span className="mr-1.5 text-brand">{i + 1}.</span>
                   {step.title}
                 </h3>
                 <p className="mt-0.5 text-[13.5px] leading-snug text-choco-2">

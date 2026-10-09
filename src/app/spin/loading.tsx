@@ -23,7 +23,7 @@ export default function Loading() {
         <Bone className="mt-5 h-[18px] w-48 rounded-md" />
         <Bone className="mt-2.5 h-[52px] rounded-full" />
       </div>
-      <div className="mx-auto mt-[30px] aspect-square w-[min(340px,86vw)] rounded-full border-[3px] border-dotted border-havmor/40 p-[21%]">
+      <div className="mx-auto mt-[30px] aspect-square w-[min(340px,86vw)] rounded-full border-[3px] border-dotted border-brand/40 p-[21%]">
         <Bone className="h-full w-full rounded-full" />
       </div>
       <BottomNav />

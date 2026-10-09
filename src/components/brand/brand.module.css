@@ -8,7 +8,7 @@
   padding: calc(env(safe-area-inset-top, 0px) + 16px) 0 18px;
   background:
     radial-gradient(120% 90% at 85% -20%, rgba(255, 80, 97, 0.55), transparent 60%),
-    var(--color-havmor);
+    var(--color-brand);
   color: #fff;
 }
 /* The melt: one tile of drips, repeated across the width. `.drip` is the
@@ -32,7 +32,7 @@
 .inner {
   position: relative;
   /* Above the drip edge, so anything that hangs over it (the landing page's
-     packs) stands in front of the melt rather than behind it. */
+     dial) stands in front of the melt rather than behind it. */
   z-index: 1;
   isolation: isolate;
 }
@@ -90,76 +90,4 @@
   font-weight: 600;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.86);
-}
-
-/* ---- The wordmark in any colour ---- */
-.maskedMark {
-  display: block;
-  flex-shrink: 0;
-  background: var(--color-havmor);
-  -webkit-mask: url("/brand/havmor-wordmark.png") center / contain no-repeat;
-  mask: url("/brand/havmor-wordmark.png") center / contain no-repeat;
-}
-
-/* ---- Flavour of the night ---- */
-.flavour {
-  display: flex;
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  background: #fff;
-  border: 1px solid rgba(89, 51, 42, 0.1);
-  box-shadow: 0 10px 28px -18px rgba(89, 51, 42, 0.35);
-}
-.flavourArt {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 112px;
-  flex-shrink: 0;
-  padding: 12px 10px;
-}
-/* A pool of light for the pack to stand in. */
-.flavourArt::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.85), transparent 70%);
-}
-.flavourArt img {
-  position: relative;
-  filter: drop-shadow(0 8px 10px rgba(59, 29, 21, 0.22));
-}
-.flavourBody {
-  min-width: 0;
-  padding: 14px 16px 14px;
-}
-.flavourName {
-  margin: 2px 0 0;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 20px;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-}
-.flavourNote {
-  margin: 4px 0 0;
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--color-choco-2);
-}
-.flavourLinks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 14px;
-  margin: 8px 0 0;
-  font-size: 13px;
-  font-weight: 800;
-}
-.flavourLinks a {
-  color: var(--color-havmor);
-}
-.flavourLinks a:focus-visible {
-  outline: 2px solid var(--color-havmor);
-  outline-offset: 2px;
-  border-radius: 4px;
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Wordmark } from "./Wordmark";
+import { DandiyaMark, Wordmark } from "./Wordmark";
 import styles from "./brand.module.css";
 
 /** The drip edge on its own, for the bottom of any other red bar. */
@@ -8,8 +8,8 @@ export function Drip() {
 }
 
 /**
- * The top of every main screen: a full-width band of Havmor red that melts
- * into the page in drips, the way the logo does. Carries the wordmark, the
+ * The top of every main screen: a full-width band of brand red that melts
+ * into the page in drips. Carries the wordmark, the
  * screen's title and anything that belongs up there (`aside`, top right).
  */
 export function BrandHeader({
@@ -39,7 +39,8 @@ export function BrandHeader({
           </p>
         )}
         <div className={styles.row}>
-          <Wordmark width={size === "hero" ? 104 : 80} />
+          {/* The hero's title is the name itself, so it only needs the mark. */}
+          {size === "hero" ? <DandiyaMark size={34} className="text-white" /> : <Wordmark size={15} />}
           {aside && <div className={styles.aside}>{aside}</div>}
         </div>
         {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}

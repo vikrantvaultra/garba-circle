@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------------
-   Havmor Garba Circle design tokens.
-   Havmor's own palette: the red of the drip logo, vanilla cream for every
+   Garba Circle design tokens.
+   The palette: a bold red for the brand, vanilla cream for every
    surface, and chocolate for everything that has to be read. The flavours
    (strawberry, pista, mango, blueberry, caramel) are the accents — dancers'
    outfits, map pins, sprinkles.
@@ -10,9 +10,9 @@
    utility class happens to reference.
    ------------------------------------------------------------------------ */
 @theme static {
-  --color-havmor: #d3002b;
-  --color-havmor-deep: #a3001f;
-  --color-havmor-soft: #ffe3e6;
+  --color-brand: #d3002b;
+  --color-brand-deep: #a3001f;
+  --color-brand-soft: #ffe3e6;
   --color-strawberry: #ff5061;
 
   --color-vanilla: #fffcf0;
@@ -76,7 +76,7 @@ body {
   overflow-x: hidden;
 }
 
-::selection { background: var(--color-havmor); color: white; }
+::selection { background: var(--color-brand); color: white; }
 
 /* Scrollbars stay out of the way but remain usable on desktop. */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -101,14 +101,14 @@ body {
   box-shadow: 0 1px 0 rgba(89, 51, 42, 0.04), 0 10px 28px -18px rgba(89, 51, 42, 0.35);
 }
 
-/* Havmor's headline voice: Nunito at its heaviest, set tight. */
+/* The headline voice: Nunito at its heaviest, set tight. */
 @utility headline {
   font-family: var(--font-display);
   font-weight: 900;
   letter-spacing: -0.02em;
 }
 
-/* A small uppercase label over a heading, like Havmor's "CHOOSE YOUR". */
+/* A small uppercase label over a heading. */
 @utility eyebrow {
   font-size: 12px;
   font-weight: 800;
@@ -131,13 +131,13 @@ body {
   font-size: 16px;
   line-height: 1.2;
   color: #fff;
-  background: var(--color-havmor);
+  background: var(--color-brand);
   box-shadow: 0 10px 22px -10px rgba(211, 0, 43, 0.75), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
   transition: transform 0.14s ease, background 0.14s ease;
 }
 @utility btn-primary-active {
   transform: scale(0.975);
-  background: var(--color-havmor-deep);
+  background: var(--color-brand-deep);
 }
 
 @utility btn-ghost {
@@ -153,7 +153,7 @@ body {
   font-weight: 800;
   font-size: 16px;
   line-height: 1.2;
-  color: var(--color-havmor);
+  color: var(--color-brand);
   background: #fff;
   border: 1.5px solid rgba(211, 0, 43, 0.35);
   transition: background 0.14s ease, transform 0.14s ease;
@@ -174,7 +174,7 @@ body {
   &::placeholder { color: rgba(138, 101, 88, 0.7); font-weight: 500; }
 }
 @utility field-focus {
-  border-color: var(--color-havmor);
+  border-color: var(--color-brand);
   box-shadow: 0 0 0 4px rgba(211, 0, 43, 0.12);
 }
 
@@ -193,8 +193,8 @@ body {
 }
 @utility chip-on {
   color: #fff;
-  background: var(--color-havmor);
-  border-color: var(--color-havmor);
+  background: var(--color-brand);
+  border-color: var(--color-brand);
 }
 
 /* Loading placeholders. Only opacity animates, so it stays on the compositor. */

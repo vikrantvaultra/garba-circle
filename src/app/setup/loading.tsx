@@ -6,7 +6,7 @@ export default function Loading() {
   return (
     <main aria-busy="true" className="app-shell flex min-h-dvh flex-col pt-safe pb-safe">
       <header className="py-5">
-        <Wordmark tone="red" width={76} className="mb-4" />
+        <Wordmark tone="red" size={15} className="mb-4" />
         <div className="flex gap-1.5">
           {[0, 1, 2].map((i) => (
             <div key={i} className="h-1.5 flex-1 rounded-full bg-choco/10" />

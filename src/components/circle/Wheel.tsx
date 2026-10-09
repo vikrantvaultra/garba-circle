@@ -10,6 +10,7 @@ import {
   type Ref,
 } from "react";
 import { TICK, buzz, sound } from "@/lib/client/sound";
+import { DandiyaMark } from "@/components/brand/Wordmark";
 import styles from "./wheel.module.css";
 
 const DANCERS = 12;
@@ -444,10 +445,10 @@ export function Wheel(props: Props) {
           if (e.detail === 0) startSpin(0.3);
         }}
       >
-        {/* The Havmor wordmark, like the lid of a tub. It lifts as a spin
-            charges and pulses while the wheel turns: transforms only. */}
+        {/* The dandiya mark. It lifts as a spin charges and pulses while the
+            wheel turns: transforms only. */}
         <span className={styles.lamp} aria-hidden>
-          <img className={styles.product} src="/brand/havmor-wordmark.png" alt="" draggable={false} />
+          <DandiyaMark className={styles.product} />
         </span>
         <span>{label}</span>
       </button>

@@ -130,7 +130,7 @@ export function PasswordForm({ next }: { next: string | null }) {
         setConfirm("");
       }}
       className={`flex-1 rounded-full py-2 text-[14px] font-extrabold transition-colors ${
-        mode === value ? "bg-white text-havmor shadow-sm" : "text-choco-2"
+        mode === value ? "bg-white text-brand shadow-sm" : "text-choco-2"
       }`}
     >
       {label}
@@ -165,7 +165,7 @@ export function PasswordForm({ next }: { next: string | null }) {
           aria-invalid={registering && (taken || (username.length > 0 && !usernameOk))}
         />
         {registering && username.length > 0 && (
-          <span className={`mt-1 block text-[12px] font-semibold ${taken || !usernameOk ? "text-havmor" : "text-cocoa"}`}>
+          <span className={`mt-1 block text-[12px] font-semibold ${taken || !usernameOk ? "text-brand" : "text-cocoa"}`}>
             {taken
               ? "That username is taken."
               : usernameOk
@@ -191,7 +191,7 @@ export function PasswordForm({ next }: { next: string | null }) {
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
-            className="absolute inset-y-0 right-3 text-[12.5px] font-extrabold text-havmor"
+            className="absolute inset-y-0 right-3 text-[12.5px] font-extrabold text-brand"
           >
             {show ? "Hide" : "Show"}
           </button>
@@ -215,7 +215,7 @@ export function PasswordForm({ next }: { next: string | null }) {
             aria-invalid={mismatch}
           />
           {mismatch && (
-            <span className="mt-1 block text-[12px] font-semibold text-havmor">Passwords don&rsquo;t match.</span>
+            <span className="mt-1 block text-[12px] font-semibold text-brand">Passwords don&rsquo;t match.</span>
           )}
         </label>
       )}
